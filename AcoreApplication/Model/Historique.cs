@@ -17,6 +17,7 @@ namespace AcoreApplication.Model
         public string OrderFabrication { get; set; }
         public string EtatFin { get; set; }
         public DateTime DateFin { get; set; }
+        public DateTime DateFin3 { get; set; }
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
