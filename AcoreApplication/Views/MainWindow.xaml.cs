@@ -51,13 +51,13 @@ namespace AcoreApplication.Views
         {
             SeriesCollection seriesCollection = new SeriesCollection
             {
-                new StepLineSeries
+                new LineSeries
                 {
                     Title = "V",
                     Values = new ChartValues<int> {segments[0].ConsigneDepartV, segments[0].ConsigneArriveeV},
                     PointGeometry = null
                 },
-                new StepLineSeries
+                new LineSeries
                 {
                     Title = "A",
                     Values = new ChartValues<int> {segments[0].ConsigneDepartA, segments[0].ConsigneArriveeA},
