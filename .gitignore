@@ -3,14 +3,13 @@
 *.suo
 *.user
 *.sln.docstates
-.vs/AcoreApplication/v15/.suo
 
 # Build results
 AcoreApplication/bin
 AcoreApplication/obj
 
 # Visual C++ cache files
-ipch/
+.vs/
 *.aps
 *.ncb
 *.opensdf
@@ -39,12 +38,8 @@ ipch/
 *.pidb
 *.log
 *.scc
-.vs/
 
 # Visual Studio profiler
 *.psess
 *.vsp
 *.vspx
-
-AcoreApplication/bin
-AcoreApplication/obj
