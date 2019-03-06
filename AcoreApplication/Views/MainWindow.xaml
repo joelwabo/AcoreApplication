@@ -13,6 +13,10 @@
         Title="FirstWindow" Height="768" Width="1024" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
     <Grid Width="1024" Height="768">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="41*"/>
+            <ColumnDefinition Width="471*"/>
+        </Grid.ColumnDefinitions>
         <TabControl Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="772" Margin="-4,-4,0,0" VerticalAlignment="Top" Width="1028">
             <TabItem Header="" Width="70" Height="30">
                 <TabItem.Background>
@@ -47,7 +51,7 @@
                     <DockPanel  Margin="10,329.6,10,0" Height="380">
                         <Grid Height="30"></Grid>
                         <local:MachineControle x:Name="Machine1" HorizontalAlignment="Left" Loaded="Machine1_Loaded" DataContext="{Binding MainView.ListRedresseur[4], Source={StaticResource Locator}, Mode=TwoWay}"/>
-                        <local:MachineControle x:Name="Machine2" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[0], Source={StaticResource Locator}, Mode=TwoWay}"/>
+                        <local:MachineControle x:Name="Machine2" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[0], Source={StaticResource Locator}, Mode=TwoWay}" Width="3"/>
                         <local:MachineControle x:Name="Machine3" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[1], Source={StaticResource Locator}, Mode=TwoWay}"/>
                         <local:MachineControle x:Name="Machine4" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[2], Source={StaticResource Locator}, Mode=TwoWay}"/>
                     </DockPanel>
@@ -66,7 +70,7 @@
                             </MenuItem.ItemTemplate>
                         </MenuItem>
                     </Menu>
-                    <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="267" Margin="10,42,0,0" VerticalAlignment="Top" Width="264">
+                    <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="267" Margin="10,17,0,0" VerticalAlignment="Top" Width="264">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
@@ -98,8 +102,7 @@
                         </DataGrid>
                         <TextBlock HorizontalAlignment="Left" Height="25.8" Margin="10,290.6,0,0" TextWrapping="Wrap" Text="A/H : " VerticalAlignment="Top" Width="30.8"/>
                     </Grid>
-                    <lvc:CartesianChart Name="SegmentChart" Margin="0,392,0,44.8"  LegendLocation="Right">
-                    </lvc:CartesianChart>
+                    <lvc:CartesianChart Name="SegmentChart" Margin="0,392,0,44.8"  LegendLocation="Right"/>
                     <CheckBox HorizontalAlignment="Left" Height="18" Margin="354.3,291.1,0,0" VerticalAlignment="Top" Width="14.4" IsChecked="{Binding Path=AH, Mode=TwoWay}"/>
                     <TextBlock HorizontalAlignment="Left" Height="18" Margin="391.5,291.1,0,0" TextWrapping="Wrap" Text="Calibre A/H :" VerticalAlignment="Top" Width="69.6"/>
                     <Menu HorizontalAlignment="Left" Margin="466.1,291.1,0,0" VerticalAlignment="Top">
@@ -135,7 +138,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <lvc:CartesianChart Margin="0,491,-0.4,-0.4">
-                        
+
                     </lvc:CartesianChart>
                 </Grid>
             </TabItem>
@@ -216,7 +219,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Menu HorizontalAlignment="Left" Height="27.2" Margin="780,0,0,0" VerticalAlignment="Top" Width="221.866" Grid.Column="1">
+        <Menu HorizontalAlignment="Left" Height="27" Margin="698.389,0,0,0" VerticalAlignment="Top" Width="222" Grid.Column="1">
             <MenuItem Header="Français" Height="100" Width="100"/>
             <MenuItem Header="Admin" Height="100" Width="100"/>
         </Menu>

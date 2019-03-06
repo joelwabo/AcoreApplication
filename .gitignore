@@ -16,3 +16,5 @@
 *.p7s
 *.nupkg
 *.ps1
+AcoreApplication/bin
+AcoreApplication/obj

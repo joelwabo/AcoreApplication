@@ -5,15 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using static AcoreApplication.Model.Constantes;
+using System.Collections.ObjectModel;
 
 namespace AcoreApplication.Model
 {
     public class HistoriqueService : IHistoriqueService
     {
         SqlConnection connection;
-        public List<Historique> GetAllData()
+        public ObservableCollection<Historique> GetAllData()
         {
-            List<Historique> result = new List<Historique>();
+            ObservableCollection<Historique> result = new ObservableCollection<Historique>();
             using (connection = new SqlConnection(CnnVal("AcoreDataBase")))
             {
                 connection.Open();
@@ -22,7 +23,6 @@ namespace AcoreApplication.Model
                 while (reader.Read())
                 {
                     Historique historique = new Historique();
-                    historique.GetHistoriqueFromDB((int)reader["IdRedresseur"]);
                     result.Add(historique);
                 }
                 reader.Close();
