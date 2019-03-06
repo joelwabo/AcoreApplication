@@ -262,6 +262,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>AcoreDataBase.mdf</DependentUpon>
     </Content>
+    <Content Include="DataBase\AcoreDB_create.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
