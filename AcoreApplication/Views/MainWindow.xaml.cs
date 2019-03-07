@@ -20,6 +20,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using LiveCharts;
 using LiveCharts.Wpf;
+using LiveCharts.Defaults;
 
 namespace AcoreApplication.Views
 {
@@ -54,22 +55,26 @@ namespace AcoreApplication.Views
                 new LineSeries
                 {
                     Title = "V",
-                    Values = new ChartValues<int> {segments[0].ConsigneDepartV, segments[0].ConsigneArriveeV},
-                    PointGeometry = null
+                    Values = new ChartValues<ObservablePoint>(),
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
                 },
                 new LineSeries
                 {
                     Title = "A",
-                    Values = new ChartValues<int> {segments[0].ConsigneDepartA, segments[0].ConsigneArriveeA},
-                    PointGeometry = null
+                    Values = new ChartValues<ObservablePoint>(),
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
                 }
             };
-            for(int i = 1; i<segments.Count; i++)
+            int i = 0;
+            foreach(Segment segment in segments)
             {
-                seriesCollection[0].Values.Add(segments[i].ConsigneDepartV);
-                seriesCollection[0].Values.Add(segments[i].ConsigneArriveeV);
-                seriesCollection[1].Values.Add(segments[i].ConsigneDepartA);
-                seriesCollection[1].Values.Add(segments[i].ConsigneArriveeA);
+                seriesCollection[0].Values.Add(new ObservablePoint(i, segment.ConsigneDepartV));
+                seriesCollection[0].Values.Add(new ObservablePoint(i+1, segment.ConsigneArriveeV));
+                seriesCollection[1].Values.Add(new ObservablePoint(i, segment.ConsigneDepartA));
+                seriesCollection[1].Values.Add(new ObservablePoint(i+1, segment.ConsigneArriveeA));
+                i++;
             }
             this.SegmentChart.Series = seriesCollection;
         }

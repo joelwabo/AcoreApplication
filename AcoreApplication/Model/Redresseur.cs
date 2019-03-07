@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using LiveCharts;
 using LiveCharts.Wpf;
+using NModbus;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +10,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
 using static AcoreApplication.Model.Constantes;
 using static AcoreApplication.Model.Option;
@@ -19,6 +22,13 @@ namespace AcoreApplication.Model
 {
     public class Redresseur : ObservableObject
     {
+        #region Constante 
+        private const int Cst_PortModbus = 502;
+        private const int Cst_NbRedresseurs = 10;
+        private const int Cst_SlaveNb = 1;
+        private const int Cst_SleepTime = 1000;
+        #endregion
+
         #region ATTRIBUTS
         private int id;
         public int Id
@@ -42,7 +52,21 @@ namespace AcoreApplication.Model
         public bool OnOff
         {
             get { return onOff; }
-            set { NotifyPropertyChanged(ref onOff, value); }
+            set {
+                NotifyPropertyChanged(ref onOff, value);
+                if (onOff != value)
+                {
+                    if (onOff)
+                    {
+                        RedresseurPoolingTask = new Thread(RedresseurPooling);
+                        RedresseurPoolingTask.Start();
+                    }
+                    else
+                    {
+                        RedresseurPoolingTask.Abort();
+                    }
+                }
+            }
         }
         private bool miseSousTension;
         public bool MiseSousTension
@@ -245,6 +269,9 @@ namespace AcoreApplication.Model
             get { return historiques; }
             set { NotifyPropertyChanged(ref historiques, value); }
         }
+
+        IModbusMaster ModBusMaster { get; set; }
+        private Thread RedresseurPoolingTask { get; set; }
         #endregion 
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
@@ -323,6 +350,143 @@ namespace AcoreApplication.Model
             return redresseurs;
         }
 
+        private void RedresseurPooling()
+        {
+            while (OnOff)
+            {
+                switch(Etat)
+                {
+                    case MODES.LocalManuel:
+                        LocaleManuel();
+                        break;
+                    case MODES.LocalRecette:
+                        LocaleRecette();
+                        break;
+                    case MODES.RemoteManuel:
+                        if(OnOff)
+                            RemoteManuel();
+                        break;
+                    case MODES.RemoteRecette:
+                        break;
+                    case MODES.Supervision:
+                        break;
+                }
+            }
+        }
+
+        private void LocaleRecette()
+        {
+            foreach (Registre registre in Registres)
+            {
+                switch (registre.Nom)
+                {
+                    case REGISTRE.ConsigneA:
+                        {
+                            ushort[] readConsigneA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            ConsigneA = readConsigneA[0];
+                        }
+                        break;
+                    case REGISTRE.ConsigneV:
+                        {
+                            ushort[] readConsigneV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            ConsigneV = readConsigneV[0];
+
+                            for (int i = 0; i < ValuesA.Count - 1; i++)
+                            {
+                                ValuesA[i] = ValuesA[i + 1];
+                            }
+                            ValuesA[ValuesA.Count - 1] = ConsigneV;
+                        }
+                        break;
+                    case REGISTRE.LectureA:
+                        {
+                            ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            LectureA = readLectureA[0];
+
+                            for (int i = 0; i < ValuesA.Count - 1; i++)
+                            {
+                                ValuesB[i] = ValuesB[i + 1];
+                            }
+                            ValuesB[ValuesA.Count - 1] = ConsigneA;
+                        }
+                        break;
+                    case REGISTRE.LectureV:
+                        {
+                            ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            LectureV = readLectureV[0];
+                        }
+                        break;
+                }
+            }
+
+        }
+
+        private void LocaleManuel()
+        {
+            foreach (Registre registre in Registres)
+            {
+                switch (registre.Nom)
+                {
+                    case REGISTRE.ConsigneA:
+                        {
+                            ushort[] readConsigneA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            ConsigneA = readConsigneA[0];
+                        }
+                        break;
+                    case REGISTRE.ConsigneV:
+                        {
+                            ushort[] readConsigneV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            ConsigneV = readConsigneV[0];
+                        }
+                        break;
+                    case REGISTRE.LectureA:
+                        {
+                            ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            LectureA = readLectureA[0];
+                        }
+                        break;
+                    case REGISTRE.LectureV:
+                        {
+                            ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            LectureV = readLectureV[0];
+                        }
+                        break;
+                }
+            }
+        }
+        
+        private void RemoteManuel()
+        {
+            foreach (Registre registre in Registres)
+            {
+                switch (registre.Nom)
+                {
+                    case REGISTRE.ConsigneA:
+                        {
+                            ModBusMaster.WriteSingleRegister(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), (ushort)ConsigneA);
+                        }
+                        break;
+                    case REGISTRE.ConsigneV:
+                        {
+                            ModBusMaster.WriteSingleRegister(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), (ushort)ConsigneV);
+                        }
+                        break;
+                    case REGISTRE.LectureA:
+                        {
+                            ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), 1);
+                            LectureA = readLectureA[0];
+                        }
+                        break;
+                    case REGISTRE.LectureV:
+                        {
+                            ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), 1);
+                            LectureV = readLectureV[0];
+                        }
+                        break;
+                }
+            }
+        }
+        
         #endregion
     }
 }

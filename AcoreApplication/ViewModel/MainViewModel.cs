@@ -113,22 +113,17 @@ namespace AcoreApplication.ViewModel
         {
             if (redresseur.OnOff)
             {
-                ListAutomate[redresseur.IdAutomate - 1].StopModbusService();
                 redresseur.OnOff = false;
             }
             else
             { 
-                ListAutomate[redresseur.IdAutomate - 1].StartModbusService();
                 redresseur.OnOff = true;
             }
         }
 
         private void StartService(Redresseur redresseur)
         {
-            if (redresseur.OnOff)
-                ListAutomate[redresseur.IdAutomate - 1].StartRecipe();
-            else
-                MessageBox.Show("Machine éteinte");
+
         }
 
         private bool CanExecuteOnOff(Redresseur redresseur)
