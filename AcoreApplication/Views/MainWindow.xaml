@@ -60,7 +60,7 @@
             <TabItem Header="Recette" Width="70">
                 <Grid Background="#FFE5E5E5">
                     <Menu HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
-                        <MenuItem Name="ProcessMenuItem" Header="{Binding ListProcess[0].Nom}" ItemsSource="{Binding ListProcess}">
+                        <MenuItem Name="ProcessMenuItem" Header="{Binding ListProcess[0].Nom}" ItemsSource="{Binding ListProcess}" Width="255" Height="16" Background="#FFEE4F14">
                             <MenuItem.ItemTemplate>
                                 <DataTemplate>
                                     <MenuItem  Header="{Binding Nom}"  Command="{Binding Source={StaticResource Locator}, 
@@ -70,7 +70,7 @@
                             </MenuItem.ItemTemplate>
                         </MenuItem>
                     </Menu>
-                    <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="267" Margin="10,17,0,0" VerticalAlignment="Top" Width="264">
+                    <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="267" Margin="10,42,0,0" VerticalAlignment="Top" Width="264">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
@@ -117,13 +117,23 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Historiques" Width="70" Margin="0,-2,0,-1">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                        <GradientStop Color="#FFE4DBDB" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" HorizontalAlignment="Left" Height="156" VerticalAlignment="Top" Width="1011" Grid.Column="3" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="113*"/>
+                        <ColumnDefinition Width="909*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" HorizontalAlignment="Left" Height="219.248" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2">
                         <DataGrid.Columns>
 
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DataGrid ItemsSource="{Binding ListProcess[0].Recettes[0].Segments, Mode=TwoWay }" HorizontalAlignment="Left" Margin="4,239,0,277.6" Width="1004">
+                    <DataGrid ItemsSource="{Binding ListProcess[0].Recettes[0].Segments, Mode=TwoWay }" HorizontalAlignment="Left" Margin="4,239,0,277.6" Width="1004" Grid.ColumnSpan="2">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Segment N°" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Consigne Depart V" Binding="{Binding ConsigneDepartV, Mode=TwoWay}"/>
@@ -137,9 +147,7 @@
                             <DataGridTextColumn Header="Temps Off" Binding="{Binding TempsOff, Mode=TwoWay}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <lvc:CartesianChart Margin="0,491,-0.4,-0.4">
-
-                    </lvc:CartesianChart>
+                    <lvc:CartesianChart Margin="0,461.4,14,28.91" Tag="" LegendLocation="Right" Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Paramètres" Width="70" Margin="0,-2,0,-1">

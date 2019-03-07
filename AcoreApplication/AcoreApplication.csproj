@@ -149,14 +149,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Design\DesignAutomateService.cs" />
-    <Compile Include="Design\DesignHistoriqueService.cs" />
     <Compile Include="Design\DesignProcessService.cs" />
     <Compile Include="FrameworkMvvm\RelayCommand.cs" />
     <Compile Include="Model\Automate.cs" />
     <Compile Include="Model\AutomateService.cs" />
     <Compile Include="Model\Constantes.cs" />
     <Compile Include="Model\Historique.cs" />
-    <Compile Include="Model\HistoriqueService.cs" />
     <Compile Include="Model\IAutomateService.cs" />
     <Compile Include="Model\IHistoriqueService.cs" />
     <Compile Include="Model\Option.cs" />

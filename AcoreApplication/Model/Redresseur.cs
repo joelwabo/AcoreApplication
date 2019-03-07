@@ -14,6 +14,7 @@ using System.Windows.Input;
 using static AcoreApplication.Model.Constantes;
 using static AcoreApplication.Model.Option;
 using static AcoreApplication.Model.Registre;
+using static AcoreApplication.Model.Historique;
 
 namespace AcoreApplication.Model
 {
@@ -286,10 +287,7 @@ namespace AcoreApplication.Model
 
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
-            Historiques = new ObservableCollection<Historique>();
-            Historique historique = new Historique();
-            historique.GetHistoriqueFromDB(Id);
-            Historiques.Add(historique);
+            Historiques = GetHistoriquesFromRedresseurId(Id);
         }
         #endregion
 
