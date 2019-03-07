@@ -16,14 +16,12 @@ namespace AcoreApplication.ViewModel
             {
                 SimpleIoc.Default.Register<IAutomateService, DesignAutomateService>();
                 SimpleIoc.Default.Register<IProcessService, DesignProcessService>();
-                SimpleIoc.Default.Register<IHistoriqueService, DesignHistoriqueService>();
             }
             
             else
             {
                 SimpleIoc.Default.Register<IAutomateService, AutomateService>();
                 SimpleIoc.Default.Register<IProcessService, ProcessService>();
-                SimpleIoc.Default.Register<IHistoriqueService, HistoriqueService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();

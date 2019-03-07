@@ -55,8 +55,12 @@
             </TabItem>
             <TabItem Header="Recette" Width="70">
                 <Grid Background="#FFE5E5E5">
-                    <Menu HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top">
-                        <MenuItem Name="ProcessMenuItem" Header="{Binding ListProcess[0].Nom}" ItemsSource="{Binding ListProcess}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="85*"/>
+                        <ColumnDefinition Width="426*"/>
+                    </Grid.ColumnDefinitions>
+                    <Menu HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                        <MenuItem Name="ProcessMenuItem" Header="{Binding ListProcess[0].Nom}" ItemsSource="{Binding ListProcess}" Width="255" Height="16" Background="#FFEE4F14">
                             <MenuItem.ItemTemplate>
                                 <DataTemplate>
                                     <MenuItem  Header="{Binding Nom}"  Command="{Binding Source={StaticResource Locator}, 
@@ -67,13 +71,14 @@
                         </MenuItem>
                     </Menu>
                     <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="267" Margin="10,42,0,0" VerticalAlignment="Top" Width="264">
+
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
                             <DataGridTextColumn Header="Nombre segment" Binding="{Binding Segments.Count}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Grid Margin="309.6,0,0,370">
+                    <Grid Margin="139.6,0,0,370" Grid.Column="1">
                         <DataGrid ItemsSource="{Binding RecetteSelected.Segments, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="275.6" Margin="0,10,0,0" VerticalAlignment="Top" Width="708.4">
                             <Interactivity:Interaction.Triggers>
                                 <Interactivity:EventTrigger EventName="LoadingRow" >
@@ -98,28 +103,44 @@
                         </DataGrid>
                         <TextBlock HorizontalAlignment="Left" Height="25.8" Margin="10,290.6,0,0" TextWrapping="Wrap" Text="A/H : " VerticalAlignment="Top" Width="30.8"/>
                     </Grid>
-                    <lvc:CartesianChart Name="SegmentChart" Margin="0,392,0,44.8"  LegendLocation="Right"/>
-                    <CheckBox HorizontalAlignment="Left" Height="18" Margin="354.3,291.1,0,0" VerticalAlignment="Top" Width="14.4" IsChecked="{Binding Path=AH, Mode=TwoWay}"/>
-                    <TextBlock HorizontalAlignment="Left" Height="18" Margin="391.5,291.1,0,0" TextWrapping="Wrap" Text="Calibre A/H :" VerticalAlignment="Top" Width="69.6"/>
-                    <Menu HorizontalAlignment="Left" Margin="466.1,291.1,0,0" VerticalAlignment="Top">
+                    <lvc:CartesianChart Name="SegmentChart" Margin="0,392,0,44.8"  LegendLocation="Right" Grid.ColumnSpan="2"/>
+                    <CheckBox HorizontalAlignment="Left" Height="18" Margin="184.3,291.1,0,0" VerticalAlignment="Top" Width="14.4" IsChecked="{Binding Path=AH, Mode=TwoWay}" Grid.Column="1"/>
+                    <TextBlock HorizontalAlignment="Left" Height="18" Margin="221.5,291.1,0,0" TextWrapping="Wrap" Text="Calibre A/H :" VerticalAlignment="Top" Width="69.6" Grid.Column="1"/>
+                    <Menu HorizontalAlignment="Left" Margin="296.1,291.1,0,0" VerticalAlignment="Top" Grid.Column="1">
                         <MenuItem Header="A/H">
                             <MenuItem Header="A/H"/>
                             <MenuItem Header="A/S"/>
                             <MenuItem Header="A/MN"/>
                         </MenuItem>
                     </Menu>
-                    <TextBlock HorizontalAlignment="Left" Height="18" Margin="583.8,291.1,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="94.8"><Run Text="Valeur maximal"/><Run Text=" :"/></TextBlock>
-                    <TextBlock HorizontalAlignment="Left" Height="16" Margin="678.6,293.1,0,0" TextWrapping="Wrap" Text="{Binding CompteurAH}" VerticalAlignment="Top" Width="69.6"/>
+                    <TextBlock HorizontalAlignment="Left" Height="18" Margin="413.8,291.1,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="94.8" Grid.Column="1"><Run Text="Valeur maximal"/><Run Text=" :"/></TextBlock>
+                    <TextBlock HorizontalAlignment="Left" Height="16" Margin="508.6,293.1,0,0" TextWrapping="Wrap" Text="{Binding CompteurAH}" VerticalAlignment="Top" Width="69.6" Grid.Column="1"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Historiques" Width="70" Margin="0,-2,0,-1">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                        <GradientStop Color="#FFE4DBDB" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" HorizontalAlignment="Left" Height="156" VerticalAlignment="Top" Width="1011" Grid.Column="3" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="113*"/>
+                        <ColumnDefinition Width="909*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListRedresseur[0].Historiques, Mode=TwoWay}" HorizontalAlignment="Left" Height="219.248" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2">
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="Debut" Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Fin" Binding="{Binding DateFin}"/>
+                            <DataGridTextColumn Header="OF" Binding="{Binding OrdreFabrication}"/>
+                            <DataGridTextColumn Header="Machine" Binding="{Binding IdRedresseur}"/>
+                            <DataGridTextColumn Header="Etat" Binding="{Binding EtatFin}"/>
+                            <DataGridTextColumn Header="Utilisateur" Binding="{Binding IdUtilisateur}"/>
 
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DataGrid ItemsSource="{Binding ListProcess[0].Recettes[0].Segments, Mode=TwoWay }" HorizontalAlignment="Left" Margin="4,239,0,277.6" Width="1004">
+                    <DataGrid ItemsSource="{Binding ListProcess[0].Recettes[0].Segments, Mode=TwoWay }" HorizontalAlignment="Left" Margin="4,239,0,277.6" Width="1004" Grid.ColumnSpan="2">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Segment N°" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Consigne Depart V" Binding="{Binding ConsigneDepartV, Mode=TwoWay}"/>
@@ -133,9 +154,18 @@
                             <DataGridTextColumn Header="Temps Off" Binding="{Binding TempsOff, Mode=TwoWay}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <lvc:CartesianChart Margin="0,491,-0.4,-0.4">
+                    <TabControl HorizontalAlignment="Left" Height="228.581" Margin="4.714,473.938,0,0" VerticalAlignment="Top" Width="1011.697" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
+                        <TabItem Header="Graphique1" Margin="0,206.621,-4,-208.621">
+                            <Grid Background="#FFE5E5E5" Margin="0,-20,0,0">
+                                <lvc:CartesianChart LegendLocation="Right"/>
 
-                    </lvc:CartesianChart>
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem Header="Donnees" Margin="1,206.621,-5,-208.621">
+                            <Grid Background="#FFE5E5E5" Margin="0,-15,0,0"/>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
             <TabItem Header="Paramètres" Width="70" Margin="0,-2,0,-1">
