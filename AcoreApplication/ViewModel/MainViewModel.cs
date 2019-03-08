@@ -85,8 +85,6 @@ namespace AcoreApplication.ViewModel
                         ListHistorique.Add(historique);
                 }
 
-            OnOffCommand = new RelayCommand<Redresseur>(OnOff, CanExecuteOnOff); 
-            StartServiceCommand = new RelayCommand<Redresseur>(StartService);
             ClickedProcessCommand = new RelayCommand<Process>(OnProcessClicked);
             SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
             SegmentCellEditCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(CellEditCommand);
@@ -108,24 +106,7 @@ namespace AcoreApplication.ViewModel
             RecetteSelected = process.Recettes[0];
             Messenger.Default.Send(process);
         }
-
-        private void OnOff(Redresseur redresseur)
-        {
-            if (redresseur.OnOff)
-            {
-                redresseur.OnOff = false;
-            }
-            else
-            { 
-                redresseur.OnOff = true;
-            }
-        }
-
-        private void StartService(Redresseur redresseur)
-        {
-
-        }
-
+        
         private bool CanExecuteOnOff(Redresseur redresseur)
         {
             return true;

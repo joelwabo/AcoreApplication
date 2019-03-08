@@ -271,7 +271,7 @@ namespace AcoreApplication.Model
             set { NotifyPropertyChanged(ref historiques, value); }
         }
 
-        IModbusMaster ModBusMaster { get; set; }
+        public IModbusMaster ModBusMaster { get; set; }
         private Thread RedresseurPoolingTask { get; set; }
         #endregion 
 

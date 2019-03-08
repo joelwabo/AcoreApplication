@@ -90,8 +90,8 @@
             <Button x:Name="button" Content="-&gt;" HorizontalAlignment="Left" Margin="156.794,0,0,-0.341" Width="20" Padding="0" Background="{x:Null}" Foreground="White" Height="20" RenderTransformOrigin="0.5,0.5"/>
         </Grid>
         <Grid Margin="0,20,0,0" Width="189" HorizontalAlignment="Left">
-            <Button Content="O" HorizontalAlignment="Left" Height="25" Margin="10,3,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.537,0.367" Command="{Binding Source={StaticResource Locator}, Path=MainView.StartServiceCommand}" CommandParameter ="{Binding}"/>
-            <Button x:Name="ButtonOnOff" Content="ON | OFF" HorizontalAlignment="Left" Height="25" Margin="35.4,3,0,0" VerticalAlignment="Top" Width="67.2" Command="{Binding Source={StaticResource Locator}, Path=MainView.OnOffCommand}" CommandParameter ="{Binding}"/>
+            <Button Content="O" HorizontalAlignment="Left" Height="25" Margin="10,3,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.537,0.367"/>
+            <local:ToggleButton x:Name="ToggleButton" Margin="40,3,99,324.459" Width="40" Height="25" />
             <Menu HorizontalAlignment="Left" Height="18.4" Margin="35.4,35.541,0,0" VerticalAlignment="Top" Width="64.8">
                 <MenuItem Header="Recette
                           " Height="100" Width="100"/>
@@ -193,6 +193,7 @@
             <lvc:CartesianChart  Grid.Row="1" LegendLocation="Right" Margin="0,175,0,29" HorizontalAlignment="Right" Width="179">
                 <lvc:CartesianChart.Series>
                     <lvc:LineSeries Title="V" Values="{Binding ValuesA}" PointGeometry="{x:Null}"/>
+                    <lvc:LineSeries Title="V" Values="{Binding ValuesB}" PointGeometry="{x:Null}"/>
                 </lvc:CartesianChart.Series>
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Title="Temps (s)" ></lvc:Axis>

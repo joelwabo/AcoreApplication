@@ -51,6 +51,11 @@ namespace AcoreApplication.Model
             Connection();
         }
 
+        ~Automate()
+        {
+            Disconnect();
+        }
+
         #endregion
 
         #region METHODES
@@ -112,6 +117,8 @@ namespace AcoreApplication.Model
 
                     ModbusPoolingTask = new Thread(ModbusPooling);
                     ModbusPoolingTask.Start();
+                    foreach (Redresseur redresseur in Redresseurs)
+                        redresseur.ModBusMaster = ModBusMaster;
                 }
                 catch (ArgumentNullException e)
                 {
@@ -123,9 +130,6 @@ namespace AcoreApplication.Model
                 }
                 finally
                 {
-                    ModbusPoolingTask.Abort();
-                    ModBusMaster.Dispose();
-                    ClientTcp.Close();
                     Mode = MODES.Disconnected;
                 }
             }
@@ -136,6 +140,8 @@ namespace AcoreApplication.Model
             if (ClientTcp.Connected)
             {
                 ModbusPoolingTask.Abort();
+                foreach (Redresseur redresseur in Redresseurs)
+                    redresseur.ModBusMaster.Dispose();
                 ModBusMaster.Dispose();
                 ClientTcp.Close();
                 Mode = MODES.Disconnected;
