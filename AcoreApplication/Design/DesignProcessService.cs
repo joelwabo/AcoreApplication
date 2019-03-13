@@ -10,6 +10,11 @@ namespace AcoreApplication.Design
 {
     class DesignProcessService : IProcessService
     {
+        public bool DeleteProcess(Process process)
+        {
+            throw new NotImplementedException();
+        }
+
         public ObservableCollection<Process> GetAllData()
         {
             ObservableCollection<Process> result = new ObservableCollection<Process>();
@@ -23,6 +28,16 @@ namespace AcoreApplication.Design
             process.Pulse = true;
             result.Add(process);
             return result;
+        }
+
+        public bool InsertProcess()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateProcess(Process process)
+        {
+            throw new NotImplementedException();
         }
     }
 }

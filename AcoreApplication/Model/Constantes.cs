@@ -9,6 +9,13 @@ namespace AcoreApplication.Model
 {
     public class Constantes
     {
+        #region Constante 
+        public const int Cst_SleepTime = 500;
+        public const int Cst_PortModbus = 502;
+        public const int Cst_NbRedresseurs = 10;
+        public const int Cst_SlaveNb = 1;
+        #endregion
+
         public enum MODES
         {
             //Automate mode

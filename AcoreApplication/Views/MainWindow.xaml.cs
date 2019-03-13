@@ -32,6 +32,8 @@ namespace AcoreApplication.Views
         public MainWindow()
         {
             InitializeComponent();
+            this.ProcessComboBox.SelectedIndex = 0;
+            
             Messenger.Default.Register<Process>(this, AfficherListRecette);
             Messenger.Default.Register<Redresseur>(this, GetListHistorique);
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
@@ -45,7 +47,6 @@ namespace AcoreApplication.Views
 
         private void AfficherListRecette(Process process)
         {
-            this.ProcessMenuItem.Header = process.Nom;
             this.ListRecetteDataGrid.ItemsSource = process.Recettes;
             this.ListSegmentHistoriqueDataGrid.ItemsSource = process.Recettes;
         }
@@ -86,9 +87,5 @@ namespace AcoreApplication.Views
             this.SegmentChart.Series = seriesCollection;
         }
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

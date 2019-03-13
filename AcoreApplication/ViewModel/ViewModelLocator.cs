@@ -1,8 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Practices.ServiceLocation;
 using AcoreApplication.Model;
 using AcoreApplication.Design;
+using Microsoft.Practices.ServiceLocation;
 
 namespace AcoreApplication.ViewModel
 {
@@ -14,7 +14,6 @@ namespace AcoreApplication.ViewModel
 
             if (ViewModelBase.IsInDesignModeStatic)
             {
-                SimpleIoc.Default.Register<IAutomateService, DesignAutomateService>();
                 SimpleIoc.Default.Register<IProcessService, DesignProcessService>();
             }
             
@@ -22,6 +21,8 @@ namespace AcoreApplication.ViewModel
             {
                 SimpleIoc.Default.Register<IAutomateService, AutomateService>();
                 SimpleIoc.Default.Register<IProcessService, ProcessService>();
+                SimpleIoc.Default.Register<IRecetteService, RecetteService>();
+                SimpleIoc.Default.Register<ISegmentService, SegmentService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();

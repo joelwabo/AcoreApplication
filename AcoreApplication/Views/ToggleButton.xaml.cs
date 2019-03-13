@@ -23,8 +23,8 @@ namespace AcoreApplication.Views
     {
         Thickness LeftSide = new Thickness(-15, 0, 0, 0);
         Thickness RightSide = new Thickness(0, 0, -15, 0);
-        SolidColorBrush OffColor = new SolidColorBrush(Color.FromArgb(144, 144, 144, 100));
-        SolidColorBrush OnColor = new SolidColorBrush(Color.FromArgb(53, 255, 53, 100));
+        SolidColorBrush OffColor = new SolidColorBrush(Color.FromRgb(144, 144, 144));
+        SolidColorBrush OnColor = new SolidColorBrush(Color.FromRgb(130, 220, 130));
         public bool Toogled  = false;
 
         public ToggleButton()
@@ -32,7 +32,7 @@ namespace AcoreApplication.Views
             InitializeComponent();
             Back.Fill = OffColor;
             Toogled = false;
-            Dot.Margin = LeftSide;
+            Dot.Margin = RightSide;
         }
 
 
@@ -42,13 +42,13 @@ namespace AcoreApplication.Views
             {
                 Back.Fill = OffColor;
                 Toogled = false;
-                Dot.Margin = LeftSide;
+                Dot.Margin = RightSide;
             }
             else
             {
                 Back.Fill = OnColor;
                 Toogled = true;
-                Dot.Margin = RightSide;
+                Dot.Margin = LeftSide;
             }
             Redresseur red = (Redresseur)this.DataContext;
             red.OnOff = Toogled;

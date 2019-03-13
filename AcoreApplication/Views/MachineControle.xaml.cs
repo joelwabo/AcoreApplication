@@ -24,6 +24,7 @@ namespace AcoreApplication.Views
         public MachineControle()
         {
             InitializeComponent();
+
         }
     }
 }

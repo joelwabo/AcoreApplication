@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0e016a4cb2fd4f24a555444e86903da9" Name="Diagram1">
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Automate" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Historique" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Options" Width="1.5" PointX="7.5" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Process" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Recette" Width="1.5" PointX="3" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Redresseur" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Registre" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Segment" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AcoreDataBaseModel.Utilisateur" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="AcoreDataBaseModel.Redresseur_Automate" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Historique_Redresseur" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Historique_Utilisateur" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Option_Process" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Option_Recette" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Option_Redresseur" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Option_Segment" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Recette_Process" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Redresseur_Process" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Segment_Recette" ManuallyRouted="false" />
+        <AssociationConnector Association="AcoreDataBaseModel.Registre_Redresseur" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

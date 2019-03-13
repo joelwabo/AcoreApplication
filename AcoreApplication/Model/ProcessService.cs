@@ -31,5 +31,58 @@ namespace AcoreApplication.Model
 
             return result;
         }
+
+        public bool InsertProcess()
+        {
+            try
+            {
+                using (var bdd = new DataBase.AcoreDBEntities())
+                {
+                    bdd.Process.Add(new DataBase.Process()
+                    {
+                        Nom = "new_Process"
+                    });
+                    bdd.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                return false;
+            }
+        }
+
+        public bool UpdateProcess(Process process)
+        {
+            try
+            {
+                using (var bdd = new DataBase.AcoreDBEntities())
+                {
+                    List<DataBase.Process> pro = bdd.Process.ToList();
+                    DataBase.Process processToUpdate = bdd.Process.FirstOrDefault(processFound => processFound.Id == process.Id);
+                    if (processToUpdate != null)
+                    {
+                        processToUpdate.Nom = process.Nom;
+                        processToUpdate.UMax = process.UMax;
+                        processToUpdate.IMax = process.IMax;
+                        processToUpdate.Pulse = process.Pulse;
+                        processToUpdate.Inverseur = process.Inverseur;
+                        processToUpdate.AH = process.AH;
+                        bdd.SaveChanges();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteProcess(Process process)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

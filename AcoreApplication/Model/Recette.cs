@@ -84,6 +84,8 @@ namespace AcoreApplication.Model
         }
 
         #endregion
+
+        #region METHODES
         private bool NotifyPropertyChanged<T>(ref T variable, T valeur, [CallerMemberName] string nomPropriete = null)
         {
             if (object.Equals(variable, valeur)) return false;
@@ -111,7 +113,7 @@ namespace AcoreApplication.Model
             }
             return recettes;
         }
-        #region METHODES
+
 
 
 

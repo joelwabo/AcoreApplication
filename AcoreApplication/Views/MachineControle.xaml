@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AcoreApplication.Views"             
+             xmlns:local="clr-namespace:AcoreApplication.Views"           
+             xmlns:model="clr-namespace:AcoreApplication.Model"             
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              
@@ -90,12 +91,9 @@
             <Button x:Name="button" Content="-&gt;" HorizontalAlignment="Left" Margin="156.794,0,0,-0.341" Width="20" Padding="0" Background="{x:Null}" Foreground="White" Height="20" RenderTransformOrigin="0.5,0.5"/>
         </Grid>
         <Grid Margin="0,20,0,0" Width="189" HorizontalAlignment="Left">
-            <Button Content="O" HorizontalAlignment="Left" Height="25" Margin="10,3,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.537,0.367"/>
-            <local:ToggleButton x:Name="ToggleButton" Margin="40,3,99,324.459" Width="40" Height="25" />
-            <Menu HorizontalAlignment="Left" Height="18.4" Margin="35.4,35.541,0,0" VerticalAlignment="Top" Width="64.8">
-                <MenuItem Header="Recette
-                          " Height="100" Width="100"/>
-            </Menu>
+            <Button Content="O" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.537,0.367"/>
+            <local:ToggleButton x:Name="ToggleButton" Margin="40,10,99,324.459" Width="40" Height="25" />
+            <TextBlock Text="{Binding Path=Etat}" Margin="12,69,44,265"/>
             <Grid Margin="10,99.6,0,170.4">
                 <Border BorderThickness="1" BorderBrush="Black" Margin="0,10,103.2,62.9">
                     <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-2" TextWrapping="Wrap" Text="Consignes VA" VerticalAlignment="Top"/>
