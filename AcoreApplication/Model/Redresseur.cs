@@ -231,7 +231,21 @@ namespace AcoreApplication.Model
             get { return defaut; }
             set { NotifyPropertyChanged(ref defaut, value); }
         }
-        
+
+        private string ordreFabrication;
+        public string OrdreFabrication
+        {
+            get { return ordreFabrication;  }
+            set { NotifyPropertyChanged(ref ordreFabrication, value);  }
+        }
+
+        private ETATFIN etatFin;
+        public ETATFIN EtatFin
+        {
+            get { return etatFin;  }
+            set { NotifyPropertyChanged(ref etatFin, value); }
+        }
+
         private ObservableCollection<int> tab;
         public ObservableCollection<int> Tab
         {
@@ -311,6 +325,8 @@ namespace AcoreApplication.Model
             Rampe = (bool)reader["Rampe"];
             DureeRampe = DateTime.Parse(reader["DureeRampe"].ToString());
             Defaut = (bool)reader["Defaut"];
+            OrdreFabrication = (string)reader["OrdreFabrication"];
+            EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
 
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);

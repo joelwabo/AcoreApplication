@@ -18,6 +18,7 @@ CREATE TABLE Historique (
     OrdreFabrication nvarchar(50)  NOT NULL,
     EtatFin nvarchar(50)  NULL,
     DateFin datetime  NULL,
+	Type nvarchar(50) NULL
     CONSTRAINT Historique_pk PRIMARY KEY  (Date)
 );
 

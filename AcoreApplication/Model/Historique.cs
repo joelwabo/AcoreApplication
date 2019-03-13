@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using static AcoreApplication.Model.Constantes;
 using System.Collections.ObjectModel;
+using static AcoreApplication.Model.Redresseur;
+
 
 namespace AcoreApplication.Model
 {
@@ -15,9 +17,10 @@ namespace AcoreApplication.Model
         public DateTime DateDebut { get; set; }
         public int IdRedresseur { get; set; }
         public int IdUtilisateur  { get; set; }
-        public string OrderFabrication { get; set; }
-        public string EtatFin { get; set; }
+        public string OrdreFabrication { get; set; }
+        public ETATFIN EtatFin { get; set; }
         public DateTime DateFin { get; set; }
+        public MODES Type { get; set; }
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
@@ -31,9 +34,10 @@ namespace AcoreApplication.Model
                     IdRedresseur = (int)reader["IdRedresseur"];
                     IdUtilisateur = (int)reader["IdUtilisateur"];
                     DateDebut = (DateTime)reader["Date"];
-                    OrderFabrication = (string)reader["OrdreFabrication"];
-                    EtatFin = (string)reader["EtatFin"];
+                    OrdreFabrication = (string)reader["OrdreFabrication"];
+                    EtatFin = (ETATFIN)reader["EtatFin"];
                     DateFin = (DateTime)reader["DateFin"];   
+                    Type = (MODES)Enum.Parse(typeof(MODES), (string)reader["Type"]);
         }
 
         public static ObservableCollection<Historique> GetHistoriquesFromRedresseurId(int idRedresseur)
@@ -42,15 +46,18 @@ namespace AcoreApplication.Model
             using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Historique WHERE IdRedresseur = " + idRedresseur, connection))
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Historique historique = new Historique(reader);
-                        historiques.Add(historique);
-                    }
-                }
+                using (SqlCommand command = new SqlCommand("INSERT INTO Historique(DateDebut, DateFin, IdRedresseur, Type, OrdreFabrication, EtatFin, IdUtilisateur) ", connection))
+                { 
+                Historique historique = new Historique();
+                historique.DateDebut = DateTime.Now;
+                historique.DateFin = DateTime.Now.AddDays(1);
+                historique.IdRedresseur = 1;
+                historique.Type = MODES.Connected;
+                historique.OrdreFabrication = "DDD567";
+                historique.EtatFin = ETATFIN.Arret_par_utilisateur;
+                historique.IdUtilisateur = 1;
+                historiques.Add(historique);
+                }   
             }
             return historiques;
         }

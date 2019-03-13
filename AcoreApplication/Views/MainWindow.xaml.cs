@@ -47,7 +47,7 @@ namespace AcoreApplication.Views
         {
             this.ProcessMenuItem.Header = process.Nom;
             this.ListRecetteDataGrid.ItemsSource = process.Recettes;
-            this.ListSegmentHistoriqueDataGrid.ItemsSource = process.Recettes;
+
         }
 
         private void GetListHistorique(Redresseur redresseur)
@@ -87,6 +87,11 @@ namespace AcoreApplication.Views
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void HistoriqueDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

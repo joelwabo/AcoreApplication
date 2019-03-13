@@ -121,21 +121,21 @@
                 </TabItem.Background>
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="113*"/>
-                        <ColumnDefinition Width="909*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="507*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListRedresseur[0].Historiques, Mode=TwoWay}" HorizontalAlignment="Left" Height="219.248" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2">
+                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListRedresseur[0].Historiques, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2" Margin="0,58,0,0" SelectionChanged="HistoriqueDataGrid_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Debut" Binding="{Binding Date}"/>
+                            <DataGridTextColumn Header="Debut" Binding="{Binding DateDebut}"/>
                             <DataGridTextColumn Header="Fin" Binding="{Binding DateFin}"/>
                             <DataGridTextColumn Header="OF" Binding="{Binding OrdreFabrication}"/>
                             <DataGridTextColumn Header="Machine" Binding="{Binding IdRedresseur}"/>
                             <DataGridTextColumn Header="Etat" Binding="{Binding EtatFin}"/>
                             <DataGridTextColumn Header="Utilisateur" Binding="{Binding IdUtilisateur}"/>
-
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DataGrid  Name="ListSegmentHistoriqueDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" HorizontalAlignment="Left" Margin="4,238,0,278" Width="1004" Grid.ColumnSpan="2">
+                    <DataGrid  Name="ListSegmentHistoriqueDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="2,238,0,278" Width="1004" Grid.Column="1">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
@@ -143,7 +143,7 @@
                             <DataGridTextColumn Header="Nombre segment" Binding="{Binding Segments.Count}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TabControl HorizontalAlignment="Left" Height="228.581" Margin="4.714,473.938,0,0" VerticalAlignment="Top" Width="1011.697" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
+                    <TabControl HorizontalAlignment="Left" Height="229" Margin="0,474,0,0" VerticalAlignment="Top" Width="1011" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
                         <TabItem Header="Graphique1" Margin="0,206.621,-4,-208.621">
                             <Grid Background="#FFE5E5E5" Margin="0,-20,0,0">
                                 <lvc:CartesianChart LegendLocation="Right"/>
@@ -155,7 +155,7 @@
                             <Grid Background="#FFE5E5E5" Margin="0,-15,0,0"/>
                         </TabItem>
                     </TabControl>
-                    <DataGrid ItemsSource="{Binding RecetteSelected.Segments, Mode=TwoWay}" HorizontalAlignment="Left" Height="138" Margin="5,318,0,0" VerticalAlignment="Top" Width="748" Grid.ColumnSpan="2">
+                    <DataGrid ItemsSource="{Binding RecetteSelected.Segments, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="138" Margin="0,318,0,0" VerticalAlignment="Top" Width="748" Grid.Column="1">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Segment N°" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Consigne Depart V" Binding="{Binding ConsigneDepartV, Mode=TwoWay}"/>
@@ -170,6 +170,9 @@
                         </DataGrid.Columns>
 
                     </DataGrid>
+                    <DatePicker HorizontalAlignment="Left" Margin="1,19,0,0" VerticalAlignment="Top" Grid.Column="1" Height="21" Width="84"/>
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="90,19,0,0" TextWrapping="Wrap" Text="à" VerticalAlignment="Top" Height="21" Width="11" FontSize="16" RenderTransformOrigin="-2.545,0.81"/>
+                    <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="106,19,0,0" VerticalAlignment="Top" Width="84" Height="21"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Paramètres">
@@ -217,7 +220,11 @@
                         </TabItem>
                         <TabItem Header="Process">
                             <Grid Background="#FFE5E5E5">
-                                <DataGrid ItemsSource="{Binding ListProcess, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="275.6" Margin="0,10,0,0" VerticalAlignment="Top" Width="978" Grid.ColumnSpan="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="13*"/>
+                                    <ColumnDefinition Width="111*"/>
+                                </Grid.ColumnDefinitions>
+                                <DataGrid ItemsSource="{Binding ListProcess, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="276" Margin="0,10,0,0" VerticalAlignment="Top" Width="978" Grid.ColumnSpan="2">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
                                         <DataGridTextColumn Header="Nom" Binding="{Binding Nom, Mode=TwoWay}"/>

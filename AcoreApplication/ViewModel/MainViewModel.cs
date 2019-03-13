@@ -84,6 +84,7 @@ namespace AcoreApplication.ViewModel
                     foreach (Historique historique in redresseur.Historiques)
                         ListHistorique.Add(historique);
                 }
+            
 
             ClickedProcessCommand = new RelayCommand<Process>(OnProcessClicked);
             SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
