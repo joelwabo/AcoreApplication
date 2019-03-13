@@ -33,7 +33,7 @@ namespace AcoreApplication.Views
         {
             InitializeComponent();
             this.ProcessComboBox.SelectedIndex = 0;
-            
+
             Messenger.Default.Register<Process>(this, AfficherListRecette);
             Messenger.Default.Register<Redresseur>(this, GetListHistorique);
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
@@ -41,14 +41,14 @@ namespace AcoreApplication.Views
 
         private void Machine1_Loaded(object sender, RoutedEventArgs e)
         {
-            Storyboard sb = this.Machine1.FindResource("Storyboard1") as Storyboard;            
+            Storyboard sb = this.Machine1.FindResource("Storyboard1") as Storyboard;
             sb.Begin();
         }
 
         private void AfficherListRecette(Process process)
         {
             this.ListRecetteDataGrid.ItemsSource = process.Recettes;
-            this.ListSegmentHistoriqueDataGrid.ItemsSource = process.Recettes;
+
         }
 
         private void GetListHistorique(Redresseur redresseur)

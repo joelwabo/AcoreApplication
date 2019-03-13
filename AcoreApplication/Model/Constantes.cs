@@ -83,6 +83,15 @@ namespace AcoreApplication.Model
             NbSeg,
             NomRecette
         }
+
+        public enum ETATFIN
+        {
+            Arret_par_utilisateur,
+            Arret_sur_défaut,
+            Arret_sur_timer,
+            Arret_A_H
+        }
+
         public static string CnnVal(string name)
         {
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;

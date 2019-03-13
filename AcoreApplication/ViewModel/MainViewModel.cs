@@ -96,6 +96,7 @@ namespace AcoreApplication.ViewModel
                     foreach (Historique historique in redresseur.Historiques)
                         ListHistorique.Add(historique);
                 }
+            
 
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
             SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
