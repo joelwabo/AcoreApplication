@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AcoreDataBaseModelStoreContainer" CdmEntityContainer="AcoreDBEntities">
+    <EntitySetMapping Name="Automate">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Automate">
+        <MappingFragment StoreEntitySet="Automate">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="IpAdresse" ColumnName="IpAdresse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Historique">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Historique">
+        <MappingFragment StoreEntitySet="Historique">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="IdRedresseur" ColumnName="IdRedresseur" />
+          <ScalarProperty Name="IdUtilisateur" ColumnName="IdUtilisateur" />
+          <ScalarProperty Name="OrdreFabrication" ColumnName="OrdreFabrication" />
+          <ScalarProperty Name="EtatFin" ColumnName="EtatFin" />
+          <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Options">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Options">
+        <MappingFragment StoreEntitySet="Options">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdRedresseur" ColumnName="IdRedresseur" />
+          <ScalarProperty Name="IdSegment" ColumnName="IdSegment" />
+          <ScalarProperty Name="IdRecette" ColumnName="IdRecette" />
+          <ScalarProperty Name="IdProcess" ColumnName="IdProcess" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Process">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Process">
+        <MappingFragment StoreEntitySet="Process">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="UMax" ColumnName="UMax" />
+          <ScalarProperty Name="IMax" ColumnName="IMax" />
+          <ScalarProperty Name="Pulse" ColumnName="Pulse" />
+          <ScalarProperty Name="Inverseur" ColumnName="Inverseur" />
+          <ScalarProperty Name="AH" ColumnName="AH" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Recette">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Recette">
+        <MappingFragment StoreEntitySet="Recette">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdProcess" ColumnName="IdProcess" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="Cyclage" ColumnName="Cyclage" />
+          <ScalarProperty Name="SegCours" ColumnName="SegCours" />
+          <ScalarProperty Name="TempsRestant" ColumnName="TempsRestant" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Redresseur">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Redresseur">
+        <MappingFragment StoreEntitySet="Redresseur">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdProcess" ColumnName="IdProcess" />
+          <ScalarProperty Name="IdAutomate" ColumnName="IdAutomate" />
+          <ScalarProperty Name="OnOff" ColumnName="OnOff" />
+          <ScalarProperty Name="MiseSousTension" ColumnName="MiseSousTension" />
+          <ScalarProperty Name="Etat" ColumnName="Etat" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="CalibreV" ColumnName="CalibreV" />
+          <ScalarProperty Name="UMax" ColumnName="UMax" />
+          <ScalarProperty Name="CalibreA" ColumnName="CalibreA" />
+          <ScalarProperty Name="IMax" ColumnName="IMax" />
+          <ScalarProperty Name="ConsigneV" ColumnName="ConsigneV" />
+          <ScalarProperty Name="ConsigneA" ColumnName="ConsigneA" />
+          <ScalarProperty Name="LectureV" ColumnName="LectureV" />
+          <ScalarProperty Name="LectureA" ColumnName="LectureA" />
+          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+          <ScalarProperty Name="AH" ColumnName="AH" />
+          <ScalarProperty Name="CompteurAH" ColumnName="CompteurAH" />
+          <ScalarProperty Name="CalibreAH" ColumnName="CalibreAH" />
+          <ScalarProperty Name="Inverseur" ColumnName="Inverseur" />
+          <ScalarProperty Name="Prevent" ColumnName="Prevent" />
+          <ScalarProperty Name="Pulse" ColumnName="Pulse" />
+          <ScalarProperty Name="Temporisation" ColumnName="Temporisation" />
+          <ScalarProperty Name="TempsOn" ColumnName="TempsOn" />
+          <ScalarProperty Name="TempsOff" ColumnName="TempsOff" />
+          <ScalarProperty Name="DureeTempo" ColumnName="DureeTempo" />
+          <ScalarProperty Name="DureeRestante" ColumnName="DureeRestante" />
+          <ScalarProperty Name="Rampe" ColumnName="Rampe" />
+          <ScalarProperty Name="DureeRampe" ColumnName="DureeRampe" />
+          <ScalarProperty Name="FichierIncident" ColumnName="FichierIncident" />
+          <ScalarProperty Name="Defaut" ColumnName="Defaut" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Registre">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Registre">
+        <MappingFragment StoreEntitySet="Registre">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdRedresseur" ColumnName="IdRedresseur" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="TypeModbus" ColumnName="TypeModbus" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="AdresseDebut" ColumnName="AdresseDebut" />
+          <ScalarProperty Name="AdresseFin" ColumnName="AdresseFin" />
+          <ScalarProperty Name="NumBit" ColumnName="NumBit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Segment">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Segment">
+        <MappingFragment StoreEntitySet="Segment">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IdRecette" ColumnName="IdRecette" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="Etat" ColumnName="Etat" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Duree" ColumnName="Duree" />
+          <ScalarProperty Name="ConsigneDepartV" ColumnName="ConsigneDepartV" />
+          <ScalarProperty Name="ConsigneDepartA" ColumnName="ConsigneDepartA" />
+          <ScalarProperty Name="ConsigneArriveeV" ColumnName="ConsigneArriveeV" />
+          <ScalarProperty Name="ConsigneArriveeA" ColumnName="ConsigneArriveeA" />
+          <ScalarProperty Name="TempsRestant" ColumnName="TempsRestant" />
+          <ScalarProperty Name="Pulse" ColumnName="Pulse" />
+          <ScalarProperty Name="Temporisation" ColumnName="Temporisation" />
+          <ScalarProperty Name="TempsOn" ColumnName="TempsOn" />
+          <ScalarProperty Name="TempsOff" ColumnName="TempsOff" />
+          <ScalarProperty Name="AH" ColumnName="AH" />
+          <ScalarProperty Name="CompteurAH" ColumnName="CompteurAH" />
+          <ScalarProperty Name="CalibreAH" ColumnName="CalibreAH" />
+          <ScalarProperty Name="Rampe" ColumnName="Rampe" />
+          <ScalarProperty Name="DureeRampe" ColumnName="DureeRampe" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Utilisateur">
+      <EntityTypeMapping TypeName="AcoreDataBaseModel.Utilisateur">
+        <MappingFragment StoreEntitySet="Utilisateur">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nom" ColumnName="Nom" />
+          <ScalarProperty Name="Mdp" ColumnName="Mdp" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
