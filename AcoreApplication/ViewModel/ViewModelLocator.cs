@@ -15,14 +15,14 @@ namespace AcoreApplication.ViewModel
             if (ViewModelBase.IsInDesignModeStatic)
             {
                 SimpleIoc.Default.Register<IProcessService, DesignProcessService>();
-            }
-            
+            }            
             else
             {
                 SimpleIoc.Default.Register<IAutomateService, AutomateService>();
                 SimpleIoc.Default.Register<IProcessService, ProcessService>();
                 SimpleIoc.Default.Register<IRecetteService, RecetteService>();
                 SimpleIoc.Default.Register<ISegmentService, SegmentService>();
+                SimpleIoc.Default.Register<IRedresseurService, RedresseurService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();

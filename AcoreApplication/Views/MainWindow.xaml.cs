@@ -37,6 +37,7 @@ namespace AcoreApplication.Views
             Messenger.Default.Register<Process>(this, AfficherListRecette);
             Messenger.Default.Register<Redresseur>(this, GetListHistorique);
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
+            Messenger.Default.Register<ObservableCollection<Registre>>(this, AfficherListRegistre);
         }
 
         private void Machine1_Loaded(object sender, RoutedEventArgs e)
@@ -48,6 +49,11 @@ namespace AcoreApplication.Views
         private void AfficherListRecette(Process process)
         {
             this.ListRecetteDataGrid.ItemsSource = process.Recettes;
+
+        }
+        private void AfficherListRegistre(ObservableCollection<Registre> registre)
+        {
+            this.ListRecetteDataGrid.ItemsSource = registre;
 
         }
 

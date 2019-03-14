@@ -62,7 +62,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdProcess" Type="int" Nullable="false" />
           <Property Name="IdAutomate" Type="int" Nullable="false" />
           <Property Name="OnOff" Type="bit" Nullable="false" />
@@ -111,7 +111,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdRecette" Type="int" Nullable="false" />
           <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Etat" Type="bit" Nullable="false" />

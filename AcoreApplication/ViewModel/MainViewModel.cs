@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using System.Linq;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace AcoreApplication.ViewModel
 {
@@ -22,9 +23,11 @@ namespace AcoreApplication.ViewModel
         IProcessService processService;
         IRecetteService recetteService;
         ISegmentService segmentService;
+        IRedresseurService redresseurService;
         public ICommand OnOffCommand { get; set; }
         public ICommand StartServiceCommand { get; set; }
         public ICommand SelectedProcessChangedCommand { get; set; }
+        public ICommand RegistreLoadingRowCommand { get; set; }
         public ICommand SegmentLoadingRowCommand { get; set; }
         public ICommand SegmentCellEditCommand { get; set; }
         public ICommand AddingNewProcessCommand { get; set; }
@@ -32,14 +35,20 @@ namespace AcoreApplication.ViewModel
         public ICommand ValideButton { get; set; }
         public ICommand AddingNewSegmentCommand { get; set; }
         public ICommand AddingNewRecetteCommand { get; set; }
-
+        public ICommand AddingNewRedresseurCommand { get; set; }
+        private Redresseur redresseurSelected = null;
+        public Redresseur RedresseurSelected
+        {
+            get { return redresseurSelected; }
+            set { NotifyPropertyChanged(ref redresseurSelected, value); }
+        }
         private Recette recetteSelected = null;
         public Recette RecetteSelected
         {
             get { return recetteSelected; }
             set { NotifyPropertyChanged(ref recetteSelected, value); }
         }
-
+        
         private ObservableCollection<Automate> listAutomate;
         public ObservableCollection<Automate> ListAutomate
         {
@@ -80,19 +89,19 @@ namespace AcoreApplication.ViewModel
             return true;
         }
                 
-        public MainViewModel(IAutomateService automateService, IProcessService _processService, IRecetteService _recetteService, ISegmentService _segmentService)
+        public MainViewModel(IAutomateService automateService)
         {
-            processService = _processService;
-            recetteService = _recetteService;
-            segmentService = _segmentService;
+            processService = SimpleIoc.Default.GetInstance<IProcessService>();
+            recetteService = SimpleIoc.Default.GetInstance<IRecetteService>();
+            segmentService = SimpleIoc.Default.GetInstance<ISegmentService>();
+            redresseurService = SimpleIoc.Default.GetInstance<IRedresseurService>();
             ListAutomate = automateService.GetAllData();
             ListProcess = processService.GetAllData();
-            ListRedresseur = new ObservableCollection<Redresseur>();
+            ListRedresseur = redresseurService.GetAllData();
             ListHistorique = new ObservableCollection<Historique>();
             foreach (Automate automate in ListAutomate)
                 foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
                 {
-                    ListRedresseur.Add(redresseur);
                     foreach (Historique historique in redresseur.Historiques)
                         ListHistorique.Add(historique);
                 }
@@ -100,13 +109,25 @@ namespace AcoreApplication.ViewModel
 
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
             SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
+            RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
             SegmentCellEditCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(CellEditCommand);
             AddingNewProcessCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewProcess);
             AddingNewRecetteCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewRecette);
             AddingNewSegmentCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewSegment);
             EditingProcessCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(EditingProcess);
+            AddingNewRedresseurCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewRedresseur);
             ValideButton = new RelayCommand<Object>(valideButton);
             RecetteSelected = ListProcess[0].Recettes[0];
+            RedresseurSelected = ListRedresseur[0];
+        }
+
+        private void AddingNewRedresseur(AddingNewItemEventArgs arg)
+        {
+            foreach (Redresseur redresseur in ListRedresseur)
+                redresseurService.UpdateRedresseur(redresseur);
+
+            redresseurService.InsertRedresseur();
+            ListRedresseur = redresseurService.GetAllData();
         }
 
         private void AddingNewSegment(AddingNewItemEventArgs arg)
@@ -117,7 +138,6 @@ namespace AcoreApplication.ViewModel
                         segmentService.UpdateSegment(seg);
 
             segmentService.InsertSegment();
-            ListProcess = processService.GetAllData();
         }
 
         private void AddingNewRecette(AddingNewItemEventArgs arg)
@@ -135,12 +155,14 @@ namespace AcoreApplication.ViewModel
             foreach (Process process in ListProcess)
             { 
                 processService.UpdateProcess(process);
-                foreach (Recette rec in process.Recettes)
-                {
-                    recetteService.UpdateRecette(rec);
-                    foreach (Segment seg in rec.Segments)
-                        segmentService.UpdateSegment(seg);
-                }
+                if (process.Recettes != null)
+                    foreach (Recette rec in process.Recettes)
+                    {
+                        recetteService.UpdateRecette(rec);
+                        if (rec.Segments != null)
+                            foreach (Segment seg in rec.Segments)
+                                    segmentService.UpdateSegment(seg);
+                    }
             }
             ListProcess = processService.GetAllData();
         }
@@ -156,6 +178,11 @@ namespace AcoreApplication.ViewModel
 
             processService.InsertProcess();
             ListProcess = processService.GetAllData();
+        }
+
+        private void RegistreLoadingRow(DataGridRowEventArgs arg)
+        {
+            Messenger.Default.Send(RedresseurSelected.Registres);
         }
 
         private void SegmentLoadingRow(DataGridRowEventArgs arg)

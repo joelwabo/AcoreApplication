@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AcoreApplication.Model
 {
-    class SegmentService : ISegmentService
+    public class SegmentService : ISegmentService
     {
 
         public bool DeleteSegment(Segment segment)
@@ -22,7 +22,6 @@ namespace AcoreApplication.Model
                 {
                     bdd.Segment.Add(new DataBase.Segment()
                     {
-                        Id = 2,
                         IdRecette = 1,
                         Nom = "new_seg",
                         Etat = false,
@@ -65,13 +64,36 @@ namespace AcoreApplication.Model
                     DataBase.Segment segmentToUpdate = bdd.Segment.FirstOrDefault(segmentFound => segmentFound.Id == segment.Id);
                     if (segmentToUpdate != null)
                     {
+                        segmentToUpdate.IdRecette = segment.IdRecette;
+                        segmentToUpdate.Nom = segment.Nom;
+                        segmentToUpdate.Etat = segment.Etat;
+                        segmentToUpdate.Type = segment.Type.ToString();
+                        var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                        //segmentToUpdate.Duree = TimeSpan.FromSeconds((segment.Duree.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.ConsigneDepartV = segment.ConsigneDepartV;
+                        segmentToUpdate.ConsigneDepartA = segment.ConsigneDepartA;
+                        segmentToUpdate.ConsigneArriveeV = segment.ConsigneArriveeV;
+                        segmentToUpdate.ConsigneArriveeA = segment.ConsigneArriveeA;
+                        //segmentToUpdate.TempsRestant = TimeSpan.FromSeconds((segment.TempsRestant.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.Pulse = segment.Pulse;
+                        segmentToUpdate.CompteurAH = segment.CompteurAH;
+                        segmentToUpdate.Temporisation = segment.Temporisation;
+                        //segmentToUpdate.TempsOn = TimeSpan.FromSeconds((segment.TempsOn.ToUniversalTime() - epoch).TotalSeconds);
+                        //segmentToUpdate.TempsOff = TimeSpan.FromSeconds((segment.TempsOff.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.AH = segment.AH;
+                        //CompteurAH = CompteurAH;
+                        segmentToUpdate.CalibreAH = segment.CalibreAH.ToString();
+                        segmentToUpdate.Rampe = segment.Rampe;
+                        //segmentToUpdate.DureeRampe = TimeSpan.FromSeconds((segment.DureeRampe.ToUniversalTime() - epoch).TotalSeconds);
+
                         bdd.SaveChanges();
                     }
                 }
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine("Exception: {0}", e);
                 return false;
             }
         }

@@ -100,6 +100,7 @@
                             </Interactivity:Interaction.Triggers>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Segment N°" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Recette N°" Binding="{Binding IdRecette, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Consigne Depart V" Binding="{Binding ConsigneDepartV, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Consigne Depart A" Binding="{Binding ConsigneDepartA, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Consigne Arrivée V" Binding="{Binding ConsigneArriveeV, Mode=TwoWay}"/>
@@ -139,7 +140,7 @@
                         <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="507*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListRedresseur[0].Historiques, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2" Margin="0,58,0,0" SelectionChanged="HistoriqueDataGrid_SelectionChanged">
+                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListRedresseur[0].Historiques, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2" Margin="0,58,0,0">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Debut" Binding="{Binding DateDebut}"/>
                             <DataGridTextColumn Header="Fin" Binding="{Binding DateFin}"/>
@@ -199,7 +200,12 @@
                         </TabItem>
                         <TabItem Header="Redresseur">
                             <Grid Background="#FFE5E5E5">
-                                <DataGrid ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="202.906" Margin="10,10,0,0" VerticalAlignment="Top" Width="968">
+                                <DataGrid Margin="10,0" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" SelectedItem="{Binding RedresseurSelected, Mode=TwoWay}" AutoGenerateColumns="False"  VerticalAlignment="Top" Width="968" Height="219.4">
+                                    <Interactivity:Interaction.Triggers>
+                                        <Interactivity:EventTrigger EventName="AddingNewItem" >
+                                            <Command:EventToCommand Command="{Binding AddingNewRedresseurCommand}" PassEventArgsToCommand="True"/>
+                                        </Interactivity:EventTrigger>
+                                    </Interactivity:Interaction.Triggers>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
                                         <DataGridTextColumn Header="Nom" Binding="{Binding Nom, Mode=TwoWay}"/>
@@ -218,7 +224,12 @@
                                         <DataGridCheckBoxColumn Header="Marche Globale" Binding="{Binding MiseSousTension, Mode=TwoWay}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <DataGrid ItemsSource="{Binding ListRedresseur[0].Registres, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="202.906" Margin="10,245.161,0,0" VerticalAlignment="Top" Width="968">
+                                <DataGrid ItemsSource="{Binding RedresseurSelected.Registres, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="202.906" Margin="10,245.161,0,0" VerticalAlignment="Top" Width="968">
+                                    <Interactivity:Interaction.Triggers>
+                                        <Interactivity:EventTrigger EventName="LoadingRow" >
+                                            <Command:EventToCommand Command="{Binding RegistreLoadingRowCommand}" PassEventArgsToCommand="True"/>
+                                        </Interactivity:EventTrigger>
+                                    </Interactivity:Interaction.Triggers>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Nom Variable" Binding="{Binding Nom}"/>
                                         <DataGridTextColumn Header="Nom Variable historisque"/>
@@ -276,9 +287,15 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Menu HorizontalAlignment="Left" Height="27" Margin="698.389,0,0,0" VerticalAlignment="Top" Width="222" Grid.Column="1">
-            <MenuItem Header="Français" Height="100" Width="100"/>
-            <MenuItem Header="Admin" Height="100" Width="100"/>
+        <Menu HorizontalAlignment="Left" Height="27" Margin="831,0,0,0" VerticalAlignment="Top">
+            <MenuItem Header="Français">
+                <MenuItem Header="Anglais"/>
+                <MenuItem Header="Allemand"/>
+            </MenuItem>
+            <MenuItem Header="Admin">
+                <MenuItem Header="Jojo"/>
+                <MenuItem Header="User2"/>
+            </MenuItem>
         </Menu>
 
     </Grid>

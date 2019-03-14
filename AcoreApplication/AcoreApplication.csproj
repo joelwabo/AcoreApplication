@@ -209,12 +209,14 @@
     <Compile Include="Model\IAutomateService.cs" />
     <Compile Include="Model\IRecetteService.cs" />
     <Compile Include="Model\IHistoriqueService.cs" />
+    <Compile Include="Model\IRedresseurService.cs" />
     <Compile Include="Model\Option.cs" />
     <Compile Include="Model\Process.cs" />
     <Compile Include="Model\Recette.cs" />
     <Compile Include="Model\ProcessService.cs" />
     <Compile Include="Model\RecetteService.cs" />
     <Compile Include="Model\Redresseur.cs" />
+    <Compile Include="Model\RedresseurService.cs" />
     <Compile Include="Model\Registre.cs" />
     <Compile Include="Model\Segment.cs" />
     <Compile Include="Model\IProcessService.cs" />

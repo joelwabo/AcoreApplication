@@ -123,32 +123,32 @@ namespace AcoreApplication.Model
             get { return id; }
             set { NotifyPropertyChanged(ref consigneA, value); }
         }
-        private int lectureV;
-        public int LectureV
+        private int? lectureV;
+        public int? LectureV
         {
             get { return lectureV; }
             set { NotifyPropertyChanged(ref lectureV, value); }
         }
-        private int lectureA;
-        public int LectureA
+        private int? lectureA;
+        public int? LectureA
         {
             get { return lectureA; }
             set { NotifyPropertyChanged(ref lectureA, value); }
         }
-        private int temperature;
-        public int Temperature
+        private int? temperature;
+        public int? Temperature
         {
             get { return temperature; }
             set { NotifyPropertyChanged(ref temperature, value); }
         }
-        private bool aH;
-        public bool AH
+        private bool? aH;
+        public bool? AH
         {
             get { return aH; }
             set { NotifyPropertyChanged(ref aH, value); }
         }
-        private int compteurAH;
-        public int CompteurAH
+        private int? compteurAH;
+        public int? CompteurAH
         {
             get { return compteurAH; }
             set { NotifyPropertyChanged(ref compteurAH, value); }
@@ -159,38 +159,38 @@ namespace AcoreApplication.Model
             get { return calibreAH; }
             set { NotifyPropertyChanged(ref calibreAH, value); }
         }
-        private bool inverseur;
-        public bool Inverseur
+        private bool? inverseur;
+        public bool? Inverseur
         {
             get { return inverseur; }
             set { NotifyPropertyChanged(ref inverseur, value); }
         }
-        private bool prevent;
-        public bool Prevent
+        private bool? prevent;
+        public bool? Prevent
         {
             get { return prevent; }
             set { NotifyPropertyChanged(ref prevent, value); }
         }
-        private bool pulse;
-        public bool Pulse
+        private bool? pulse;
+        public bool? Pulse
         {
             get { return pulse; }
             set { NotifyPropertyChanged(ref pulse, value); }
         }
-        private bool temporisation;
-        public bool Temporisation
+        private bool? temporisation;
+        public bool? Temporisation
         {
             get { return temporisation; }
             set { NotifyPropertyChanged(ref temporisation, value); }
         }
-        private int tempsOn;
-        public int TempsOn
+        private int? tempsOn;
+        public int? TempsOn
         {
             get { return tempsOn; }
             set { NotifyPropertyChanged(ref tempsOn, value); }
         }
-        private int tempsOff;
-        public int TempsOff
+        private int? tempsOff;
+        public int? TempsOff
         {
             get { return tempsOff; }
             set { NotifyPropertyChanged(ref tempsOff, value); }
@@ -207,8 +207,8 @@ namespace AcoreApplication.Model
             get { return dureeRestante; }
             set { NotifyPropertyChanged(ref dureeRestante, value); }
         }
-        private bool rampe;
-        public bool Rampe
+        private bool? rampe;
+        public bool? Rampe
         {
             get { return rampe; }
             set { NotifyPropertyChanged(ref rampe, value); }
@@ -290,8 +290,38 @@ namespace AcoreApplication.Model
         #endregion 
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Redresseur()
+        public Redresseur(DataBase.Redresseur red)
         {
+            Id = red.Id;
+            IdProcess = red.IdProcess;
+            IdAutomate = red.IdAutomate;
+            OnOff = red.OnOff;
+            MiseSousTension = red.MiseSousTension;
+            Etat = (MODES)Enum.Parse(typeof(MODES), red.Etat);
+            Type = (TYPEREDRESSEUR)Enum.Parse(typeof(TYPEREDRESSEUR), red.Type);
+            UMax = red.UMax;
+            IMax = red.IMax;
+            ConsigneV = red.ConsigneV;
+            ConsigneA = red.ConsigneA;
+            LectureV = red.LectureV;
+            LectureA = red.LectureA;
+            Temperature = red.Temperature;
+            AH = red.AH;
+            CompteurAH = red.CompteurAH;
+            CalibreAH = (CALIBRE)Enum.Parse(typeof(CALIBRE), red.CalibreAH);
+            Pulse = red.Pulse;
+            Temporisation = red.Temporisation;
+            TempsOn = red.TempsOn;
+            TempsOff = red.TempsOff;
+            DureeTempo = DateTime.Parse(red.DureeTempo.ToString());
+            DureeRestante = DateTime.Parse(red.DureeRestante.ToString());
+            Rampe = red.Rampe;
+            DureeRampe = DateTime.Parse(red.DureeRampe.ToString());
+            Defaut = red.Defaut;
+
+            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Registres = GetAllRegisterFromRedresseurId(Id);
+            Historiques = GetHistoriquesFromRedresseurId(Id);
 
         }
 
@@ -325,13 +355,14 @@ namespace AcoreApplication.Model
             Rampe = (bool)reader["Rampe"];
             DureeRampe = DateTime.Parse(reader["DureeRampe"].ToString());
             Defaut = (bool)reader["Defaut"];
-            OrdreFabrication = (string)reader["OrdreFabrication"];
-            EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
+            //OrdreFabrication = (string)reader["OrdreFabrication"];
+            //EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
 
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
             Historiques = GetHistoriquesFromRedresseurId(Id);
         }
+
         #endregion
 
         #region METHODES
