@@ -131,6 +131,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
@@ -178,6 +179,16 @@
     <Compile Include="DataBase\Historique.cs">
       <DependentUpon>AcoreDBEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataBase\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataBase\Options.cs">
       <DependentUpon>AcoreDBEntities.tt</DependentUpon>
     </Compile>
@@ -206,6 +217,7 @@
     <Compile Include="Model\AutomateService.cs" />
     <Compile Include="Model\Constantes.cs" />
     <Compile Include="Model\Historique.cs" />
+    <Compile Include="Model\HistoriqueService.cs" />
     <Compile Include="Model\IAutomateService.cs" />
     <Compile Include="Model\IRecetteService.cs" />
     <Compile Include="Model\IHistoriqueService.cs" />
@@ -294,6 +306,7 @@
     </EntityDeploy>
     <None Include="DataBase\AcoreDBEntities.edmx.diagram">
       <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -342,6 +355,16 @@
       <LastGenOutput>AcoreDBEntities.cs</LastGenOutput>
     </Content>
     <Content Include="DataBase\AcoreDB_create.sql" />
+    <Content Include="DataBase\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+      <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
+    </Content>
+    <Content Include="DataBase\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+      <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

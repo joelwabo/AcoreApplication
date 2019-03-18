@@ -10,5 +10,7 @@ namespace AcoreApplication.Model
     public interface IHistoriqueService
     {
         ObservableCollection<Historique> GetAllData();
+        bool InsertHistorique();
+        bool UpdateHistorique(Redresseur redresseur);
     }
 }
