@@ -23,6 +23,7 @@ namespace AcoreApplication.ViewModel
         IProcessService processService;
         IRecetteService recetteService;
         ISegmentService segmentService;
+        IAutomateService automateService;
         IRedresseurService redresseurService;
         public ICommand OnOffCommand { get; set; }
         public ICommand StartServiceCommand { get; set; }
@@ -89,19 +90,21 @@ namespace AcoreApplication.ViewModel
             return true;
         }
                 
-        public MainViewModel(IAutomateService automateService)
+        public MainViewModel(IAutomateService _automateService)
         {
+            automateService = _automateService;
             processService = SimpleIoc.Default.GetInstance<IProcessService>();
             recetteService = SimpleIoc.Default.GetInstance<IRecetteService>();
             segmentService = SimpleIoc.Default.GetInstance<ISegmentService>();
             redresseurService = SimpleIoc.Default.GetInstance<IRedresseurService>();
-            ListAutomate = automateService.GetAllData();
+            ListAutomate = _automateService.GetAllData();
             ListProcess = processService.GetAllData();
-            ListRedresseur = redresseurService.GetAllData();
+            ListRedresseur = new ObservableCollection<Redresseur>();
             ListHistorique = new ObservableCollection<Historique>();
             foreach (Automate automate in ListAutomate)
                 foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
                 {
+                    ListRedresseur.Add(redresseur);
                     foreach (Historique historique in redresseur.Historiques)
                         ListHistorique.Add(historique);
                 }
@@ -127,7 +130,7 @@ namespace AcoreApplication.ViewModel
                 redresseurService.UpdateRedresseur(redresseur);
 
             redresseurService.InsertRedresseur();
-            ListRedresseur = redresseurService.GetAllData();
+            ListAutomate = automateService.GetAllData();
         }
 
         private void AddingNewSegment(AddingNewItemEventArgs arg)

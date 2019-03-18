@@ -53,21 +53,7 @@ namespace AcoreApplication.Model
         public bool OnOff
         {
             get { return onOff; }
-            set {
-                NotifyPropertyChanged(ref onOff, value);
-                if (onOff != value)
-                {
-                    if (onOff)
-                    {
-                        RedresseurPoolingTask = new Thread(RedresseurPooling);
-                        RedresseurPoolingTask.Start();
-                    }
-                    else
-                    {
-                        RedresseurPoolingTask.Abort();
-                    }
-                }
-            }
+            set { NotifyPropertyChanged(ref onOff, value); }
         }
         private bool miseSousTension;
         public bool MiseSousTension
@@ -323,6 +309,9 @@ namespace AcoreApplication.Model
             Registres = GetAllRegisterFromRedresseurId(Id);
             Historiques = GetHistoriquesFromRedresseurId(Id);
 
+            RedresseurPoolingTask = new Thread(RedresseurPooling);
+            RedresseurPoolingTask.Start();
+
         }
 
         public Redresseur(SqlDataReader reader)
@@ -361,6 +350,9 @@ namespace AcoreApplication.Model
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
             Historiques = GetHistoriquesFromRedresseurId(Id);
+
+            RedresseurPoolingTask = new Thread(RedresseurPooling);
+            RedresseurPoolingTask.Start();
         }
 
         #endregion
@@ -397,25 +389,29 @@ namespace AcoreApplication.Model
 
         private void RedresseurPooling()
         {
-            while (OnOff)
+            while (true)
             {
-                switch(Etat)
+                if (OnOff)
                 {
-                    case MODES.LocalManuel:
-                        LocaleManuel();
-                        break;
-                    case MODES.LocalRecette:
-                        LocaleRecette();
-                        break;
-                    case MODES.RemoteManuel:
-                        if(OnOff)
-                            RemoteManuel();
-                        break;
-                    case MODES.RemoteRecette:
-                        break;
-                    case MODES.Supervision:
-                        break;
+                    switch (Etat)
+                    {
+                        case MODES.LocalManuel:
+                            LocaleManuel();
+                            break;
+                        case MODES.LocalRecette:
+                            LocaleRecette();
+                            break;
+                        case MODES.RemoteManuel:
+                            if (OnOff)
+                                RemoteManuel();
+                            break;
+                        case MODES.RemoteRecette:
+                            break;
+                        case MODES.Supervision:
+                            break;
+                    }
                 }
+                Thread.Sleep(1000);
             }
         }
 
