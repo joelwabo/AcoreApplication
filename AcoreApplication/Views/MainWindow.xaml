@@ -139,7 +139,7 @@
                         <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="507*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListRedresseur[0].Historiques, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2" Margin="0,58,0,0">
+                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2" Margin="0,58,0,0">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Debut" Binding="{Binding DateDebut}"/>
                             <DataGridTextColumn Header="Fin" Binding="{Binding DateFin}"/>

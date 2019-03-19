@@ -315,7 +315,6 @@ namespace AcoreApplication.Model
 
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
-            Historiques = GetHistoriquesFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
@@ -356,7 +355,6 @@ namespace AcoreApplication.Model
 
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
-            Historiques = GetHistoriquesFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
 
             RedresseurPoolingTask = new Thread(RedresseurPooling);

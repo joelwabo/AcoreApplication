@@ -25,6 +25,7 @@ namespace AcoreApplication.ViewModel
         ISegmentService segmentService;
         IAutomateService automateService;
         IRedresseurService redresseurService;
+        IHistoriqueService historiqueService;
         public ICommand OnOffCommand { get; set; }
         public ICommand StartServiceCommand { get; set; }
         public ICommand SelectedProcessChangedCommand { get; set; }
@@ -98,16 +99,18 @@ namespace AcoreApplication.ViewModel
             recetteService = SimpleIoc.Default.GetInstance<IRecetteService>();
             segmentService = SimpleIoc.Default.GetInstance<ISegmentService>();
             redresseurService = SimpleIoc.Default.GetInstance<IRedresseurService>();
+            historiqueService = SimpleIoc.Default.GetInstance<IHistoriqueService>();
             ListAutomate = _automateService.GetAllData();
             ListProcess = processService.GetAllData();
+            ListHistorique = historiqueService.GetAllData();
             ListRedresseur = new ObservableCollection<Redresseur>();
-            ListHistorique = new ObservableCollection<Historique>();
+            //ListHistorique = new ObservableCollection<Historique>();
             foreach (Automate automate in ListAutomate)
                 foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
                 {
                     ListRedresseur.Add(redresseur);
-                    foreach (Historique historique in redresseur.Historiques)
-                        ListHistorique.Add(historique);
+                    //foreach (Historique historique in redresseur.Historiques)
+                        //ListHistorique.Add(historique);
                 }
             
 

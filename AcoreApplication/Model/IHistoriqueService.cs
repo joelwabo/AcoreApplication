@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Collections.ObjectModel;
 
 namespace AcoreApplication.Model
@@ -11,6 +7,6 @@ namespace AcoreApplication.Model
     {
         ObservableCollection<Historique> GetAllData();
         bool InsertHistorique();
-        bool UpdateHistorique(Redresseur redresseur);
+        bool UpdateHistorique(Historique historique);
     }
 }

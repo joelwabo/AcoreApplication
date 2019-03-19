@@ -28,38 +28,34 @@ namespace AcoreApplication.Model
         {
 
         }
+        #endregion
 
+        #region METHODS
         public Historique(SqlDataReader reader)
         { 
                     IdRedresseur = (int)reader["IdRedresseur"];
                     IdUtilisateur = (int)reader["IdUtilisateur"];
                     DateDebut = (DateTime)reader["Date"];
                     OrdreFabrication = (string)reader["OrdreFabrication"];
-                    EtatFin = (ETATFIN)reader["EtatFin"];
+                    EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
                     DateFin = (DateTime)reader["DateFin"];   
                     Type = (MODES)Enum.Parse(typeof(MODES), (string)reader["Type"]);
         }
 
-        public static ObservableCollection<Historique> GetHistoriquesFromRedresseurId(int idRedresseur)
+        internal DataBase.Historique ToDataBase()
         {
-            ObservableCollection<Historique> historiques = new ObservableCollection<Historique>();
-            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
-            {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("INSERT INTO Historique(DateDebut, DateFin, IdRedresseur, Type, OrdreFabrication, EtatFin, IdUtilisateur) ", connection))
-                { 
-                Historique historique = new Historique();
-                historique.DateDebut = DateTime.Now;
-                historique.DateFin = DateTime.Now.AddDays(1);
-                historique.IdRedresseur = 1;
-                historique.Type = MODES.Connected;
-                historique.OrdreFabrication = "DDD567";
-                historique.EtatFin = ETATFIN.Arret_par_utilisateur;
-                historique.IdUtilisateur = 1;
-                historiques.Add(historique);
-                }   
-            }
-            return historiques;
+            DataBase.Historique historique = new DataBase.Historique();
+
+            historique.IdRedresseur = IdRedresseur;
+            historique.IdUtilisateur = IdUtilisateur;
+            historique.Date = DateDebut;
+            historique.OrdreFabrication = OrdreFabrication;
+            historique.EtatFin =EtatFin.ToString();
+            historique.DateFin = DateFin;
+            historique.Type = Type.ToString();
+
+            return historique;
+
         }
 
 
