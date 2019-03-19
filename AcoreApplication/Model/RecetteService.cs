@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +62,26 @@ namespace AcoreApplication.Model
             {
                 return false;
             }
+        }
+
+        public static ObservableCollection<Recette> GetListRecetteFromProcessId(int idProcess)
+        {
+            ObservableCollection<Recette> result = new ObservableCollection<Recette>();
+            try
+            {
+                using (var bdd = new DataBase.AcoreDBEntities())
+                {
+                    List<DataBase.Recette> recettes = bdd.Recette.Where(rec => rec.IdProcess == idProcess).ToList();
+                    foreach (DataBase.Recette rec in recettes)
+                        result.Add(new Recette(rec));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                return result;
+            }
+            return result;
         }
     }
 }

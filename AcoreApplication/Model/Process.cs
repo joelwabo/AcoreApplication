@@ -45,7 +45,6 @@ namespace AcoreApplication.Model
 
         #region METHODES
 
-
         internal DataBase.Process ToDataBase()
         {
             DataBase.Process process = new DataBase.Process();

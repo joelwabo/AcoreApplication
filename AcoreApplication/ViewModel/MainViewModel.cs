@@ -37,6 +37,7 @@ namespace AcoreApplication.ViewModel
         public ICommand AddingNewSegmentCommand { get; set; }
         public ICommand AddingNewRecetteCommand { get; set; }
         public ICommand AddingNewRedresseurCommand { get; set; }
+        public ICommand SelectedRecetteChangedCommand { get; set; }
         private Redresseur redresseurSelected = null;
         public Redresseur RedresseurSelected
         {
@@ -111,6 +112,7 @@ namespace AcoreApplication.ViewModel
             
 
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
+            SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(RecetteChangedCommand);
             SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
             RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
             SegmentCellEditCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(CellEditCommand);
@@ -206,7 +208,17 @@ namespace AcoreApplication.ViewModel
                 Messenger.Default.Send(process);
             }
         }
-        
+
+        private void RecetteChangedCommand(SelectionChangedEventArgs arg)
+        {
+            if (arg.AddedItems.Count > 0)
+            {
+                Recette recette = arg.AddedItems[0] as Recette;
+                Redresseur red = arg.Source as Redresseur;
+                red.SelectedRecette = recette;
+            }
+        }
+
         private bool CanExecuteOnOff(Redresseur redresseur)
         {
             return true;

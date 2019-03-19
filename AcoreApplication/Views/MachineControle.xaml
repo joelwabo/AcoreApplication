@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:AcoreApplication.Views"           
              xmlns:model="clr-namespace:AcoreApplication.Model"             
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:Command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d" 
              
         DataContext="{Binding MainView.ListRedresseur[0], Source={StaticResource Locator}}"
@@ -93,7 +95,21 @@
         <Grid Margin="0,20,0,0" Width="189" HorizontalAlignment="Left">
             <Button Content="O" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.537,0.367"/>
             <local:ToggleButton x:Name="ToggleButton" Margin="40,10,99,324.459" Width="40" Height="25" />
-            <TextBlock Text="{Binding Path=Etat}" Margin="12,69,44,265"/>
+            <TextBlock Text="{Binding Path=Etat}" Margin="10,44,46,291" Height="25"/>
+            <ComboBox Name="RecetteComboBox"  HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Height="26" Width="134" ItemsSource="{Binding Path=ListRecette}">
+                <Interactivity:Interaction.Triggers>
+                    <Interactivity:EventTrigger EventName="SelectionChanged" >
+                        <Command:EventToCommand Command="{Binding SelectedRecetteChangedCommand}" PassEventArgsToCommand="True"/>
+                    </Interactivity:EventTrigger>
+                </Interactivity:Interaction.Triggers>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Nom}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <Grid Margin="10,99.6,0,170.4">
                 <Border BorderThickness="1" BorderBrush="Black" Margin="0,10,103.2,62.9">
                     <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-2" TextWrapping="Wrap" Text="Consignes VA" VerticalAlignment="Top"/>
@@ -191,7 +207,7 @@
             <lvc:CartesianChart  Grid.Row="1" LegendLocation="Right" Margin="0,175,0,29" HorizontalAlignment="Right" Width="179">
                 <lvc:CartesianChart.Series>
                     <lvc:LineSeries Title="V" Values="{Binding ValuesA}" PointGeometry="{x:Null}"/>
-                    <lvc:LineSeries Title="V" Values="{Binding ValuesB}" PointGeometry="{x:Null}"/>
+                    <lvc:LineSeries Title="A" Values="{Binding ValuesB}" PointGeometry="{x:Null}"/>
                 </lvc:CartesianChart.Series>
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Title="Temps (s)" ></lvc:Axis>

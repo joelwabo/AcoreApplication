@@ -15,13 +15,6 @@ namespace AcoreApplication.Model
 {
     public class Automate 
     {
-        #region Constante 
-        private const int Cst_PortModbus = 502;
-        private const int Cst_NbRedresseurs = 10;
-        private const int Cst_SlaveNb = 1;
-        private const int Cst_SleepTime = 1000;
-        #endregion
-
         #region ATTRIBUTS
         public int Id { get; set; }
         public MODES Mode { get; set; }
@@ -53,6 +46,7 @@ namespace AcoreApplication.Model
 
         ~Automate()
         {
+            ModbusPoolingTask.Abort();
             Disconnect();
         }
 

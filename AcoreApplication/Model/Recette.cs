@@ -31,8 +31,8 @@ namespace AcoreApplication.Model
             get { return nom; }
             set { NotifyPropertyChanged(ref nom, value); }
         }
-        private int cyclage;
-        public int Cyclage
+        private int? cyclage;
+        public int? Cyclage
         {
             get { return cyclage; }
             set { NotifyPropertyChanged(ref cyclage, value); }
@@ -65,9 +65,16 @@ namespace AcoreApplication.Model
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Recette()
+        public Recette(DataBase.Recette rec)
         {
+            Id = rec.Id;
+            IdProcess = rec.IdProcess;
+            Nom = rec.Nom;
+            Cyclage = rec.Cyclage;
+            TempsRestant = DateTime.Parse(rec.TempsRestant.ToString());
 
+            Segments = GetAllSegmentFromRecetteId(Id);
+            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
         }
 
         public Recette(SqlDataReader reader)
@@ -76,7 +83,7 @@ namespace AcoreApplication.Model
             Id = (int)reader["Id"];
             IdProcess = (int)reader["IdProcess"];
             Nom = (string)reader["Nom"];
-            Cyclage = (int)reader["Cyclage"];
+            Cyclage = (int?)reader["Cyclage"];
             TempsRestant = DateTime.Parse(reader["TempsRestant"].ToString());
 
             Segments = GetAllSegmentFromRecetteId(Id);

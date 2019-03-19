@@ -53,7 +53,7 @@ namespace AcoreApplication.Model
         public bool OnOff
         {
             get { return onOff; }
-            set { NotifyPropertyChanged(ref onOff, value); }
+            set{ NotifyPropertyChanged(ref onOff, value);}
         }
         private bool miseSousTension;
         public bool MiseSousTension
@@ -270,7 +270,13 @@ namespace AcoreApplication.Model
             get { return historiques; }
             set { NotifyPropertyChanged(ref historiques, value); }
         }
-
+        private ObservableCollection<Recette> listRecette;
+        public ObservableCollection<Recette> ListRecette
+        {
+            get { return listRecette; }
+            set { NotifyPropertyChanged(ref listRecette, value); }
+        }
+        public Recette SelectedRecette = null;
         public IModbusMaster ModBusMaster { get; set; }
         private Thread RedresseurPoolingTask { get; set; }
         #endregion 
@@ -278,6 +284,8 @@ namespace AcoreApplication.Model
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
         public Redresseur(DataBase.Redresseur red)
         {
+            ValuesA = new ChartValues<double> { 0 };
+            ValuesB = new ChartValues<double> { 0 };
             Id = red.Id;
             IdProcess = red.IdProcess;
             IdAutomate = red.IdAutomate;
@@ -308,10 +316,9 @@ namespace AcoreApplication.Model
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
             Historiques = GetHistoriquesFromRedresseurId(Id);
-
+            ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
-
         }
 
         public Redresseur(SqlDataReader reader)
@@ -350,6 +357,7 @@ namespace AcoreApplication.Model
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
             Historiques = GetHistoriquesFromRedresseurId(Id);
+            ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
 
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
@@ -402,16 +410,16 @@ namespace AcoreApplication.Model
                             LocaleRecette();
                             break;
                         case MODES.RemoteManuel:
-                            if (OnOff)
-                                RemoteManuel();
+                            RemoteManuel();
                             break;
                         case MODES.RemoteRecette:
+                            RemoteRecette();
                             break;
                         case MODES.Supervision:
                             break;
                     }
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(Cst_SleepTime/5);
             }
         }
 
@@ -431,24 +439,28 @@ namespace AcoreApplication.Model
                         {
                             ushort[] readConsigneV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
                             ConsigneV = readConsigneV[0];
-
-                            for (int i = 0; i < ValuesA.Count - 1; i++)
+                            if (ValuesA.Count < 500)
+                                ValuesA.Add(ConsigneV);
+                            else
                             {
-                                ValuesA[i] = ValuesA[i + 1];
+                                for (int i = 0; i < ValuesA.Count - 1; i++)
+                                    ValuesA[i] = ValuesA[i + 1];
+                                ValuesA[ValuesA.Count - 1] = ConsigneV;
                             }
-                            ValuesA[ValuesA.Count - 1] = ConsigneV;
                         }
                         break;
                     case REGISTRE.LectureA:
                         {
                             ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
                             LectureA = readLectureA[0];
-
-                            for (int i = 0; i < ValuesA.Count - 1; i++)
+                            if (ValuesB.Count < 500)
+                                ValuesB.Add(ConsigneA);
+                            else
                             {
-                                ValuesB[i] = ValuesB[i + 1];
+                                for (int i = 0; i < ValuesA.Count - 1; i++)
+                                    ValuesB[i] = ValuesB[i + 1];
+                                ValuesB[ValuesA.Count - 1] = ConsigneA;
                             }
-                            ValuesB[ValuesA.Count - 1] = ConsigneA;
                         }
                         break;
                     case REGISTRE.LectureV:
@@ -527,7 +539,20 @@ namespace AcoreApplication.Model
                 }
             }
         }
-        
+
+        private void RemoteRecette()
+        {
+            if (SelectedRecette != null)
+            { 
+                foreach(Segment seg in SelectedRecette.Segments)
+                {
+                    ConsigneA = ConsigneA + (seg.ConsigneDepartA - seg.ConsigneArriveeA)/Cst_SleepTime;
+                    ConsigneV = ConsigneV + (seg.ConsigneDepartV - seg.ConsigneArriveeV)/ Cst_SleepTime;
+                }
+
+            }
+        }
+
         #endregion
     }
 }
