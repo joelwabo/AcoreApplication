@@ -179,16 +179,6 @@
     <Compile Include="DataBase\Historique.cs">
       <DependentUpon>AcoreDBEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataBase\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataBase\Options.cs">
       <DependentUpon>AcoreDBEntities.tt</DependentUpon>
     </Compile>
@@ -355,16 +345,6 @@
       <LastGenOutput>AcoreDBEntities.cs</LastGenOutput>
     </Content>
     <Content Include="DataBase\AcoreDB_create.sql" />
-    <Content Include="DataBase\Model1.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
-      <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
-    </Content>
-    <Content Include="DataBase\Model1.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1.cs</LastGenOutput>
-      <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

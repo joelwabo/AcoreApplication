@@ -21,7 +21,6 @@ using System.Collections.ObjectModel;
 using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Defaults;
-using AcoreApplication.DataBase;
 
 namespace AcoreApplication.Views
 {

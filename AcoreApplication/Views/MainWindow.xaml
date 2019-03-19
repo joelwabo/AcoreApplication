@@ -32,7 +32,6 @@
                             <DataGridTextColumn Header="Compteur" Binding="{Binding CompteurAH}"/>
                             <DataGridCheckBoxColumn Header="ON/OFF" Binding="{Binding OnOff, Mode=TwoWay}"/>
                             <DataGridTextColumn Header="Etat" Binding="{Binding Etat, Mode=TwoWay}"/>
-
                             <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=TwoWay}"/>
                             <DataGridCheckBoxColumn Header="Pulsé" Binding="{Binding Pulse, Mode=TwoWay}"/>
                             <DataGridTextColumn Header="Ton ms" Binding="{Binding TempsOn, Mode=TwoWay}"/>
