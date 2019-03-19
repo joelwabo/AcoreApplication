@@ -97,6 +97,12 @@
     <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -122,11 +128,15 @@
       <HintPath>..\packages\NModbus.3.0.58\lib\net45\NModbus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -148,8 +158,49 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataBase\AcoreDBEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcoreDBEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\AcoreDBEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\AcoreDBEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Automate.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Historique.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Options.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Process.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Recette.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Redresseur.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Registre.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Segment.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Utilisateur.cs">
+      <DependentUpon>AcoreDBEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Design\DesignAutomateService.cs" />
-    <Compile Include="Design\DesignHistoriqueService.cs" />
     <Compile Include="Design\DesignProcessService.cs" />
     <Compile Include="FrameworkMvvm\RelayCommand.cs" />
     <Compile Include="Model\Automate.cs" />
@@ -158,15 +209,21 @@
     <Compile Include="Model\Historique.cs" />
     <Compile Include="Model\HistoriqueService.cs" />
     <Compile Include="Model\IAutomateService.cs" />
+    <Compile Include="Model\IRecetteService.cs" />
     <Compile Include="Model\IHistoriqueService.cs" />
+    <Compile Include="Model\IRedresseurService.cs" />
     <Compile Include="Model\Option.cs" />
     <Compile Include="Model\Process.cs" />
     <Compile Include="Model\Recette.cs" />
     <Compile Include="Model\ProcessService.cs" />
+    <Compile Include="Model\RecetteService.cs" />
     <Compile Include="Model\Redresseur.cs" />
+    <Compile Include="Model\RedresseurService.cs" />
     <Compile Include="Model\Registre.cs" />
     <Compile Include="Model\Segment.cs" />
     <Compile Include="Model\IProcessService.cs" />
+    <Compile Include="Model\ISegmentService.cs" />
+    <Compile Include="Model\SegmentService.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MachineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -182,6 +239,9 @@
     </Compile>
     <Compile Include="Views\RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ToggleButton.xaml.cs">
+      <DependentUpon>ToggleButton.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\MachineControle.xaml">
       <SubType>Designer</SubType>
@@ -207,6 +267,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ToggleButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -226,6 +290,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="DataBase\AcoreDBEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AcoreDBEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DataBase\AcoreDBEntities.edmx.diagram">
+      <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -262,6 +334,20 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>AcoreDataBase.mdf</DependentUpon>
     </Content>
+    <Content Include="DataBase\AcoreDBEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AcoreDBEntities.Context.cs</LastGenOutput>
+      <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
+    </Content>
+    <Content Include="DataBase\AcoreDBEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AcoreDBEntities.edmx</DependentUpon>
+      <LastGenOutput>AcoreDBEntities.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataBase\AcoreDB_create.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

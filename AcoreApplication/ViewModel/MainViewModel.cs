@@ -12,25 +12,45 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
+using System.Linq;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace AcoreApplication.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         #region ATTRIBUTS 
+        IProcessService processService;
+        IRecetteService recetteService;
+        ISegmentService segmentService;
+        IAutomateService automateService;
+        IRedresseurService redresseurService;
         public ICommand OnOffCommand { get; set; }
         public ICommand StartServiceCommand { get; set; }
-        public ICommand ClickedProcessCommand { get; set; }
+        public ICommand SelectedProcessChangedCommand { get; set; }
+        public ICommand RegistreLoadingRowCommand { get; set; }
         public ICommand SegmentLoadingRowCommand { get; set; }
         public ICommand SegmentCellEditCommand { get; set; }
-
+        public ICommand AddingNewProcessCommand { get; set; }
+        public ICommand EditingProcessCommand { get; set; }
+        public ICommand ValideButton { get; set; }
+        public ICommand AddingNewSegmentCommand { get; set; }
+        public ICommand AddingNewRecetteCommand { get; set; }
+        public ICommand AddingNewRedresseurCommand { get; set; }
+        public ICommand SelectedRecetteChangedCommand { get; set; }
+        private Redresseur redresseurSelected = null;
+        public Redresseur RedresseurSelected
+        {
+            get { return redresseurSelected; }
+            set { NotifyPropertyChanged(ref redresseurSelected, value); }
+        }
         private Recette recetteSelected = null;
         public Recette RecetteSelected
         {
             get { return recetteSelected; }
             set { NotifyPropertyChanged(ref recetteSelected, value); }
         }
-
+        
         private ObservableCollection<Automate> listAutomate;
         public ObservableCollection<Automate> ListAutomate
         {
@@ -71,9 +91,14 @@ namespace AcoreApplication.ViewModel
             return true;
         }
                 
-        public MainViewModel(IAutomateService automateService, IProcessService processService)
+        public MainViewModel(IAutomateService _automateService)
         {
-            ListAutomate = automateService.GetAllData();
+            automateService = _automateService;
+            processService = SimpleIoc.Default.GetInstance<IProcessService>();
+            recetteService = SimpleIoc.Default.GetInstance<IRecetteService>();
+            segmentService = SimpleIoc.Default.GetInstance<ISegmentService>();
+            redresseurService = SimpleIoc.Default.GetInstance<IRedresseurService>();
+            ListAutomate = _automateService.GetAllData();
             ListProcess = processService.GetAllData();
             ListRedresseur = new ObservableCollection<Redresseur>();
             ListHistorique = new ObservableCollection<Historique>();
@@ -84,51 +109,114 @@ namespace AcoreApplication.ViewModel
                     foreach (Historique historique in redresseur.Historiques)
                         ListHistorique.Add(historique);
                 }
-
-            OnOffCommand = new RelayCommand<Redresseur>(OnOff, CanExecuteOnOff); 
-            StartServiceCommand = new RelayCommand<Redresseur>(StartService);
-            ClickedProcessCommand = new RelayCommand<Process>(OnProcessClicked);
-            SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
-            SegmentCellEditCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(CellEditCommand);
             
+
+            SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
+            SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(RecetteChangedCommand);
+            SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
+            RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
+            SegmentCellEditCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(CellEditCommand);
+            AddingNewProcessCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewProcess);
+            AddingNewRecetteCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewRecette);
+            AddingNewSegmentCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewSegment);
+            EditingProcessCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(EditingProcess);
+            AddingNewRedresseurCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewRedresseur);
+            ValideButton = new RelayCommand<Object>(valideButton);
             RecetteSelected = ListProcess[0].Recettes[0];
+            RedresseurSelected = ListRedresseur[0];
+        }
+
+        private void AddingNewRedresseur(AddingNewItemEventArgs arg)
+        {
+            foreach (Redresseur redresseur in ListRedresseur)
+                redresseurService.UpdateRedresseur(redresseur);
+
+            redresseurService.InsertRedresseur();
+            ListAutomate = automateService.GetAllData();
+        }
+
+        private void AddingNewSegment(AddingNewItemEventArgs arg)
+        {
+            foreach (Process process in ListProcess)
+                foreach (Recette rec in process.Recettes)
+                    foreach (Segment seg in rec.Segments)
+                        segmentService.UpdateSegment(seg);
+
+            segmentService.InsertSegment();
+        }
+
+        private void AddingNewRecette(AddingNewItemEventArgs arg)
+        {
+            foreach (Process process in ListProcess)
+                foreach (Recette rec in process.Recettes)
+                    recetteService.UpdateRecette(rec);
+
+            recetteService.InsertRecette();
+            ListProcess = processService.GetAllData();
+        }
+
+        private void valideButton(Object obj)
+        {
+            foreach (Process process in ListProcess)
+            { 
+                processService.UpdateProcess(process);
+                if (process.Recettes != null)
+                    foreach (Recette rec in process.Recettes)
+                    {
+                        recetteService.UpdateRecette(rec);
+                        if (rec.Segments != null)
+                            foreach (Segment seg in rec.Segments)
+                                    segmentService.UpdateSegment(seg);
+                    }
+            }
+            ListProcess = processService.GetAllData();
+        }
+
+        private void EditingProcess(DataGridCellEditEndingEventArgs arg)
+        {
+        }
+
+        private void AddingNewProcess(AddingNewItemEventArgs arg)
+        {
+            foreach (Process process in ListProcess)
+                processService.UpdateProcess(process);
+
+            processService.InsertProcess();
+            ListProcess = processService.GetAllData();
+        }
+
+        private void RegistreLoadingRow(DataGridRowEventArgs arg)
+        {
+            Messenger.Default.Send(RedresseurSelected.Registres);
         }
 
         private void SegmentLoadingRow(DataGridRowEventArgs arg)
         {
             Messenger.Default.Send(RecetteSelected.Segments);
         }
+
         private void CellEditCommand(DataGridCellEditEndingEventArgs arg)
         {
             Messenger.Default.Send(RecetteSelected.Segments);
         }
 
-        private void OnProcessClicked(Process process)
+        private void SelectedProcessChanged(SelectionChangedEventArgs arg)
         {
-            RecetteSelected = process.Recettes[0];
-            Messenger.Default.Send(process);
-        }
-
-        private void OnOff(Redresseur redresseur)
-        {
-            if (redresseur.OnOff)
-            {
-                ListAutomate[redresseur.IdAutomate - 1].StopModbusService();
-                redresseur.OnOff = false;
-            }
-            else
+            if(arg.AddedItems.Count>0)
             { 
-                ListAutomate[redresseur.IdAutomate - 1].StartModbusService();
-                redresseur.OnOff = true;
+                Process process = arg.AddedItems[0] as Process;
+                Messenger.Default.Send(process);
             }
         }
 
-        private void StartService(Redresseur redresseur)
+        private void RecetteChangedCommand(SelectionChangedEventArgs arg)
         {
-            if (redresseur.OnOff)
-                ListAutomate[redresseur.IdAutomate - 1].StartRecipe();
-            else
-                MessageBox.Show("Machine éteinte");
+            if (arg.AddedItems.Count > 0)
+            {
+                Recette recette = arg.AddedItems[0] as Recette;
+                Redresseur red = arg.Source as Redresseur;
+                red.SelectedRecette = recette;
+            }
         }
 
         private bool CanExecuteOnOff(Redresseur redresseur)
@@ -138,4 +226,5 @@ namespace AcoreApplication.ViewModel
         
         #endregion
     }
+
 }

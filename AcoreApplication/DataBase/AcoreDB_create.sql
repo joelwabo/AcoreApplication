@@ -18,6 +18,7 @@ CREATE TABLE Historique (
     OrdreFabrication nvarchar(50)  NOT NULL,
     EtatFin nvarchar(50)  NULL,
     DateFin datetime  NULL,
+	Type nvarchar(50) NULL
     CONSTRAINT Historique_pk PRIMARY KEY  (Date)
 );
 
@@ -238,6 +239,13 @@ INSERT INTO [dbo].[Options] ([Id], [IdRedresseur], [IdSegment], [IdRecette], [Id
 INSERT INTO [dbo].[Options] ([Id], [IdRedresseur], [IdSegment], [IdRecette], [IdProcess], [nom]) VALUES (15, 3, 3, 2, 2, N'CompteurAH')
 INSERT INTO [dbo].[Options] ([Id], [IdRedresseur], [IdSegment], [IdRecette], [IdProcess], [nom]) VALUES (16, 4, 4, 3, 2, N'Cyclage')
 INSERT INTO [dbo].[Options] ([Id], [IdRedresseur], [IdSegment], [IdRecette], [IdProcess], [nom]) VALUES (17, 4, 4, 3, 2, N'Prevent');;
+
+INSERT INTO [dbo].[Utilisateur] ([Id], [Nom], [Mdp]) VALUES (1, N'Ayan', N'laptop')
+
+INSERT INTO [dbo].[Historique] ([Date],[IdRedresseur], [IdUtilisateur], [OrdreFabrication], [EtatFin],  [DateFin]) VALUES (N'2019-01-03 12:00:00', 1, 1, N'000567', N'Stopped by default', N'2019-02-03 12:00:00')
+INSERT INTO [dbo].[Historique] ([Date],[IdRedresseur], [IdUtilisateur], [OrdreFabrication], [EtatFin],  [DateFin]) VALUES (N'2019-01-03 12:01:00', 2, 1, N'000568', N'Stopped by USER', N'2019-02-03 12:00:00')
+INSERT INTO [dbo].[Historique] ([Date],[IdRedresseur], [IdUtilisateur], [OrdreFabrication], [EtatFin],  [DateFin]) VALUES (N'2019-01-03 12:02:00', 3, 1, N'000569', N'Stopped by USER', N'2019-02-03 12:00:00')
+INSERT INTO [dbo].[Historique] ([Date],[IdRedresseur], [IdUtilisateur], [OrdreFabrication], [EtatFin],  [DateFin]) VALUES (N'2019-01-03 12:04:00', 4, 1, N'000570', N'Stopped by default', N'2019-02-03 12:00:00')
 
 -- End of file.
 

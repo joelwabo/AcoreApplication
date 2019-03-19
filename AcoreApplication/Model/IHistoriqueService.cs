@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace AcoreApplication.Model
 {
     public interface IHistoriqueService
     {
-        List<Historique> GetAllData();
+        ObservableCollection<Historique> GetAllData();
+        bool InsertHistorique();
+        bool UpdateHistorique(Redresseur redresseur);
     }
 }

@@ -14,7 +14,7 @@ namespace AcoreApplication.Model
         #region ATTRIBUTS
         public int Id { get; set; }
         public int IdRedresseur { get; set; }
-        public string Nom { get; set; }
+        public REGISTRE Nom { get; set; }
         public TYPEMODBUS TypeModbus { get; set; }
         public Type Type { get; set; }
         public int AdresseDebut { get; set; }
@@ -33,7 +33,7 @@ namespace AcoreApplication.Model
         {
             Id = (int)reader["Id"];
             IdRedresseur = (int)reader["IdRedresseur"];
-            Nom = (string)reader["Nom"];
+            Nom = (REGISTRE)Enum.Parse(typeof(REGISTRE), (string)reader["Nom"]);
             Type = Type.GetType(reader["Type"].ToString());
             TypeModbus = (TYPEMODBUS)Enum.Parse(typeof(TYPEMODBUS), (string)reader["TypeModbus"]);
             AdresseDebut = (int)reader["AdresseDebut"];

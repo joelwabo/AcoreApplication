@@ -9,25 +9,40 @@ namespace AcoreApplication.Model
 {
     public class Constantes
     {
+        #region Constante 
+        public const int Cst_SleepTime = 500;
+        public const int Cst_PortModbus = 502;
+        public const int Cst_NbRedresseurs = 10;
+        public const int Cst_SlaveNb = 1;
+        #endregion
+
         public enum MODES
         {
-            Recette,
-            Remote,
-            Manuel,
-            Lecture,
-            CommandeLocal, 
-            LocalDistance,
-            Supervision
+            //Automate mode
+            Disconnected = -1,
+            Connected,
+            RemoteManuel,/*(Writing) Consigne Type, OnOff, Options
+            (Reading) Lecture temperature 
+            */
+            RemoteRecette, /*(Writing) Consignes pour réaliser seg des recettes Type, OnOff, Options
+            (Reading) Lecture temperature 
+            */
+            Supervision,
+
+            //Redresseur mode
+            LocalManuel, //(Reading) Consigne Lecture N°OF Type, Options
+            LocalRecette, //(Reading) Consigne Lecture N°OF Type, Options, Info_Recette : seg, 
+            Automatique
         }
 
         public enum OPTION
         {
             Statique,
             Mecanique,
-            Pulse,
-            Temporisation,
-            Rampe,
-            CompteurAH,
+            Pulse, //Quand on est on envoyer Ton TOff
+            Temporisation, //envoie de de consigne en fonction de durée tempo
+            Rampe, //envoie de consigne en fonction de durée de 0
+            CompteurAH, //Calcul ou pas?
             Cyclage,
             Prevent,
             MesureTemperature
@@ -51,6 +66,30 @@ namespace AcoreApplication.Model
             HoldingRegister,
             InputRegister,
             CoilRegister
+        }
+
+        public enum REGISTRE
+        {
+            Etat,
+            MarcheArret,
+            ConsigneV,
+            ConsigneA,
+            LectureV,
+            LectureA,
+            OnOff,
+            Defaut,
+            NumRecette,
+            SegCours,
+            NbSeg,
+            NomRecette
+        }
+
+        public enum ETATFIN
+        {
+            Arret_par_utilisateur,
+            Arret_sur_défaut,
+            Arret_sur_timer,
+            Arret_A_H
         }
 
         public static string CnnVal(string name)

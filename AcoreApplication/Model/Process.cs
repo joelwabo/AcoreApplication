@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using static AcoreApplication.Model.Constantes;
 using static AcoreApplication.Model.Recette;
 using static AcoreApplication.Model.Option;
+using System;
 
 namespace AcoreApplication.Model
 {
@@ -40,10 +41,24 @@ namespace AcoreApplication.Model
             Recettes = GetAllRecetteFromProcessId(Id);
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
         }
-
-        #endregion 
+        #endregion
 
         #region METHODES
+
+        internal DataBase.Process ToDataBase()
+        {
+            DataBase.Process process = new DataBase.Process();
+
+            process.Nom = Nom;
+            process.UMax = UMax;
+            process.IMax = IMax;
+            process.Pulse = Pulse;
+            process.Inverseur = Inverseur;
+            process.AH = AH;
+
+            return process;
+            
+        }
 
         #endregion
     }

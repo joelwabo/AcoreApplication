@@ -20,6 +20,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Collections.ObjectModel;
 using LiveCharts;
 using LiveCharts.Wpf;
+using LiveCharts.Defaults;
 
 namespace AcoreApplication.Views
 {
@@ -31,48 +32,65 @@ namespace AcoreApplication.Views
         public MainWindow()
         {
             InitializeComponent();
+            this.ProcessComboBox.SelectedIndex = 0;
+
             Messenger.Default.Register<Process>(this, AfficherListRecette);
+            Messenger.Default.Register<Redresseur>(this, GetListHistorique);
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
+            Messenger.Default.Register<ObservableCollection<Registre>>(this, AfficherListRegistre);
         }
 
         private void Machine1_Loaded(object sender, RoutedEventArgs e)
         {
-            Storyboard sb = this.Machine1.FindResource("Storyboard1") as Storyboard;            
+            Storyboard sb = this.Machine1.FindResource("Storyboard1") as Storyboard;
             sb.Begin();
         }
 
         private void AfficherListRecette(Process process)
         {
-            this.ProcessMenuItem.Header = process.Nom;
             this.ListRecetteDataGrid.ItemsSource = process.Recettes;
+
+        }
+        private void AfficherListRegistre(ObservableCollection<Registre> registre)
+        {
+            this.ListRecetteDataGrid.ItemsSource = registre;
+
+        }
+
+        private void GetListHistorique(Redresseur redresseur)
+        {
+            this.HistoriqueDataGrid.ItemsSource = redresseur.Historiques;
         }
 
         private void CreateSegmentChart(ObservableCollection<Segment> segments)
         {
             SeriesCollection seriesCollection = new SeriesCollection
             {
-                new StepLineSeries
+                new LineSeries
                 {
                     Title = "V",
-                    Values = new ChartValues<int> {segments[0].ConsigneDepartV, segments[0].ConsigneArriveeV},
-                    PointGeometry = null
+                    Values = new ChartValues<ObservablePoint>(),
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
                 },
-                new StepLineSeries
+                new LineSeries
                 {
                     Title = "A",
-                    Values = new ChartValues<int> {segments[0].ConsigneDepartA, segments[0].ConsigneArriveeA},
-                    PointGeometry = null
+                    Values = new ChartValues<ObservablePoint>(),
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
                 }
             };
-            for(int i = 1; i<segments.Count; i++)
+            int i = 0;
+            foreach(Segment segment in segments)
             {
-                seriesCollection[0].Values.Add(segments[i].ConsigneDepartV);
-                seriesCollection[0].Values.Add(segments[i].ConsigneArriveeV);
-                seriesCollection[1].Values.Add(segments[i].ConsigneDepartA);
-                seriesCollection[1].Values.Add(segments[i].ConsigneArriveeA);
+                seriesCollection[0].Values.Add(new ObservablePoint(i, segment.ConsigneDepartV));
+                seriesCollection[0].Values.Add(new ObservablePoint(i+1, segment.ConsigneArriveeV));
+                seriesCollection[1].Values.Add(new ObservablePoint(i, segment.ConsigneDepartA));
+                seriesCollection[1].Values.Add(new ObservablePoint(i+1, segment.ConsigneArriveeA));
+                i++;
             }
             this.SegmentChart.Series = seriesCollection;
         }
-
     }
 }
