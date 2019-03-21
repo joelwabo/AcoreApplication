@@ -80,8 +80,8 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="ProcessId" Binding="{Binding IdProcess}"/>
-                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
-                            <DataGridTextColumn Header="Nombre segment" Binding="{Binding Segments.Count, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="{Binding Name, Source={StaticResource LanguagesRes}}" Binding="{Binding Nom}"/>
+                            <DataGridTextColumn Header="{Binding Segment_number, Source={StaticResource LanguagesRes}}" Binding="{Binding Segments.Count, Mode=OneWay}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Grid Margin="309.6,0,0,370">
@@ -98,13 +98,13 @@
                                 </Interactivity:EventTrigger>
                             </Interactivity:Interaction.Triggers>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Segment N°" Binding="{Binding Id}"/>
-                                <DataGridTextColumn Header="Recette N°" Binding="{Binding IdRecette, Mode=TwoWay}"/>
-                                <DataGridTextColumn Header="Consigne Depart V" Binding="{Binding ConsigneDepartV, Mode=TwoWay}"/>
-                                <DataGridTextColumn Header="Consigne Depart A" Binding="{Binding ConsigneDepartA, Mode=TwoWay}"/>
-                                <DataGridTextColumn Header="Consigne Arrivée V" Binding="{Binding ConsigneArriveeV, Mode=TwoWay}"/>
-                                <DataGridTextColumn Header="Consigne Arrivée A" Binding="{Binding ConsigneArriveeA, Mode=TwoWay}"/>
-                                <DataGridTextColumn Header="Duree" Binding="{Binding Duree, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="{Binding Segment_n, Source={StaticResource LanguagesRes}}" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="{Binding Recipe_n, Source={StaticResource LanguagesRes}}" Binding="{Binding IdRecette, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="{Binding Commande_depart_v, Source={StaticResource LanguagesRes}}" Binding="{Binding ConsigneDepartV, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="{Binding Commande_depart_a, Source={StaticResource LanguagesRes}}" Binding="{Binding ConsigneDepartA, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="{Binding Commande_arrivee_v, Source={StaticResource LanguagesRes}}" Binding="{Binding ConsigneArriveeV, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="{Binding Commande_arrivee_a, Source={StaticResource LanguagesRes}}" Binding="{Binding ConsigneArriveeA, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="{Binding Duration, Source={StaticResource LanguagesRes}}" Binding="{Binding Duree, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="{Binding Type, Source={StaticResource LanguagesRes}}" Binding="{Binding Type, Mode=TwoWay}"/>
                                 <DataGridCheckBoxColumn Header="Pulsee" Binding="{Binding Pulse, Mode=TwoWay}"/>
                                 <DataGridTextColumn Header="Temps On" Binding="{Binding TempsOn, Mode=TwoWay}"/>

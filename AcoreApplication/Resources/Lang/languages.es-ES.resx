@@ -129,6 +129,18 @@
   <data name="Commande_A" xml:space="preserve">
     <value>Orden A</value>
   </data>
+  <data name="Commande_arrivee_a" xml:space="preserve">
+    <value>Orden Arrivée A</value>
+  </data>
+  <data name="Commande_arrivee_v" xml:space="preserve">
+    <value>Orden Arrivée V</value>
+  </data>
+  <data name="Commande_depart_a" xml:space="preserve">
+    <value>Orden Depart A</value>
+  </data>
+  <data name="Commande_depart_v" xml:space="preserve">
+    <value>Orden Depart V</value>
+  </data>
   <data name="Commande_V" xml:space="preserve">
     <value>Orden V</value>
   </data>
@@ -140,6 +152,9 @@
   </data>
   <data name="Compteur" xml:space="preserve">
     <value>Contador</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duración</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>Inglés</value>
@@ -186,11 +201,20 @@
   <data name="Recipe" xml:space="preserve">
     <value>Receta</value>
   </data>
+  <data name="Recipe_n" xml:space="preserve">
+    <value>Receta N°</value>
+  </data>
   <data name="Rectifier" xml:space="preserve">
     <value>Rectificador</value>
   </data>
   <data name="Segment" xml:space="preserve">
     <value>Segmento</value>
+  </data>
+  <data name="Segment_n" xml:space="preserve">
+    <value>Segmento N°</value>
+  </data>
+  <data name="Segment_number" xml:space="preserve">
+    <value>Número segmento</value>
   </data>
   <data name="Spanish" xml:space="preserve">
     <value>Español</value>
@@ -210,7 +234,7 @@
   <data name="Validate_change" xml:space="preserve">
     <value>Validar cambio</value>
   </data>
-  <data name="Value" xml:space="preserve">
+  <data name="Value_text" xml:space="preserve">
     <value>Valor</value>
   </data>
 </root>

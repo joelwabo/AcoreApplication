@@ -97,6 +97,42 @@ namespace AcoreApplication.Resources.Lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Consigne Arrivée A.
+        /// </summary>
+        public static string Commande_arrivee_a {
+            get {
+                return ResourceManager.GetString("Commande_arrivee_a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Consigne Arrivée V.
+        /// </summary>
+        public static string Commande_arrivee_v {
+            get {
+                return ResourceManager.GetString("Commande_arrivee_v", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Consigne Depart A.
+        /// </summary>
+        public static string Commande_depart_a {
+            get {
+                return ResourceManager.GetString("Commande_depart_a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Consigne Depart V.
+        /// </summary>
+        public static string Commande_depart_v {
+            get {
+                return ResourceManager.GetString("Commande_depart_v", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Consigne V.
         /// </summary>
         public static string Commande_V {
@@ -129,6 +165,15 @@ namespace AcoreApplication.Resources.Lang {
         public static string Counter {
             get {
                 return ResourceManager.GetString("Counter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Durée.
+        /// </summary>
+        public static string Duration {
+            get {
+                return ResourceManager.GetString("Duration", resourceCulture);
             }
         }
         
@@ -286,6 +331,15 @@ namespace AcoreApplication.Resources.Lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Recette N°.
+        /// </summary>
+        public static string Recipe_n {
+            get {
+                return ResourceManager.GetString("Recipe_n", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Redresseur.
         /// </summary>
         public static string Rectifier {
@@ -300,6 +354,24 @@ namespace AcoreApplication.Resources.Lang {
         public static string Segment {
             get {
                 return ResourceManager.GetString("Segment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Segment N°.
+        /// </summary>
+        public static string Segment_n {
+            get {
+                return ResourceManager.GetString("Segment_n", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Nombre segment.
+        /// </summary>
+        public static string Segment_number {
+            get {
+                return ResourceManager.GetString("Segment_number", resourceCulture);
             }
         }
         
@@ -387,9 +459,9 @@ namespace AcoreApplication.Resources.Lang {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Valeur.
         /// </summary>
-        public static string Value {
+        public static string Value_text {
             get {
-                return ResourceManager.GetString("Value", resourceCulture);
+                return ResourceManager.GetString("Value_text", resourceCulture);
             }
         }
     }

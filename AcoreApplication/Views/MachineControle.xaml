@@ -191,7 +191,7 @@
                     <Grid Background="#FFE5E5E5">
                         <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
                         <CheckBox  HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8" IsChecked="{Binding Path=Temporisation, Mode=TwoWay}"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Valeur : "/>
+                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Value_text, Source={StaticResource LanguagesRes}}"/>
                         <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=DureeTempo, Mode=TwoWay}"/>
                     </Grid>
                 </TabItem>
