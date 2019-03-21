@@ -21,6 +21,8 @@ using System.Collections.ObjectModel;
 using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Defaults;
+using System.Threading;
+using System.Globalization;
 
 namespace AcoreApplication.Views
 {
@@ -38,6 +40,26 @@ namespace AcoreApplication.Views
             Messenger.Default.Register<Redresseur>(this, GetListHistorique);
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
             Messenger.Default.Register<ObservableCollection<Registre>>(this, AfficherListRegistre);
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentCulture;
+            
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
+            AcoreApplication.Resources.Lang.Wrapper.ChangeCulture(Thread.CurrentThread.CurrentUICulture);
+        }
+
+        private void Spanish_click(object sender, RoutedEventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("es-ES");
+            AcoreApplication.Resources.Lang.Wrapper.ChangeCulture(Thread.CurrentThread.CurrentUICulture);
+        }
+        private void English_click(object sender, RoutedEventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            AcoreApplication.Resources.Lang.Wrapper.ChangeCulture(Thread.CurrentThread.CurrentUICulture);
+        }
+        private void French_click(object sender, RoutedEventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
+            AcoreApplication.Resources.Lang.Wrapper.ChangeCulture(Thread.CurrentThread.CurrentUICulture);
         }
 
         private void Machine1_Loaded(object sender, RoutedEventArgs e)

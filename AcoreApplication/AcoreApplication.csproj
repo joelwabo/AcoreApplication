@@ -224,6 +224,27 @@
     <Compile Include="Model\IProcessService.cs" />
     <Compile Include="Model\ISegmentService.cs" />
     <Compile Include="Model\SegmentService.cs" />
+    <Compile Include="Resources\Lang\languages.Designer.cs">
+      <DependentUpon>languages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Lang\languages.fr-FR.Designer.cs">
+      <DependentUpon>languages.fr-FR.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Lang\Wrapper.cs" />
+    <Compile Include="Resources\Lang\languages.en-US.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>languages.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Lang\languages.es-ES.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>languages.es-ES.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MachineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -289,6 +310,22 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang\languages.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>languages.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang\languages.fr-FR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>languages.fr-FR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang\languages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>languages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang\languages.es-ES.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>languages.es-ES.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EntityDeploy Include="DataBase\AcoreDBEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

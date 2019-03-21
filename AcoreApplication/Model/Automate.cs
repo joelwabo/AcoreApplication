@@ -41,7 +41,7 @@ namespace AcoreApplication.Model
             Redresseurs = GetAllRedresseurFromAutotameId(Id);
 
             ClientTcp = new TcpClient();
-            Connection();
+            //Connection();
         }
 
         ~Automate()
