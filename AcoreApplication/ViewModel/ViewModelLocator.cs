@@ -23,6 +23,7 @@ namespace AcoreApplication.ViewModel
                 SimpleIoc.Default.Register<IRecetteService, RecetteService>();
                 SimpleIoc.Default.Register<ISegmentService, SegmentService>();
                 SimpleIoc.Default.Register<IRedresseurService, RedresseurService>();
+                SimpleIoc.Default.Register<IHistoriqueService, HistoriqueService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();
