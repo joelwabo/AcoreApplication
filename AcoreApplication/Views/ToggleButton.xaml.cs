@@ -1,4 +1,5 @@
 ﻿using AcoreApplication.Model;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,23 @@ namespace AcoreApplication.Views
             Toogled = false;
             Dot.Margin = RightSide;
         }
+        
+        private void UpdateToggle(Redresseur red)
+        {
+            if (red.OnOff)
+            {
+                Back.Fill = OffColor;
+                Toogled = false;
+                Dot.Margin = RightSide;
+            }
+            else
+            {
+                Back.Fill = OnColor;
+                Toogled = true;
+                Dot.Margin = LeftSide;
+            }
 
+        }
 
         private void Dot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

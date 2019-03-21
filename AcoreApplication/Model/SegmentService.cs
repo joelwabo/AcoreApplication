@@ -69,22 +69,22 @@ namespace AcoreApplication.Model
                         segmentToUpdate.Etat = segment.Etat;
                         segmentToUpdate.Type = segment.Type.ToString();
                         var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                        //segmentToUpdate.Duree = TimeSpan.FromSeconds((segment.Duree.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.Duree = segment.Duree;
                         segmentToUpdate.ConsigneDepartV = segment.ConsigneDepartV;
                         segmentToUpdate.ConsigneDepartA = segment.ConsigneDepartA;
                         segmentToUpdate.ConsigneArriveeV = segment.ConsigneArriveeV;
                         segmentToUpdate.ConsigneArriveeA = segment.ConsigneArriveeA;
-                        //segmentToUpdate.TempsRestant = TimeSpan.FromSeconds((segment.TempsRestant.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.TempsRestant = segment.TempsRestant;
                         segmentToUpdate.Pulse = segment.Pulse;
                         segmentToUpdate.CompteurAH = segment.CompteurAH;
                         segmentToUpdate.Temporisation = segment.Temporisation;
-                        //segmentToUpdate.TempsOn = TimeSpan.FromSeconds((segment.TempsOn.ToUniversalTime() - epoch).TotalSeconds);
-                        //segmentToUpdate.TempsOff = TimeSpan.FromSeconds((segment.TempsOff.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.TempsOn = segment.TempsOn;
+                        segmentToUpdate.TempsOff = segment.TempsOff;
                         segmentToUpdate.AH = segment.AH;
                         //CompteurAH = CompteurAH;
                         segmentToUpdate.CalibreAH = segment.CalibreAH.ToString();
                         segmentToUpdate.Rampe = segment.Rampe;
-                        //segmentToUpdate.DureeRampe = TimeSpan.FromSeconds((segment.DureeRampe.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.DureeRampe = segment.DureeRampe;
 
                         bdd.SaveChanges();
                     }

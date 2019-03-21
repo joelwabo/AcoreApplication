@@ -112,7 +112,7 @@ namespace AcoreApplication.ViewModel
             
 
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
-            SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(RecetteChangedCommand);
+            SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedRecetteChanged);
             SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
             RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
             SegmentCellEditCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(CellEditCommand);
@@ -209,13 +209,14 @@ namespace AcoreApplication.ViewModel
             }
         }
 
-        private void RecetteChangedCommand(SelectionChangedEventArgs arg)
+        private void SelectedRecetteChanged(SelectionChangedEventArgs arg)
         {
             if (arg.AddedItems.Count > 0)
             {
                 Recette recette = arg.AddedItems[0] as Recette;
-                Redresseur red = arg.Source as Redresseur;
+                Redresseur red = (arg.Source as ComboBox).DataContext as Redresseur;
                 red.SelectedRecette = recette;
+                red.SelectedRecette.SegCours = 0;
             }
         }
 

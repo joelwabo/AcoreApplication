@@ -99,7 +99,7 @@
             <ComboBox Name="RecetteComboBox"  HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Height="26" Width="134" ItemsSource="{Binding Path=ListRecette}">
                 <Interactivity:Interaction.Triggers>
                     <Interactivity:EventTrigger EventName="SelectionChanged" >
-                        <Command:EventToCommand Command="{Binding SelectedRecetteChangedCommand}" PassEventArgsToCommand="True"/>
+                        <Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>
                     </Interactivity:EventTrigger>
                 </Interactivity:Interaction.Triggers>
                 <ComboBox.ItemTemplate>

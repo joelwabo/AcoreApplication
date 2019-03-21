@@ -39,7 +39,7 @@ namespace AcoreApplication.Views
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
             Messenger.Default.Register<ObservableCollection<Registre>>(this, AfficherListRegistre);
         }
-
+        
         private void Machine1_Loaded(object sender, RoutedEventArgs e)
         {
             Storyboard sb = this.Machine1.FindResource("Storyboard1") as Storyboard;

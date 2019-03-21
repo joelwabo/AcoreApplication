@@ -42,8 +42,8 @@ namespace AcoreApplication.Model
             get { return type; }
             set { NotifyPropertyChanged(ref type, value); }
         }
-        private DateTime duree;
-        public DateTime Duree
+        private TimeSpan duree;
+        public TimeSpan Duree
         {
             get { return duree; }
             set { NotifyPropertyChanged(ref duree, value); }
@@ -72,8 +72,8 @@ namespace AcoreApplication.Model
             get { return consigneArriveeA; }
             set { NotifyPropertyChanged(ref consigneArriveeA, value); }
         }
-        private DateTime tempsRestant;
-        public DateTime TempsRestant
+        private TimeSpan tempsRestant;
+        public TimeSpan TempsRestant
         {
             get { return tempsRestant; }
             set { NotifyPropertyChanged(ref tempsRestant, value); }
@@ -90,14 +90,14 @@ namespace AcoreApplication.Model
             get { return temporisation; }
             set { NotifyPropertyChanged(ref temporisation, value); }
         }
-        private DateTime tempsOn;
-        public DateTime TempsOn
+        private TimeSpan tempsOn;
+        public TimeSpan TempsOn
         {
             get { return tempsOn; }
             set { NotifyPropertyChanged(ref tempsOn, value); }
         }
-        private DateTime tempsOff;
-        public DateTime TempsOff
+        private TimeSpan tempsOff;
+        public TimeSpan TempsOff
         {
             get { return tempsOff; }
             set { NotifyPropertyChanged(ref tempsOff, value); }
@@ -126,8 +126,8 @@ namespace AcoreApplication.Model
             get { return rampe; }
             set { NotifyPropertyChanged(ref rampe, value); }
         }
-        private DateTime dureeRampe;
-        public DateTime DureeRampe
+        private TimeSpan dureeRampe;
+        public TimeSpan DureeRampe
         {
             get { return dureeRampe; }
             set { NotifyPropertyChanged(ref dureeRampe, value); }
@@ -145,7 +145,6 @@ namespace AcoreApplication.Model
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
         public Segment()
         {
-
         }
 
         public Segment(SqlDataReader reader)
@@ -155,22 +154,22 @@ namespace AcoreApplication.Model
             Nom = (string)reader["Nom"];
             Etat = (bool)reader["Etat"];
             Type = (TYPEREDRESSEUR)Enum.Parse(typeof(TYPEREDRESSEUR), (string)reader["Type"]);
-            Duree = DateTime.Parse(reader["Duree"].ToString());
+            Duree = TimeSpan.Parse(reader["Duree"].ToString());
             ConsigneDepartV = (int)reader["ConsigneDepartV"];
             ConsigneDepartA = (int)reader["ConsigneDepartA"];
             ConsigneArriveeV = (int)reader["ConsigneArriveeV"];
             ConsigneArriveeA = (int)reader["ConsigneArriveeA"];
-            TempsRestant = DateTime.Parse(reader["TempsRestant"].ToString());
+            TempsRestant = TimeSpan.Parse(reader["TempsRestant"].ToString());
             Pulse = (bool)reader["Pulse"];
             CompteurAH = (int)reader["CompteurAH"];
             Temporisation = (bool)reader["Temporisation"];
-            TempsOn = DateTime.Parse(reader["TempsOn"].ToString());
-            TempsOff = DateTime.Parse(reader["TempsOff"].ToString());
+            TempsOn = TimeSpan.Parse(reader["TempsOn"].ToString());
+            TempsOff = TimeSpan.Parse(reader["TempsOff"].ToString());
             AH = (bool)reader["AH"];
             CompteurAH = (int)reader["CompteurAH"];
             CalibreAH = (CALIBRE)Enum.Parse(typeof(CALIBRE), (string)reader["CalibreAH"]);
             Rampe = (bool)reader["Rampe"];
-            DureeRampe = DateTime.Parse(reader["DureeRampe"].ToString());
+            DureeRampe = TimeSpan.Parse(reader["DureeRampe"].ToString());
 
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
         }

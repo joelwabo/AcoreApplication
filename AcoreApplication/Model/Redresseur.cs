@@ -18,6 +18,7 @@ using static AcoreApplication.Model.Constantes;
 using static AcoreApplication.Model.Option;
 using static AcoreApplication.Model.Registre;
 using static AcoreApplication.Model.Historique;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace AcoreApplication.Model
 {
@@ -31,6 +32,7 @@ namespace AcoreApplication.Model
         #endregion
 
         #region ATTRIBUTS
+        DateTime timend;
         private int id;
         public int Id
         {
@@ -53,7 +55,20 @@ namespace AcoreApplication.Model
         public bool OnOff
         {
             get { return onOff; }
-            set{ NotifyPropertyChanged(ref onOff, value);}
+            set
+            {
+                NotifyPropertyChanged(ref onOff, value);
+                if (OnOff)
+                {
+                    if (Etat == MODES.RemoteRecette)
+                    {
+                        if (SelectedRecette != null)
+                        {
+                            SelectedRecette.TempsDebut = DateTime.Now;
+                        }
+                    }
+                }
+            }
         }
         private bool miseSousTension;
         public bool MiseSousTension
@@ -279,9 +294,14 @@ namespace AcoreApplication.Model
         public Recette SelectedRecette = null;
         public IModbusMaster ModBusMaster { get; set; }
         private Thread RedresseurPoolingTask { get; set; }
-        #endregion 
+        #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
+        public Redresseur()
+        {
+
+        }
+
         public Redresseur(DataBase.Redresseur red)
         {
             ValuesA = new ChartValues<double> { 0 };
@@ -510,6 +530,56 @@ namespace AcoreApplication.Model
         
         private void RemoteManuel()
         {
+            WriteModbus();
+        }
+
+        private void RemoteRecette()
+        {
+            if (SelectedRecette != null) //Consigne = coefDirect*t + consigneD
+            {
+                if (SelectedRecette.TempsDebut.Add(SelectedRecette.TempsRestant) >= DateTime.Now)
+                {
+                    if (SelectedRecette.TempsDebut.Add(SelectedRecette.Segments[SelectedRecette.SegCours].Duree) >= DateTime.Now)
+                    {
+                        TimeSpan t = DateTime.Now - SelectedRecette.TempsDebut;
+                        float coefDirectA = (SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneArriveeA - SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartA) / (float)SelectedRecette.Segments[SelectedRecette.SegCours].Duree.TotalSeconds;
+                        float coefDirectV = (SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneArriveeV - SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartV) / (float)SelectedRecette.Segments[SelectedRecette.SegCours].Duree.TotalSeconds;
+
+                        ConsigneA = (int)(coefDirectA * (float)t.TotalSeconds + SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartA);
+                        ConsigneV = (int)(coefDirectV * (float)t.TotalSeconds + SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartV);
+                        if (ValuesA.Count < 500)
+                        {
+                            ValuesA.Add(ConsigneV);
+                            ValuesB.Add(ConsigneA);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < ValuesA.Count - 1; i++)
+                            {
+                                ValuesA[i] = ValuesA[i + 1];
+                                ValuesB[i] = ValuesB[i + 1];
+                                ValuesA[ValuesA.Count - 1] = ConsigneV;
+                                ValuesB[ValuesA.Count - 1] = ConsigneA;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SelectedRecette.SegCours++;
+                        if (SelectedRecette.SegCours >= SelectedRecette.Segments.Count)
+                        {
+                            SelectedRecette.SegCours--;
+                            OnOff = false;
+                            Messenger.Default.Send(SelectedRecette);
+                        }
+                    }
+                }
+                WriteModbus();
+            }
+        }
+
+        private void WriteModbus()
+        {
             foreach (Registre registre in Registres)
             {
                 switch (registre.Nom)
@@ -537,19 +607,6 @@ namespace AcoreApplication.Model
                         }
                         break;
                 }
-            }
-        }
-
-        private void RemoteRecette()
-        {
-            if (SelectedRecette != null)
-            { 
-                foreach(Segment seg in SelectedRecette.Segments)
-                {
-                    ConsigneA = ConsigneA + (seg.ConsigneDepartA - seg.ConsigneArriveeA)/Cst_SleepTime;
-                    ConsigneV = ConsigneV + (seg.ConsigneDepartV - seg.ConsigneArriveeV)/ Cst_SleepTime;
-                }
-
             }
         }
 

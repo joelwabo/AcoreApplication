@@ -43,11 +43,18 @@ namespace AcoreApplication.Model
             get { return segCours; }
             set { NotifyPropertyChanged(ref segCours, value); }
         }
-        private DateTime tempsRestant;
-        public DateTime TempsRestant
+        private TimeSpan tempsRestant;
+        public TimeSpan TempsRestant
         {
             get { return tempsRestant; }
             set { NotifyPropertyChanged(ref tempsRestant, value); }
+        }
+
+        private DateTime tempsDebut;
+        public DateTime TempsDebut
+        {
+            get { return tempsDebut; }
+            set { NotifyPropertyChanged(ref tempsDebut, value); }
         }
 
         private ObservableCollection<Segment> segments;
@@ -65,16 +72,22 @@ namespace AcoreApplication.Model
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
+        public Recette()
+        {
+
+        }
         public Recette(DataBase.Recette rec)
         {
             Id = rec.Id;
             IdProcess = rec.IdProcess;
             Nom = rec.Nom;
             Cyclage = rec.Cyclage;
-            TempsRestant = DateTime.Parse(rec.TempsRestant.ToString());
+            TempsRestant = new TimeSpan(0);
 
             Segments = GetAllSegmentFromRecetteId(Id);
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            foreach (Segment seg in Segments)
+                TempsRestant = TempsRestant + seg.Duree;
         }
 
         public Recette(SqlDataReader reader)
@@ -84,10 +97,12 @@ namespace AcoreApplication.Model
             IdProcess = (int)reader["IdProcess"];
             Nom = (string)reader["Nom"];
             Cyclage = (int?)reader["Cyclage"];
-            TempsRestant = DateTime.Parse(reader["TempsRestant"].ToString());
+            TempsRestant = new TimeSpan(0);
 
             Segments = GetAllSegmentFromRecetteId(Id);
             Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            foreach (Segment seg in Segments)
+                TempsRestant = TempsRestant + seg.Duree;
         }
 
         #endregion
