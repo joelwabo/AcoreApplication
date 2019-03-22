@@ -60,7 +60,7 @@
                     <ComboBox Name="ProcessComboBox"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="27" Width="134" ItemsSource="{Binding ListProcess}">
                         <Interactivity:Interaction.Triggers>
                             <Interactivity:EventTrigger EventName="SelectionChanged" >
-                                <!--<Command:EventToCommand Command="{Binding SelectedProcessChangedCommand}" PassEventArgsToCommand="True"/>-->
+                                <Command:EventToCommand Command="{Binding SelectedProcessChangedCommand}" PassEventArgsToCommand="True"/>
                             </Interactivity:EventTrigger>
                         </Interactivity:Interaction.Triggers>
                         <ComboBox.ItemTemplate>
@@ -74,7 +74,7 @@
                     <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="267" Margin="10,42,0,0" VerticalAlignment="Top" Width="264">
                         <Interactivity:Interaction.Triggers>
                             <Interactivity:EventTrigger EventName="AddingNewItem" >
-                                <!--<Command:EventToCommand Command="{Binding AddingNewRecetteCommand}" PassEventArgsToCommand="True"/>-->
+                                <Command:EventToCommand Command="{Binding AddingNewRecetteCommand}" PassEventArgsToCommand="True"/>
                             </Interactivity:EventTrigger>
                         </Interactivity:Interaction.Triggers>
                         <DataGrid.Columns>
@@ -88,13 +88,13 @@
                         <DataGrid ItemsSource="{Binding RecetteSelected.Segments, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="275.6" Margin="-10,10,0,0" VerticalAlignment="Top" Width="708.4">
                             <Interactivity:Interaction.Triggers>
                                 <Interactivity:EventTrigger EventName="LoadingRow" >
-                                    <!--<Command:EventToCommand Command="{Binding SegmentLoadingRowCommand}" PassEventArgsToCommand="True"/>-->
+                                    <Command:EventToCommand Command="{Binding SegmentLoadingRowCommand}" PassEventArgsToCommand="True"/>
                                 </Interactivity:EventTrigger>
                                 <Interactivity:EventTrigger EventName="CellEditEnding" >
-                                    <!--<Command:EventToCommand Command="{Binding SegmentCellEditCommand}" PassEventArgsToCommand="True"/>-->
+                                    <Command:EventToCommand Command="{Binding SegmentCellEditCommand}" PassEventArgsToCommand="True"/>
                                 </Interactivity:EventTrigger>
                                 <Interactivity:EventTrigger EventName="AddingNewItem" >
-                                    <!--<Command:EventToCommand Command="{Binding AddingNewSegmentCommand}" PassEventArgsToCommand="True"/>-->
+                                    <Command:EventToCommand Command="{Binding AddingNewSegmentCommand}" PassEventArgsToCommand="True"/>
                                 </Interactivity:EventTrigger>
                             </Interactivity:Interaction.Triggers>
                             <DataGrid.Columns>
@@ -195,6 +195,19 @@
                     <TabControl HorizontalAlignment="Left" Height="682.641" Margin="10,10,0,0" VerticalAlignment="Top" Width="998" Grid.ColumnSpan="2">
                         <TabItem Header="{Binding Users, Source={StaticResource LanguagesRes}}">
                             <Grid Background="#FFE5E5E5">
+                                <DataGrid Name="usergrid">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="{Binding Name, Source={StaticResource LanguagesRes}}" Binding="{Binding Nom}"/>
+                                        <DataGridTextColumn Header="Permissions" Binding="{Binding Segments.Count, Mode=OneWay}">
+                                            <!--
+                                            <DataGridTextColumn Header="Params" Binding="{Binding Segments.Count, Mode=OneWay}"/>
+
+                                            <DataGridTextColumn Header="Historiques" Binding="{Binding Segments.Count, Mode=OneWay}"/>
+
+                                            <DataGridTextColumn Header="Recetes" Binding="{Binding Segments.Count, Mode=OneWay}"/>-->
+                                        </DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
                             </Grid>
                         </TabItem>
                         <TabItem Header="{Binding Rectifier, Source={StaticResource LanguagesRes}}">

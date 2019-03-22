@@ -93,14 +93,16 @@ namespace AcoreApplication.Views
                     Title = "V",
                     Values = new ChartValues<ObservablePoint>(),
                     PointGeometry = DefaultGeometries.Square,
-                    PointGeometrySize = 15
+                    PointGeometrySize = 15,
+                    LineSmoothness = 0
                 },
                 new LineSeries
                 {
                     Title = "A",
                     Values = new ChartValues<ObservablePoint>(),
                     PointGeometry = DefaultGeometries.Square,
-                    PointGeometrySize = 15
+                    PointGeometrySize = 15,
+                    LineSmoothness = 0
                 }
             };
             int i = 0;
