@@ -39,7 +39,7 @@ namespace AcoreApplication.Model
                     OrdreFabrication = (string)reader["OrdreFabrication"];
                     EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
                     DateFin = (DateTime)reader["DateFin"];   
-                    Type = (MODES)Enum.Parse(typeof(MODES), (string)reader["Type"]);
+                    //Type = (MODES)Enum.Parse(typeof(MODES), (string)reader["Type"]);
         }
 
         internal DataBase.Historique ToDataBase()
