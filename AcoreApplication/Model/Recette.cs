@@ -76,7 +76,7 @@ namespace AcoreApplication.Model
         {
 
         }
-        public Recette(DataBase.Recette rec)
+        public Recette(DataService.Recette rec)
         {
             Id = rec.Id;
             IdProcess = rec.IdProcess;

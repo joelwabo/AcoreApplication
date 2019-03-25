@@ -18,9 +18,9 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    bdd.Recette.Add(new DataBase.Recette()
+                    bdd.Recette.Add(new DataService.Recette()
                     {
                         IdProcess = 1,
                         Nom = "new_recette",
@@ -43,10 +43,10 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Recette> pro = bdd.Recette.ToList();
-                    DataBase.Recette recetteToUpdate = bdd.Recette.FirstOrDefault(recetteFound => recetteFound.Id == recette.Id);
+                    List<DataService.Recette> pro = bdd.Recette.ToList();
+                    DataService.Recette recetteToUpdate = bdd.Recette.FirstOrDefault(recetteFound => recetteFound.Id == recette.Id);
                     if (recetteToUpdate != null)
                     {
                         recetteToUpdate.IdProcess = recette.IdProcess;
@@ -69,10 +69,10 @@ namespace AcoreApplication.Model
             ObservableCollection<Recette> result = new ObservableCollection<Recette>();
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Recette> recettes = bdd.Recette.Where(rec => rec.IdProcess == idProcess).ToList();
-                    foreach (DataBase.Recette rec in recettes)
+                    List<DataService.Recette> recettes = bdd.Recette.Where(rec => rec.IdProcess == idProcess).ToList();
+                    foreach (DataService.Recette rec in recettes)
                         result.Add(new Recette(rec));
                 }
             }

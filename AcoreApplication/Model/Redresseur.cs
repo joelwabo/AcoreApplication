@@ -32,7 +32,6 @@ namespace AcoreApplication.Model
         #endregion
 
         #region ATTRIBUTS
-        DateTime timend;
         private int id;
         public int Id
         {
@@ -45,11 +44,11 @@ namespace AcoreApplication.Model
             get { return idProcess; }
             set { NotifyPropertyChanged(ref idProcess, value); }
         }
-        private int idAutomate;
-        public int IdAutomate
+        private string ipAdresse;
+        public string IpAdresse
         {
-            get { return idAutomate; }
-            set { NotifyPropertyChanged(ref idAutomate, value); }
+            get { return ipAdresse; }
+            set { NotifyPropertyChanged(ref ipAdresse, value); }
         }
         private bool onOff;
         public bool OnOff
@@ -302,13 +301,13 @@ namespace AcoreApplication.Model
 
         }
 
-        public Redresseur(DataBase.Redresseur red)
+        public Redresseur(DataService.Redresseur red)
         {
             ValuesA = new ChartValues<double> { 0 };
             ValuesB = new ChartValues<double> { 0 };
             Id = red.Id;
             IdProcess = red.IdProcess;
-            IdAutomate = red.IdAutomate;
+            IpAdresse = red.IpAdresse;
             OnOff = red.OnOff;
             MiseSousTension = red.MiseSousTension;
             Etat = (MODES)Enum.Parse(typeof(MODES), red.Etat);
@@ -346,7 +345,7 @@ namespace AcoreApplication.Model
             ValuesB = new ChartValues<double> { 0 };
             Id = (int)reader["Id"];
             IdProcess = (int)reader["IdProcess"];
-            IdAutomate = (int)reader["IdAutomate"];
+            IpAdresse = (string)reader["IpAdresse"];
             OnOff = (bool)reader["OnOff"];
             MiseSousTension = (bool)reader["MiseSousTension"];
             Etat = (MODES)Enum.Parse(typeof(MODES), (string)reader["Etat"]);
@@ -394,13 +393,13 @@ namespace AcoreApplication.Model
             return true;
         }
 
-        public static ObservableCollection<Redresseur> GetAllRedresseurFromAutotameId(int idAutomate)
+        public static ObservableCollection<Redresseur> GetAllRedresseurFromAutotameId(string ipAdresse)
         {
             ObservableCollection<Redresseur> redresseurs = new ObservableCollection<Redresseur>();
             using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Redresseur WHERE IdAutomate = " + idAutomate, connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM Redresseur WHERE IpAdresse = N'" + ipAdresse + "'", connection))
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())

@@ -35,20 +35,20 @@ namespace AcoreApplication.Model
         { 
                     IdRedresseur = (int)reader["IdRedresseur"];
                     IdUtilisateur = (int)reader["IdUtilisateur"];
-                    DateDebut = (DateTime)reader["Date"];
+                    DateDebut = (DateTime)reader["DateDebut"];
                     OrdreFabrication = (string)reader["OrdreFabrication"];
                     EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
                     DateFin = (DateTime)reader["DateFin"];   
                     //Type = (MODES)Enum.Parse(typeof(MODES), (string)reader["Type"]);
         }
 
-        internal DataBase.Historique ToDataBase()
+        internal DataService.Historique ToDataBase()
         {
-            DataBase.Historique historique = new DataBase.Historique();
+            DataService.Historique historique = new DataService.Historique();
 
             historique.IdRedresseur = IdRedresseur;
             historique.IdUtilisateur = IdUtilisateur;
-            historique.Date = DateDebut;
+            historique.DateDebut = DateDebut;
             historique.OrdreFabrication = OrdreFabrication;
             historique.EtatFin =EtatFin.ToString();
             historique.DateFin = DateFin;

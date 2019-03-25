@@ -16,7 +16,6 @@ namespace AcoreApplication.Model
     public class Automate 
     {
         #region ATTRIBUTS
-        public int Id { get; set; }
         public MODES Mode { get; set; }
         public string IpAdresse { get; set; }
 
@@ -35,10 +34,9 @@ namespace AcoreApplication.Model
 
         public Automate(SqlDataReader reader)
         {
-            Id = (int)reader["Id"];
             Mode = (MODES)Enum.Parse(typeof(MODES), (string)reader["Mode"]);
             IpAdresse = (string)reader["IpAdresse"];
-            Redresseurs = GetAllRedresseurFromAutotameId(Id);
+            Redresseurs = GetAllRedresseurFromAutotameId(IpAdresse);
 
             ClientTcp = new TcpClient();
             Connection();

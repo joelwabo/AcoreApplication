@@ -21,10 +21,10 @@ namespace AcoreApplication.Model
             ObservableCollection<Redresseur> result = new ObservableCollection<Redresseur>();
             try
             {                
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Redresseur> redresseur = bdd.Redresseur.ToList();
-                    foreach (DataBase.Redresseur red in redresseur)
+                    List<DataService.Redresseur> redresseur = bdd.Redresseur.ToList();
+                    foreach (DataService.Redresseur red in redresseur)
                         result.Add(new Redresseur(red));
                 }
                 return result;
@@ -41,12 +41,12 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    bdd.Redresseur.Add(new DataBase.Redresseur()
+                    bdd.Redresseur.Add(new DataService.Redresseur()
                     {
                         IdProcess = 1,
-                        IdAutomate = 1,
+                        IpAdresse = "192.168.1.111",
                         OnOff = false,
                         MiseSousTension = false,
                         Etat = "",
@@ -86,14 +86,14 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Redresseur> pro = bdd.Redresseur.ToList();
-                    DataBase.Redresseur redresseurToUpdate = bdd.Redresseur.FirstOrDefault(redresseurFound => redresseurFound.Id == redresseur.Id);
+                    List<DataService.Redresseur> pro = bdd.Redresseur.ToList();
+                    DataService.Redresseur redresseurToUpdate = bdd.Redresseur.FirstOrDefault(redresseurFound => redresseurFound.Id == redresseur.Id);
                     if (redresseurToUpdate != null)
                     {
                         redresseurToUpdate.IdProcess = redresseur.IdProcess;
-                        redresseurToUpdate.IdAutomate = redresseur.IdAutomate;
+                        redresseurToUpdate.IpAdresse = redresseur.IpAdresse;
                         redresseurToUpdate.OnOff = redresseur.OnOff;
                         redresseurToUpdate.MiseSousTension = redresseur.MiseSousTension;
                         redresseurToUpdate.Etat = redresseur.Etat.ToString();

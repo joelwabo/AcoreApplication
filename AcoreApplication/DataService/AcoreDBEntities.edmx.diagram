@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4a143f48018747b39c9925755f256d13" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="DataService.Automate" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.Historique" Width="1.5" PointX="5.25" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.HistoriqueData" Width="1.5" PointX="7.5" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.Options" Width="1.5" PointX="7.5" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.Process" Width="1.5" PointX="0.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.Recette" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.Redresseur" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.Registre" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.Segment" Width="1.5" PointX="5.25" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataService.Utilisateur" Width="1.5" PointX="3" PointY="19.625" IsExpanded="true" />
+        <AssociationConnector Association="DataService.Redresseur_Automate" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Historique_Recette" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Historique_Redresseur" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Historique_Utilisateur" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.HistoriqueData_Historique" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Option_Process" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Option_Recette" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Option_Redresseur" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Option_Segment" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Recette_Process" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Redresseur_Process" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Segment_Recette" ManuallyRouted="false" />
+        <AssociationConnector Association="DataService.Registre_Redresseur" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

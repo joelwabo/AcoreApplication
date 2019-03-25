@@ -36,14 +36,14 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    bdd.Historique.Add(new DataBase.Historique()
+                    bdd.Historique.Add(new DataService.Historique()
                     {
                         IdRedresseur = 1,
                         IdUtilisateur = 1,
                         OrdreFabrication = "",
-                        Date = new DateTime(),
+                        DateDebut = new DateTime(),
                         DateFin = new DateTime(),
                         EtatFin = "",
                         Type = ""
@@ -63,16 +63,16 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Historique> hist = bdd.Historique.ToList();
-                    DataBase.Historique historiqueToUpdate = bdd.Historique.FirstOrDefault(historiqueFound => historiqueFound.IdRedresseur == historique.IdRedresseur);
+                    List<DataService.Historique> hist = bdd.Historique.ToList();
+                    DataService.Historique historiqueToUpdate = bdd.Historique.FirstOrDefault(historiqueFound => historiqueFound.IdRedresseur == historique.IdRedresseur);
                     if (historiqueToUpdate != null)
                     {
                         historiqueToUpdate.IdRedresseur = historique.IdRedresseur;
                         historiqueToUpdate.IdUtilisateur = historique.IdUtilisateur;
                         historiqueToUpdate.OrdreFabrication = historique.OrdreFabrication;
-                        historiqueToUpdate.Date = historique.DateDebut;
+                        historiqueToUpdate.DateDebut = historique.DateDebut;
                         historiqueToUpdate.DateFin = historique.DateFin;
                         historiqueToUpdate.EtatFin = historique.EtatFin.ToString();
                         historiqueToUpdate.Type = historique.Type.ToString();

@@ -18,9 +18,9 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    bdd.Segment.Add(new DataBase.Segment()
+                    bdd.Segment.Add(new DataService.Segment()
                     {
                         IdRecette = 1,
                         Nom = "new_seg",
@@ -58,10 +58,10 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Segment> seg = bdd.Segment.ToList();
-                    DataBase.Segment segmentToUpdate = bdd.Segment.FirstOrDefault(segmentFound => segmentFound.Id == segment.Id);
+                    List<DataService.Segment> seg = bdd.Segment.ToList();
+                    DataService.Segment segmentToUpdate = bdd.Segment.FirstOrDefault(segmentFound => segmentFound.Id == segment.Id);
                     if (segmentToUpdate != null)
                     {
                         segmentToUpdate.IdRecette = segment.IdRecette;

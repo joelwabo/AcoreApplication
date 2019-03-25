@@ -45,9 +45,9 @@ namespace AcoreApplication.Model
 
         #region METHODES
 
-        internal DataBase.Process ToDataBase()
+        internal DataService.Process ToDataBase()
         {
-            DataBase.Process process = new DataBase.Process();
+            DataService.Process process = new DataService.Process();
 
             process.Nom = Nom;
             process.UMax = UMax;

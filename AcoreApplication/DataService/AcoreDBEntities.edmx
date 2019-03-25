@@ -1,0 +1,962 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DataService.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Automate">
+          <Key>
+            <PropertyRef Name="IpAdresse" />
+          </Key>
+          <Property Name="IpAdresse" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Historique">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateDebut" Type="datetime" Nullable="false" />
+          <Property Name="IdUtilisateur" Type="int" Nullable="false" />
+          <Property Name="IdRedresseur" Type="int" Nullable="false" />
+          <Property Name="IdRecette" Type="int" Nullable="false" />
+          <Property Name="DateFin" Type="datetime" />
+          <Property Name="OrdreFabrication" Type="nvarchar" MaxLength="50" />
+          <Property Name="EtatFin" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="HistoriqueData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdHistorique" Type="int" Nullable="false" />
+          <Property Name="ConsigneV" Type="int" />
+          <Property Name="ConsineA" Type="int" />
+          <Property Name="LectureV" Type="int" />
+          <Property Name="LectureA" Type="int" />
+        </EntityType>
+        <EntityType Name="Options">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRedresseur" Type="int" Nullable="false" />
+          <Property Name="IdSegment" Type="int" Nullable="false" />
+          <Property Name="IdRecette" Type="int" Nullable="false" />
+          <Property Name="IdProcess" Type="int" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Process">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UMax" Type="int" Nullable="false" />
+          <Property Name="IMax" Type="int" Nullable="false" />
+          <Property Name="Pulse" Type="bit" Nullable="false" />
+          <Property Name="Inverseur" Type="bit" Nullable="false" />
+          <Property Name="AH" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Recette">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdProcess" Type="int" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cyclage" Type="int" />
+          <Property Name="SegCours" Type="int" />
+          <Property Name="TempsRestant" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Redresseur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IpAdresse" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdProcess" Type="int" Nullable="false" />
+          <Property Name="OnOff" Type="bit" Nullable="false" />
+          <Property Name="MiseSousTension" Type="bit" Nullable="false" />
+          <Property Name="Etat" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CalibreV" Type="float" />
+          <Property Name="UMax" Type="int" Nullable="false" />
+          <Property Name="CalibreA" Type="float" />
+          <Property Name="IMax" Type="int" Nullable="false" />
+          <Property Name="ConsigneV" Type="int" Nullable="false" />
+          <Property Name="ConsigneA" Type="int" Nullable="false" />
+          <Property Name="LectureV" Type="int" />
+          <Property Name="LectureA" Type="int" />
+          <Property Name="Temperature" Type="int" />
+          <Property Name="AH" Type="bit" />
+          <Property Name="CompteurAH" Type="int" />
+          <Property Name="CalibreAH" Type="nvarchar" MaxLength="50" />
+          <Property Name="Inverseur" Type="bit" />
+          <Property Name="Prevent" Type="bit" Nullable="false" />
+          <Property Name="Pulse" Type="bit" />
+          <Property Name="TempsOn" Type="int" />
+          <Property Name="TempsOff" Type="int" />
+          <Property Name="Temporisation" Type="bit" />
+          <Property Name="DureeTempo" Type="time" Precision="7" />
+          <Property Name="DureeRestante" Type="time" Precision="7" />
+          <Property Name="Rampe" Type="bit" />
+          <Property Name="DureeRampe" Type="time" Precision="7" />
+          <Property Name="FichierIncident" Type="binary" MaxLength="50" />
+          <Property Name="Defaut" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Registre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRedresseur" Type="int" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TypeModbus" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdresseDebut" Type="int" Nullable="false" />
+          <Property Name="AdresseFin" Type="int" Nullable="false" />
+          <Property Name="NumBit" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Segment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRecette" Type="int" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Etat" Type="bit" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Duree" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ConsigneDepartV" Type="int" Nullable="false" />
+          <Property Name="ConsigneDepartA" Type="int" Nullable="false" />
+          <Property Name="ConsigneArriveeV" Type="int" Nullable="false" />
+          <Property Name="ConsigneArriveeA" Type="int" Nullable="false" />
+          <Property Name="TempsRestant" Type="time" Precision="7" />
+          <Property Name="Pulse" Type="bit" />
+          <Property Name="Temporisation" Type="bit" />
+          <Property Name="TempsOn" Type="time" Precision="7" />
+          <Property Name="TempsOff" Type="time" Precision="7" />
+          <Property Name="AH" Type="bit" />
+          <Property Name="CompteurAH" Type="int" />
+          <Property Name="CalibreAH" Type="nvarchar" MaxLength="50" />
+          <Property Name="Rampe" Type="bit" />
+          <Property Name="DureeRampe" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nom" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mdp" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="Historique_Recette">
+          <End Role="Recette" Type="Self.Recette" Multiplicity="1" />
+          <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recette">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Historique">
+              <PropertyRef Name="IdRecette" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historique_Redresseur">
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="1" />
+          <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Redresseur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Historique">
+              <PropertyRef Name="IdRedresseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historique_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
+          <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Historique">
+              <PropertyRef Name="IdUtilisateur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HistoriqueData_Historique">
+          <End Role="Historique" Type="Self.Historique" Multiplicity="1" />
+          <End Role="HistoriqueData" Type="Self.HistoriqueData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Historique">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HistoriqueData">
+              <PropertyRef Name="IdHistorique" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Option_Process">
+          <End Role="Process" Type="Self.Process" Multiplicity="1" />
+          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Process">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Options">
+              <PropertyRef Name="IdProcess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Option_Recette">
+          <End Role="Recette" Type="Self.Recette" Multiplicity="1" />
+          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recette">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Options">
+              <PropertyRef Name="IdRecette" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Option_Redresseur">
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="1" />
+          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Redresseur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Options">
+              <PropertyRef Name="IdRedresseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Option_Segment">
+          <End Role="Segment" Type="Self.Segment" Multiplicity="1" />
+          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Segment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Options">
+              <PropertyRef Name="IdSegment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Recette_Process">
+          <End Role="Process" Type="Self.Process" Multiplicity="1" />
+          <End Role="Recette" Type="Self.Recette" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Process">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Recette">
+              <PropertyRef Name="IdProcess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Redresseur_Automate">
+          <End Role="Automate" Type="Self.Automate" Multiplicity="1" />
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Automate">
+              <PropertyRef Name="IpAdresse" />
+            </Principal>
+            <Dependent Role="Redresseur">
+              <PropertyRef Name="IpAdresse" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Redresseur_Process">
+          <End Role="Process" Type="Self.Process" Multiplicity="1" />
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Process">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Redresseur">
+              <PropertyRef Name="IdProcess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Registre_Redresseur">
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="1" />
+          <End Role="Registre" Type="Self.Registre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Redresseur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Registre">
+              <PropertyRef Name="IdRedresseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Segment_Recette">
+          <End Role="Recette" Type="Self.Recette" Multiplicity="1" />
+          <End Role="Segment" Type="Self.Segment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recette">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Segment">
+              <PropertyRef Name="IdRecette" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DataServiceStoreContainer">
+          <EntitySet Name="Automate" EntityType="Self.Automate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Historique" EntityType="Self.Historique" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistoriqueData" EntityType="Self.HistoriqueData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Options" EntityType="Self.Options" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Process" EntityType="Self.Process" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recette" EntityType="Self.Recette" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Redresseur" EntityType="Self.Redresseur" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Registre" EntityType="Self.Registre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Segment" EntityType="Self.Segment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Historique_Recette" Association="Self.Historique_Recette">
+            <End Role="Recette" EntitySet="Recette" />
+            <End Role="Historique" EntitySet="Historique" />
+          </AssociationSet>
+          <AssociationSet Name="Historique_Redresseur" Association="Self.Historique_Redresseur">
+            <End Role="Redresseur" EntitySet="Redresseur" />
+            <End Role="Historique" EntitySet="Historique" />
+          </AssociationSet>
+          <AssociationSet Name="Historique_Utilisateur" Association="Self.Historique_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Historique" EntitySet="Historique" />
+          </AssociationSet>
+          <AssociationSet Name="HistoriqueData_Historique" Association="Self.HistoriqueData_Historique">
+            <End Role="Historique" EntitySet="Historique" />
+            <End Role="HistoriqueData" EntitySet="HistoriqueData" />
+          </AssociationSet>
+          <AssociationSet Name="Option_Process" Association="Self.Option_Process">
+            <End Role="Process" EntitySet="Process" />
+            <End Role="Options" EntitySet="Options" />
+          </AssociationSet>
+          <AssociationSet Name="Option_Recette" Association="Self.Option_Recette">
+            <End Role="Recette" EntitySet="Recette" />
+            <End Role="Options" EntitySet="Options" />
+          </AssociationSet>
+          <AssociationSet Name="Option_Redresseur" Association="Self.Option_Redresseur">
+            <End Role="Redresseur" EntitySet="Redresseur" />
+            <End Role="Options" EntitySet="Options" />
+          </AssociationSet>
+          <AssociationSet Name="Option_Segment" Association="Self.Option_Segment">
+            <End Role="Segment" EntitySet="Segment" />
+            <End Role="Options" EntitySet="Options" />
+          </AssociationSet>
+          <AssociationSet Name="Recette_Process" Association="Self.Recette_Process">
+            <End Role="Process" EntitySet="Process" />
+            <End Role="Recette" EntitySet="Recette" />
+          </AssociationSet>
+          <AssociationSet Name="Redresseur_Automate" Association="Self.Redresseur_Automate">
+            <End Role="Automate" EntitySet="Automate" />
+            <End Role="Redresseur" EntitySet="Redresseur" />
+          </AssociationSet>
+          <AssociationSet Name="Redresseur_Process" Association="Self.Redresseur_Process">
+            <End Role="Process" EntitySet="Process" />
+            <End Role="Redresseur" EntitySet="Redresseur" />
+          </AssociationSet>
+          <AssociationSet Name="Registre_Redresseur" Association="Self.Registre_Redresseur">
+            <End Role="Redresseur" EntitySet="Redresseur" />
+            <End Role="Registre" EntitySet="Registre" />
+          </AssociationSet>
+          <AssociationSet Name="Segment_Recette" Association="Self.Segment_Recette">
+            <End Role="Recette" EntitySet="Recette" />
+            <End Role="Segment" EntitySet="Segment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DataService" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Automate">
+          <Key>
+            <PropertyRef Name="IpAdresse" />
+          </Key>
+          <Property Name="IpAdresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Redresseur" Relationship="Self.Redresseur_Automate" FromRole="Automate" ToRole="Redresseur" />
+        </EntityType>
+        <EntityType Name="Historique">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateDebut" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdUtilisateur" Type="Int32" Nullable="false" />
+          <Property Name="IdRedresseur" Type="Int32" Nullable="false" />
+          <Property Name="IdRecette" Type="Int32" Nullable="false" />
+          <Property Name="DateFin" Type="DateTime" Precision="3" />
+          <Property Name="OrdreFabrication" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EtatFin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Recette" Relationship="Self.Historique_Recette" FromRole="Historique" ToRole="Recette" />
+          <NavigationProperty Name="Redresseur" Relationship="Self.Historique_Redresseur" FromRole="Historique" ToRole="Redresseur" />
+          <NavigationProperty Name="Utilisateur" Relationship="Self.Historique_Utilisateur" FromRole="Historique" ToRole="Utilisateur" />
+          <NavigationProperty Name="HistoriqueData" Relationship="Self.HistoriqueData_Historique" FromRole="Historique" ToRole="HistoriqueData" />
+        </EntityType>
+        <EntityType Name="HistoriqueData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdHistorique" Type="Int32" Nullable="false" />
+          <Property Name="ConsigneV" Type="Int32" />
+          <Property Name="ConsineA" Type="Int32" />
+          <Property Name="LectureV" Type="Int32" />
+          <Property Name="LectureA" Type="Int32" />
+          <NavigationProperty Name="Historique" Relationship="Self.HistoriqueData_Historique" FromRole="HistoriqueData" ToRole="Historique" />
+        </EntityType>
+        <EntityType Name="Options">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRedresseur" Type="Int32" Nullable="false" />
+          <Property Name="IdSegment" Type="Int32" Nullable="false" />
+          <Property Name="IdRecette" Type="Int32" Nullable="false" />
+          <Property Name="IdProcess" Type="Int32" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Process" Relationship="Self.Option_Process" FromRole="Options" ToRole="Process" />
+          <NavigationProperty Name="Recette" Relationship="Self.Option_Recette" FromRole="Options" ToRole="Recette" />
+          <NavigationProperty Name="Redresseur" Relationship="Self.Option_Redresseur" FromRole="Options" ToRole="Redresseur" />
+          <NavigationProperty Name="Segment" Relationship="Self.Option_Segment" FromRole="Options" ToRole="Segment" />
+        </EntityType>
+        <EntityType Name="Process">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UMax" Type="Int32" Nullable="false" />
+          <Property Name="IMax" Type="Int32" Nullable="false" />
+          <Property Name="Pulse" Type="Boolean" Nullable="false" />
+          <Property Name="Inverseur" Type="Boolean" Nullable="false" />
+          <Property Name="AH" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Options" Relationship="Self.Option_Process" FromRole="Process" ToRole="Options" />
+          <NavigationProperty Name="Recette" Relationship="Self.Recette_Process" FromRole="Process" ToRole="Recette" />
+          <NavigationProperty Name="Redresseur" Relationship="Self.Redresseur_Process" FromRole="Process" ToRole="Redresseur" />
+        </EntityType>
+        <EntityType Name="Recette">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdProcess" Type="Int32" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cyclage" Type="Int32" />
+          <Property Name="SegCours" Type="Int32" />
+          <Property Name="TempsRestant" Type="Time" Precision="7" />
+          <NavigationProperty Name="Historique" Relationship="Self.Historique_Recette" FromRole="Recette" ToRole="Historique" />
+          <NavigationProperty Name="Options" Relationship="Self.Option_Recette" FromRole="Recette" ToRole="Options" />
+          <NavigationProperty Name="Process" Relationship="Self.Recette_Process" FromRole="Recette" ToRole="Process" />
+          <NavigationProperty Name="Segment" Relationship="Self.Segment_Recette" FromRole="Recette" ToRole="Segment" />
+        </EntityType>
+        <EntityType Name="Redresseur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IpAdresse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IdProcess" Type="Int32" Nullable="false" />
+          <Property Name="OnOff" Type="Boolean" Nullable="false" />
+          <Property Name="MiseSousTension" Type="Boolean" Nullable="false" />
+          <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CalibreV" Type="Double" />
+          <Property Name="UMax" Type="Int32" Nullable="false" />
+          <Property Name="CalibreA" Type="Double" />
+          <Property Name="IMax" Type="Int32" Nullable="false" />
+          <Property Name="ConsigneV" Type="Int32" Nullable="false" />
+          <Property Name="ConsigneA" Type="Int32" Nullable="false" />
+          <Property Name="LectureV" Type="Int32" />
+          <Property Name="LectureA" Type="Int32" />
+          <Property Name="Temperature" Type="Int32" />
+          <Property Name="AH" Type="Boolean" />
+          <Property Name="CompteurAH" Type="Int32" />
+          <Property Name="CalibreAH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Inverseur" Type="Boolean" />
+          <Property Name="Prevent" Type="Boolean" Nullable="false" />
+          <Property Name="Pulse" Type="Boolean" />
+          <Property Name="TempsOn" Type="Int32" />
+          <Property Name="TempsOff" Type="Int32" />
+          <Property Name="Temporisation" Type="Boolean" />
+          <Property Name="DureeTempo" Type="Time" Precision="7" />
+          <Property Name="DureeRestante" Type="Time" Precision="7" />
+          <Property Name="Rampe" Type="Boolean" />
+          <Property Name="DureeRampe" Type="Time" Precision="7" />
+          <Property Name="FichierIncident" Type="Binary" MaxLength="50" FixedLength="true" />
+          <Property Name="Defaut" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Automate" Relationship="Self.Redresseur_Automate" FromRole="Redresseur" ToRole="Automate" />
+          <NavigationProperty Name="Historique" Relationship="Self.Historique_Redresseur" FromRole="Redresseur" ToRole="Historique" />
+          <NavigationProperty Name="Options" Relationship="Self.Option_Redresseur" FromRole="Redresseur" ToRole="Options" />
+          <NavigationProperty Name="Process" Relationship="Self.Redresseur_Process" FromRole="Redresseur" ToRole="Process" />
+          <NavigationProperty Name="Registre" Relationship="Self.Registre_Redresseur" FromRole="Redresseur" ToRole="Registre" />
+        </EntityType>
+        <EntityType Name="Registre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRedresseur" Type="Int32" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TypeModbus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdresseDebut" Type="Int32" Nullable="false" />
+          <Property Name="AdresseFin" Type="Int32" Nullable="false" />
+          <Property Name="NumBit" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Redresseur" Relationship="Self.Registre_Redresseur" FromRole="Registre" ToRole="Redresseur" />
+        </EntityType>
+        <EntityType Name="Segment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRecette" Type="Int32" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Etat" Type="Boolean" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Duree" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ConsigneDepartV" Type="Int32" Nullable="false" />
+          <Property Name="ConsigneDepartA" Type="Int32" Nullable="false" />
+          <Property Name="ConsigneArriveeV" Type="Int32" Nullable="false" />
+          <Property Name="ConsigneArriveeA" Type="Int32" Nullable="false" />
+          <Property Name="TempsRestant" Type="Time" Precision="7" />
+          <Property Name="Pulse" Type="Boolean" />
+          <Property Name="Temporisation" Type="Boolean" />
+          <Property Name="TempsOn" Type="Time" Precision="7" />
+          <Property Name="TempsOff" Type="Time" Precision="7" />
+          <Property Name="AH" Type="Boolean" />
+          <Property Name="CompteurAH" Type="Int32" />
+          <Property Name="CalibreAH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Rampe" Type="Boolean" />
+          <Property Name="DureeRampe" Type="Time" Precision="7" />
+          <NavigationProperty Name="Options" Relationship="Self.Option_Segment" FromRole="Segment" ToRole="Options" />
+          <NavigationProperty Name="Recette" Relationship="Self.Segment_Recette" FromRole="Segment" ToRole="Recette" />
+        </EntityType>
+        <EntityType Name="Utilisateur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mdp" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Historique" Relationship="Self.Historique_Utilisateur" FromRole="Utilisateur" ToRole="Historique" />
+        </EntityType>
+        <Association Name="Redresseur_Automate">
+          <End Role="Automate" Type="Self.Automate" Multiplicity="1" />
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Automate">
+              <PropertyRef Name="IpAdresse" />
+            </Principal>
+            <Dependent Role="Redresseur">
+              <PropertyRef Name="IpAdresse" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historique_Recette">
+          <End Role="Recette" Type="Self.Recette" Multiplicity="1" />
+          <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recette">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Historique">
+              <PropertyRef Name="IdRecette" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historique_Redresseur">
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="1" />
+          <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Redresseur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Historique">
+              <PropertyRef Name="IdRedresseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Historique_Utilisateur">
+          <End Role="Utilisateur" Type="Self.Utilisateur" Multiplicity="1" />
+          <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Historique">
+              <PropertyRef Name="IdUtilisateur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HistoriqueData_Historique">
+          <End Role="Historique" Type="Self.Historique" Multiplicity="1" />
+          <End Role="HistoriqueData" Type="Self.HistoriqueData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Historique">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HistoriqueData">
+              <PropertyRef Name="IdHistorique" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Option_Process">
+          <End Role="Process" Type="Self.Process" Multiplicity="1" />
+          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Process">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Options">
+              <PropertyRef Name="IdProcess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Option_Recette">
+          <End Role="Recette" Type="Self.Recette" Multiplicity="1" />
+          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recette">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Options">
+              <PropertyRef Name="IdRecette" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Option_Redresseur">
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="1" />
+          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Redresseur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Options">
+              <PropertyRef Name="IdRedresseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Option_Segment">
+          <End Role="Segment" Type="Self.Segment" Multiplicity="1" />
+          <End Role="Options" Type="Self.Options" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Segment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Options">
+              <PropertyRef Name="IdSegment" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Recette_Process">
+          <End Role="Process" Type="Self.Process" Multiplicity="1" />
+          <End Role="Recette" Type="Self.Recette" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Process">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Recette">
+              <PropertyRef Name="IdProcess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Redresseur_Process">
+          <End Role="Process" Type="Self.Process" Multiplicity="1" />
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Process">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Redresseur">
+              <PropertyRef Name="IdProcess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Segment_Recette">
+          <End Role="Recette" Type="Self.Recette" Multiplicity="1" />
+          <End Role="Segment" Type="Self.Segment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recette">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Segment">
+              <PropertyRef Name="IdRecette" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Registre_Redresseur">
+          <End Role="Redresseur" Type="Self.Redresseur" Multiplicity="1" />
+          <End Role="Registre" Type="Self.Registre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Redresseur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Registre">
+              <PropertyRef Name="IdRedresseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AcoreDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Automate" EntityType="Self.Automate" />
+          <EntitySet Name="Historique" EntityType="Self.Historique" />
+          <EntitySet Name="HistoriqueData" EntityType="Self.HistoriqueData" />
+          <EntitySet Name="Options" EntityType="Self.Options" />
+          <EntitySet Name="Process" EntityType="Self.Process" />
+          <EntitySet Name="Recette" EntityType="Self.Recette" />
+          <EntitySet Name="Redresseur" EntityType="Self.Redresseur" />
+          <EntitySet Name="Registre" EntityType="Self.Registre" />
+          <EntitySet Name="Segment" EntityType="Self.Segment" />
+          <EntitySet Name="Utilisateur" EntityType="Self.Utilisateur" />
+          <AssociationSet Name="Redresseur_Automate" Association="Self.Redresseur_Automate">
+            <End Role="Automate" EntitySet="Automate" />
+            <End Role="Redresseur" EntitySet="Redresseur" />
+          </AssociationSet>
+          <AssociationSet Name="Historique_Recette" Association="Self.Historique_Recette">
+            <End Role="Recette" EntitySet="Recette" />
+            <End Role="Historique" EntitySet="Historique" />
+          </AssociationSet>
+          <AssociationSet Name="Historique_Redresseur" Association="Self.Historique_Redresseur">
+            <End Role="Redresseur" EntitySet="Redresseur" />
+            <End Role="Historique" EntitySet="Historique" />
+          </AssociationSet>
+          <AssociationSet Name="Historique_Utilisateur" Association="Self.Historique_Utilisateur">
+            <End Role="Utilisateur" EntitySet="Utilisateur" />
+            <End Role="Historique" EntitySet="Historique" />
+          </AssociationSet>
+          <AssociationSet Name="HistoriqueData_Historique" Association="Self.HistoriqueData_Historique">
+            <End Role="Historique" EntitySet="Historique" />
+            <End Role="HistoriqueData" EntitySet="HistoriqueData" />
+          </AssociationSet>
+          <AssociationSet Name="Option_Process" Association="Self.Option_Process">
+            <End Role="Process" EntitySet="Process" />
+            <End Role="Options" EntitySet="Options" />
+          </AssociationSet>
+          <AssociationSet Name="Option_Recette" Association="Self.Option_Recette">
+            <End Role="Recette" EntitySet="Recette" />
+            <End Role="Options" EntitySet="Options" />
+          </AssociationSet>
+          <AssociationSet Name="Option_Redresseur" Association="Self.Option_Redresseur">
+            <End Role="Redresseur" EntitySet="Redresseur" />
+            <End Role="Options" EntitySet="Options" />
+          </AssociationSet>
+          <AssociationSet Name="Option_Segment" Association="Self.Option_Segment">
+            <End Role="Segment" EntitySet="Segment" />
+            <End Role="Options" EntitySet="Options" />
+          </AssociationSet>
+          <AssociationSet Name="Recette_Process" Association="Self.Recette_Process">
+            <End Role="Process" EntitySet="Process" />
+            <End Role="Recette" EntitySet="Recette" />
+          </AssociationSet>
+          <AssociationSet Name="Redresseur_Process" Association="Self.Redresseur_Process">
+            <End Role="Process" EntitySet="Process" />
+            <End Role="Redresseur" EntitySet="Redresseur" />
+          </AssociationSet>
+          <AssociationSet Name="Segment_Recette" Association="Self.Segment_Recette">
+            <End Role="Recette" EntitySet="Recette" />
+            <End Role="Segment" EntitySet="Segment" />
+          </AssociationSet>
+          <AssociationSet Name="Registre_Redresseur" Association="Self.Registre_Redresseur">
+            <End Role="Redresseur" EntitySet="Redresseur" />
+            <End Role="Registre" EntitySet="Registre" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DataServiceStoreContainer" CdmEntityContainer="AcoreDBEntities">
+          <EntitySetMapping Name="Automate">
+            <EntityTypeMapping TypeName="DataService.Automate">
+              <MappingFragment StoreEntitySet="Automate">
+                <ScalarProperty Name="IpAdresse" ColumnName="IpAdresse" />
+                <ScalarProperty Name="Mode" ColumnName="Mode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Historique">
+            <EntityTypeMapping TypeName="DataService.Historique">
+              <MappingFragment StoreEntitySet="Historique">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+                <ScalarProperty Name="IdUtilisateur" ColumnName="IdUtilisateur" />
+                <ScalarProperty Name="IdRedresseur" ColumnName="IdRedresseur" />
+                <ScalarProperty Name="IdRecette" ColumnName="IdRecette" />
+                <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+                <ScalarProperty Name="OrdreFabrication" ColumnName="OrdreFabrication" />
+                <ScalarProperty Name="EtatFin" ColumnName="EtatFin" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistoriqueData">
+            <EntityTypeMapping TypeName="DataService.HistoriqueData">
+              <MappingFragment StoreEntitySet="HistoriqueData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdHistorique" ColumnName="IdHistorique" />
+                <ScalarProperty Name="ConsigneV" ColumnName="ConsigneV" />
+                <ScalarProperty Name="ConsineA" ColumnName="ConsineA" />
+                <ScalarProperty Name="LectureV" ColumnName="LectureV" />
+                <ScalarProperty Name="LectureA" ColumnName="LectureA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Options">
+            <EntityTypeMapping TypeName="DataService.Options">
+              <MappingFragment StoreEntitySet="Options">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRedresseur" ColumnName="IdRedresseur" />
+                <ScalarProperty Name="IdSegment" ColumnName="IdSegment" />
+                <ScalarProperty Name="IdRecette" ColumnName="IdRecette" />
+                <ScalarProperty Name="IdProcess" ColumnName="IdProcess" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Process">
+            <EntityTypeMapping TypeName="DataService.Process">
+              <MappingFragment StoreEntitySet="Process">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="UMax" ColumnName="UMax" />
+                <ScalarProperty Name="IMax" ColumnName="IMax" />
+                <ScalarProperty Name="Pulse" ColumnName="Pulse" />
+                <ScalarProperty Name="Inverseur" ColumnName="Inverseur" />
+                <ScalarProperty Name="AH" ColumnName="AH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recette">
+            <EntityTypeMapping TypeName="DataService.Recette">
+              <MappingFragment StoreEntitySet="Recette">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdProcess" ColumnName="IdProcess" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Cyclage" ColumnName="Cyclage" />
+                <ScalarProperty Name="SegCours" ColumnName="SegCours" />
+                <ScalarProperty Name="TempsRestant" ColumnName="TempsRestant" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Redresseur">
+            <EntityTypeMapping TypeName="DataService.Redresseur">
+              <MappingFragment StoreEntitySet="Redresseur">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IpAdresse" ColumnName="IpAdresse" />
+                <ScalarProperty Name="IdProcess" ColumnName="IdProcess" />
+                <ScalarProperty Name="OnOff" ColumnName="OnOff" />
+                <ScalarProperty Name="MiseSousTension" ColumnName="MiseSousTension" />
+                <ScalarProperty Name="Etat" ColumnName="Etat" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CalibreV" ColumnName="CalibreV" />
+                <ScalarProperty Name="UMax" ColumnName="UMax" />
+                <ScalarProperty Name="CalibreA" ColumnName="CalibreA" />
+                <ScalarProperty Name="IMax" ColumnName="IMax" />
+                <ScalarProperty Name="ConsigneV" ColumnName="ConsigneV" />
+                <ScalarProperty Name="ConsigneA" ColumnName="ConsigneA" />
+                <ScalarProperty Name="LectureV" ColumnName="LectureV" />
+                <ScalarProperty Name="LectureA" ColumnName="LectureA" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="AH" ColumnName="AH" />
+                <ScalarProperty Name="CompteurAH" ColumnName="CompteurAH" />
+                <ScalarProperty Name="CalibreAH" ColumnName="CalibreAH" />
+                <ScalarProperty Name="Inverseur" ColumnName="Inverseur" />
+                <ScalarProperty Name="Prevent" ColumnName="Prevent" />
+                <ScalarProperty Name="Pulse" ColumnName="Pulse" />
+                <ScalarProperty Name="TempsOn" ColumnName="TempsOn" />
+                <ScalarProperty Name="TempsOff" ColumnName="TempsOff" />
+                <ScalarProperty Name="Temporisation" ColumnName="Temporisation" />
+                <ScalarProperty Name="DureeTempo" ColumnName="DureeTempo" />
+                <ScalarProperty Name="DureeRestante" ColumnName="DureeRestante" />
+                <ScalarProperty Name="Rampe" ColumnName="Rampe" />
+                <ScalarProperty Name="DureeRampe" ColumnName="DureeRampe" />
+                <ScalarProperty Name="FichierIncident" ColumnName="FichierIncident" />
+                <ScalarProperty Name="Defaut" ColumnName="Defaut" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Registre">
+            <EntityTypeMapping TypeName="DataService.Registre">
+              <MappingFragment StoreEntitySet="Registre">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRedresseur" ColumnName="IdRedresseur" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="TypeModbus" ColumnName="TypeModbus" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="AdresseDebut" ColumnName="AdresseDebut" />
+                <ScalarProperty Name="AdresseFin" ColumnName="AdresseFin" />
+                <ScalarProperty Name="NumBit" ColumnName="NumBit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Segment">
+            <EntityTypeMapping TypeName="DataService.Segment">
+              <MappingFragment StoreEntitySet="Segment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRecette" ColumnName="IdRecette" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Etat" ColumnName="Etat" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Duree" ColumnName="Duree" />
+                <ScalarProperty Name="ConsigneDepartV" ColumnName="ConsigneDepartV" />
+                <ScalarProperty Name="ConsigneDepartA" ColumnName="ConsigneDepartA" />
+                <ScalarProperty Name="ConsigneArriveeV" ColumnName="ConsigneArriveeV" />
+                <ScalarProperty Name="ConsigneArriveeA" ColumnName="ConsigneArriveeA" />
+                <ScalarProperty Name="TempsRestant" ColumnName="TempsRestant" />
+                <ScalarProperty Name="Pulse" ColumnName="Pulse" />
+                <ScalarProperty Name="Temporisation" ColumnName="Temporisation" />
+                <ScalarProperty Name="TempsOn" ColumnName="TempsOn" />
+                <ScalarProperty Name="TempsOff" ColumnName="TempsOff" />
+                <ScalarProperty Name="AH" ColumnName="AH" />
+                <ScalarProperty Name="CompteurAH" ColumnName="CompteurAH" />
+                <ScalarProperty Name="CalibreAH" ColumnName="CalibreAH" />
+                <ScalarProperty Name="Rampe" ColumnName="Rampe" />
+                <ScalarProperty Name="DureeRampe" ColumnName="DureeRampe" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Utilisateur">
+            <EntityTypeMapping TypeName="DataService.Utilisateur">
+              <MappingFragment StoreEntitySet="Utilisateur">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Mdp" ColumnName="Mdp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

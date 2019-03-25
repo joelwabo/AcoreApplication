@@ -36,9 +36,9 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    bdd.Process.Add(new DataBase.Process()
+                    bdd.Process.Add(new DataService.Process()
                     {
                         Nom = "new_Process"
                     });
@@ -57,10 +57,10 @@ namespace AcoreApplication.Model
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Process> pro = bdd.Process.ToList();
-                    DataBase.Process processToUpdate = bdd.Process.FirstOrDefault(processFound => processFound.Id == process.Id);
+                    List<DataService.Process> pro = bdd.Process.ToList();
+                    DataService.Process processToUpdate = bdd.Process.FirstOrDefault(processFound => processFound.Id == process.Id);
                     if (processToUpdate != null)
                     {
                         processToUpdate.Nom = process.Nom;
