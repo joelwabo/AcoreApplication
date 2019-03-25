@@ -29,6 +29,7 @@ namespace AcoreApplication.ViewModel
         public ICommand OnOffCommand { get; set; }
         public ICommand StartServiceCommand { get; set; }
         public ICommand SelectedProcessChangedCommand { get; set; }
+        public ICommand SelectedHistoriqueChangedCommand { get; set; }
         public ICommand RegistreLoadingRowCommand { get; set; }
         public ICommand SegmentLoadingRowCommand { get; set; }
         public ICommand SegmentCellEditCommand { get; set; }
@@ -120,6 +121,7 @@ namespace AcoreApplication.ViewModel
             DataLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(DataLoadingRow);
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
             SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedRecetteChanged);
+            SelectedHistoriqueChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedHistoriqueChanged);
             SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
             RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
             SegmentCellEditCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(CellEditCommand);
@@ -137,7 +139,7 @@ namespace AcoreApplication.ViewModel
         
         private void DataLoadingRow(DataGridRowEventArgs arg)
         {
-            Messenger.Default.Send(HistoriqueSelected.HistoriqueData);
+            Messenger.Default.Send(HistoriqueSelected);
         }
 
         private void AddingNewRedresseur(AddingNewItemEventArgs arg)
@@ -232,6 +234,15 @@ namespace AcoreApplication.ViewModel
                 Redresseur red = (arg.Source as ComboBox).DataContext as Redresseur;
                 red.SelectedRecette = recette;
                 red.SelectedRecette.SegCours = 0;
+            }
+        }
+
+        private void SelectedHistoriqueChanged(SelectionChangedEventArgs arg)
+        {
+            if (arg.AddedItems.Count > 0)
+            {
+                DataService.Historique historique = arg.AddedItems[0] as DataService.Historique;
+                Messenger.Default.Send(historique);
             }
         }
 

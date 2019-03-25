@@ -36,7 +36,7 @@ namespace AcoreApplication.Views
 
             Messenger.Default.Register<Process>(this, AfficherListRecette);
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
-            Messenger.Default.Register<ICollection<DataService.HistoriqueData>>(this, CreateHistoriqueChart);
+            Messenger.Default.Register<DataService.Historique>(this, CreateHistoriqueChart);
             Messenger.Default.Register<ObservableCollection<Registre>>(this, AfficherListRegistre);
         }
         
@@ -89,7 +89,7 @@ namespace AcoreApplication.Views
             this.SegmentChart.Series = seriesCollection;
         }
 
-        private void CreateHistoriqueChart(ICollection<DataService.HistoriqueData> datas)
+        private void CreateHistoriqueChart(DataService.Historique historique)
         {
             SeriesCollection seriesCollection = new SeriesCollection
             {
@@ -106,10 +106,24 @@ namespace AcoreApplication.Views
                     Values = new ChartValues<ObservablePoint>(),
                     PointGeometry = DefaultGeometries.Square,
                     PointGeometrySize = 15
+                },
+                new LineSeries
+                {
+                    Title = "U",
+                    Values = new ChartValues<ObservablePoint>(),
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
+                },
+                new LineSeries
+                {
+                    Title = "I",
+                    Values = new ChartValues<ObservablePoint>(),
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
                 }
             };
             int i = 0;
-            foreach (DataService.HistoriqueData data in datas)
+            foreach (DataService.HistoriqueData data in historique.HistoriqueData)
             {
                 seriesCollection[0].Values.Add(new ObservablePoint(i, (double)data.ConsigneV));
                 seriesCollection[1].Values.Add(new ObservablePoint(i, (double)data.ConsineA));

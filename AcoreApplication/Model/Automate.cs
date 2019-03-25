@@ -102,7 +102,7 @@ namespace AcoreApplication.Model
             {
                 try
                 {
-                    ClientTcp.Connect(IpAdresse, Cst_PortModbus);
+                    ClientTcp.ConnectAsync(IpAdresse, Cst_PortModbus).Wait(100);
                     var factory = new ModbusFactory();
                     ModBusMaster = factory.CreateMaster(ClientTcp);
                     Mode = MODES.Connected;

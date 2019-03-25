@@ -130,7 +130,12 @@
             <TabItem Header="Historiques">
                 <Grid Margin="0,0,0,20.8">
                     <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" SelectedItem="{Binding HistoriqueSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="165.8" VerticalAlignment="Top" Width="1001" Margin="10,58,0,0">
-                        <DataGrid.Columns>
+                        <Interactivity:Interaction.Triggers>
+                            <Interactivity:EventTrigger EventName="SelectionChanged" >
+                                <Command:EventToCommand Command="{Binding SelectedHistoriqueChangedCommand}" PassEventArgsToCommand="True"/>
+                            </Interactivity:EventTrigger>
+                        </Interactivity:Interaction.Triggers>
+                        <DataGrid.Columns>                            
                             <DataGridTextColumn Header="Debut" Binding="{Binding DateDebut}"/>
                             <DataGridTextColumn Header="Fin" Binding="{Binding DateFin}"/>
                             <DataGridTextColumn Header="OF" Binding="{Binding OrdreFabrication}"/>
