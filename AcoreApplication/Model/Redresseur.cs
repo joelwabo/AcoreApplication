@@ -17,8 +17,9 @@ using System.Windows.Input;
 using static AcoreApplication.Model.Constantes;
 using static AcoreApplication.Model.Option;
 using static AcoreApplication.Model.Registre;
-using static AcoreApplication.Model.Historique;
 using GalaSoft.MvvmLight.Messaging;
+using AcoreApplication.DataService;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace AcoreApplication.Model
 {
@@ -65,6 +66,28 @@ namespace AcoreApplication.Model
                         {
                             SelectedRecette.TempsDebut = DateTime.Now;
                         }
+                    }
+                    Historique = new Historique();
+                    Historique.DateDebut = DateTime.Now;
+                    Historique.IdUtilisateur = 1;
+                    Historique.IdRedresseur = Id;
+                    if ((Etat == MODES.LocalRecette) || (Etat == MODES.RemoteRecette))
+                    {
+                        Historique.IdRecette = SelectedRecette.Id;
+                        //Historique.Recette = SelectedRecette;
+                    }
+                    Historique.OrdreFabrication = OrdreFabrication;
+                    Historique.EtatFin = ETATFIN.Finish.ToString();
+                    Historique.Type = Etat.ToString();
+
+                }
+                else
+                {
+                    if(Historique!=null)
+                    {
+                        Historique.DateFin = DateTime.Now;
+                        SimpleIoc.Default.GetInstance<IHistoriqueService>().InsertHistorique(Historique);
+                        Historique = null;
                     }
                 }
             }
@@ -278,12 +301,13 @@ namespace AcoreApplication.Model
             get { return registres; }
             set { NotifyPropertyChanged(ref registres, value); }
         }
-        private ObservableCollection<Historique> historiques;
-        public ObservableCollection<Historique> Historiques
+        private Historique historiques = null;
+        public Historique Historique
         {
             get { return historiques; }
             set { NotifyPropertyChanged(ref historiques, value); }
         }
+
         private ObservableCollection<Recette> listRecette;
         public ObservableCollection<Recette> ListRecette
         {
@@ -418,6 +442,7 @@ namespace AcoreApplication.Model
             {
                 if (OnOff)
                 {
+                    HistoriqueData tempData = new HistoriqueData();
                     switch (Etat)
                     {
                         case MODES.LocalManuel:
@@ -435,6 +460,13 @@ namespace AcoreApplication.Model
                         case MODES.Supervision:
                             break;
                     }
+                    tempData.IdHistorique = Historique.Id;
+                    tempData.LectureA = LectureA;
+                    tempData.LectureV = LectureV;
+                    tempData.ConsigneV = ConsigneV;
+                    tempData.ConsineA = ConsigneA;
+                    Historique.HistoriqueData.Add(tempData);
+
                 }
                 Thread.Sleep(Cst_SleepTime/5);
             }

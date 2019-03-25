@@ -39,6 +39,14 @@ namespace AcoreApplication.ViewModel
         public ICommand AddingNewRecetteCommand { get; set; }
         public ICommand AddingNewRedresseurCommand { get; set; }
         public ICommand SelectedRecetteChangedCommand { get; set; }
+        public ICommand DataLoadingRowCommand { get; set; }
+
+        private DataService.Historique historiqueSelected;
+        public DataService.Historique HistoriqueSelected
+        {
+            get { return historiqueSelected; }
+            set { NotifyPropertyChanged(ref historiqueSelected, value); }
+        }
         private Redresseur redresseurSelected = null;
         public Redresseur RedresseurSelected
         {
@@ -73,8 +81,8 @@ namespace AcoreApplication.ViewModel
             set { NotifyPropertyChanged(ref listProcess, value); }
         }
 
-        private ObservableCollection<Historique> listHistorique;
-        public ObservableCollection<Historique> ListHistorique
+        private ObservableCollection<DataService.Historique> listHistorique;
+        public ObservableCollection<DataService.Historique> ListHistorique
         {
             get { return listHistorique; }
             set { NotifyPropertyChanged(ref listHistorique, value); }
@@ -107,13 +115,9 @@ namespace AcoreApplication.ViewModel
             //ListHistorique = new ObservableCollection<Historique>();
             foreach (Automate automate in ListAutomate)
                 foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
-                {
                     ListRedresseur.Add(redresseur);
-                    //foreach (Historique historique in redresseur.Historiques)
-                        //ListHistorique.Add(historique);
-                }
-            
 
+            DataLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(DataLoadingRow);
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
             SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedRecetteChanged);
             SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
@@ -127,6 +131,13 @@ namespace AcoreApplication.ViewModel
             ValideButton = new RelayCommand<Object>(valideButton);
             RecetteSelected = ListProcess[0].Recettes[0];
             RedresseurSelected = ListRedresseur[0];
+            HistoriqueSelected = ListHistorique[0];
+        }
+
+        
+        private void DataLoadingRow(DataGridRowEventArgs arg)
+        {
+            Messenger.Default.Send(HistoriqueSelected.HistoriqueData);
         }
 
         private void AddingNewRedresseur(AddingNewItemEventArgs arg)
@@ -173,6 +184,7 @@ namespace AcoreApplication.ViewModel
                     }
             }
             ListProcess = processService.GetAllData();
+            ListHistorique = historiqueService.GetAllData();
         }
 
         private void EditingProcess(DataGridCellEditEndingEventArgs arg)

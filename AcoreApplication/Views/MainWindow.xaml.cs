@@ -35,8 +35,8 @@ namespace AcoreApplication.Views
             this.ProcessComboBox.SelectedIndex = 0;
 
             Messenger.Default.Register<Process>(this, AfficherListRecette);
-            Messenger.Default.Register<Redresseur>(this, GetListHistorique);
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
+            Messenger.Default.Register<ICollection<DataService.HistoriqueData>>(this, CreateHistoriqueChart);
             Messenger.Default.Register<ObservableCollection<Registre>>(this, AfficherListRegistre);
         }
         
@@ -51,15 +51,11 @@ namespace AcoreApplication.Views
             this.ListRecetteDataGrid.ItemsSource = process.Recettes;
 
         }
+
         private void AfficherListRegistre(ObservableCollection<Registre> registre)
         {
             this.ListRecetteDataGrid.ItemsSource = registre;
 
-        }
-
-        private void GetListHistorique(Redresseur redresseur)
-        {
-            this.HistoriqueDataGrid.ItemsSource = redresseur.Historiques;
         }
 
         private void CreateSegmentChart(ObservableCollection<Segment> segments)
@@ -92,5 +88,35 @@ namespace AcoreApplication.Views
             }
             this.SegmentChart.Series = seriesCollection;
         }
+
+        private void CreateHistoriqueChart(ICollection<DataService.HistoriqueData> datas)
+        {
+            SeriesCollection seriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "V",
+                    Values = new ChartValues<ObservablePoint>(),
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
+                },
+                new LineSeries
+                {
+                    Title = "A",
+                    Values = new ChartValues<ObservablePoint>(),
+                    PointGeometry = DefaultGeometries.Square,
+                    PointGeometrySize = 15
+                }
+            };
+            int i = 0;
+            foreach (DataService.HistoriqueData data in datas)
+            {
+                seriesCollection[0].Values.Add(new ObservablePoint(i, (double)data.ConsigneV));
+                seriesCollection[1].Values.Add(new ObservablePoint(i, (double)data.ConsineA));
+                i++;
+            }
+            this.HistoriqueChart.Series = seriesCollection;
+        }
+
     }
 }

@@ -24,7 +24,7 @@ namespace AcoreApplication.DataService
         public System.DateTime DateDebut { get; set; }
         public int IdUtilisateur { get; set; }
         public int IdRedresseur { get; set; }
-        public int IdRecette { get; set; }
+        public Nullable<int> IdRecette { get; set; }
         public Nullable<System.DateTime> DateFin { get; set; }
         public string OrdreFabrication { get; set; }
         public string EtatFin { get; set; }

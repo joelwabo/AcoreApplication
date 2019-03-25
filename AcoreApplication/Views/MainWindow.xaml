@@ -128,18 +128,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Historiques">
-                <TabItem.Background>
-                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                        <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                        <GradientStop Color="#FFE4DBDB" Offset="1"/>
-                    </LinearGradientBrush>
-                </TabItem.Background>
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*"/>
-                        <ColumnDefinition Width="507*"/>
-                    </Grid.ColumnDefinitions>
-                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="161" VerticalAlignment="Top" Width="1011" Grid.ColumnSpan="2" Margin="0,58,0,0">
+                <Grid Margin="0,0,0,20.8">
+                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" SelectedItem="{Binding HistoriqueSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="165.8" VerticalAlignment="Top" Width="1001" Margin="10,58,0,0">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Debut" Binding="{Binding DateDebut}"/>
                             <DataGridTextColumn Header="Fin" Binding="{Binding DateFin}"/>
@@ -150,41 +140,36 @@
                             <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DataGrid  Name="ListSegmentHistoriqueDataGrid"  ItemsSource="{Binding ListProcess[0].Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="2,238,0,278" Width="1004" Grid.Column="1">
-
+                    <DataGrid ItemsSource="{Binding HistoriqueSelected.Recette.Segment, Mode=TwoWay }" AutoGenerateColumns="False" Margin="10,248,10,249.2">
+                        <Interactivity:Interaction.Triggers>
+                            <Interactivity:EventTrigger EventName="LoadingRow" >
+                                <Command:EventToCommand Command="{Binding DataLoadingRowCommand}" PassEventArgsToCommand="True"/>
+                            </Interactivity:EventTrigger>
+                        </Interactivity:Interaction.Triggers>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
-                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
-                            <DataGridTextColumn Header="Nombre segment" Binding="{Binding Segments.Count}"/>
+                            <DataGridTextColumn Header="Segment N°" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Consigne Depart V" Binding="{Binding ConsigneDepartV, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Consigne Depart A" Binding="{Binding ConsigneDepartA, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Consigne Arrivée V" Binding="{Binding ConsigneArriveeV, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Consigne Arrivée A" Binding="{Binding ConsigneArriveeA, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Duree" Binding="{Binding Duree, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=OneWay}"/>
+                            <DataGridCheckBoxColumn Header="Pulsee" Binding="{Binding Pulse, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Temps On" Binding="{Binding TempsOn, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Temps Off" Binding="{Binding TempsOff, Mode=OneWay}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TabControl HorizontalAlignment="Left" Height="229" Margin="0,474,0,0" VerticalAlignment="Top" Width="1011" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
+                    <TabControl HorizontalAlignment="Left" Height="229" Margin="10,460,0,0" VerticalAlignment="Top" Width="1001" RenderTransformOrigin="0.5,0.5">
                         <TabItem Header="Graphique1" Margin="0,206.621,-4,-208.621">
-                            <Grid Background="#FFE5E5E5" Margin="0,-20,0,0">
-                                <lvc:CartesianChart LegendLocation="Right"/>
-
+                            <Grid>
+                                <lvc:CartesianChart Name="HistoriqueChart" LegendLocation="Right"/>
                             </Grid>
                         </TabItem>
 
                         <TabItem Header="Donnees" Margin="1,206.621,-5,-208.621">
-                            <Grid Background="#FFE5E5E5" Margin="0,-15,0,0"/>
+                            <Grid></Grid>
                         </TabItem>
                     </TabControl>
-                    <DataGrid ItemsSource="{Binding RecetteSelected.Segments, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="138" Margin="0,318,0,0" VerticalAlignment="Top" Width="748" Grid.Column="1">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Segment N°" Binding="{Binding Id}"/>
-                            <DataGridTextColumn Header="Consigne Depart V" Binding="{Binding ConsigneDepartV, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Consigne Depart A" Binding="{Binding ConsigneDepartA, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Consigne Arrivée V" Binding="{Binding ConsigneArriveeV, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Consigne Arrivée A" Binding="{Binding ConsigneArriveeA, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Duree" Binding="{Binding Duree, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=TwoWay}"/>
-                            <DataGridCheckBoxColumn Header="Pulsee" Binding="{Binding Pulse, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Temps On" Binding="{Binding TempsOn, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Temps Off" Binding="{Binding TempsOff, Mode=TwoWay}"/>
-                        </DataGrid.Columns>
-
-                    </DataGrid>
                     <DatePicker HorizontalAlignment="Left" Margin="1,19,0,0" VerticalAlignment="Top" Grid.Column="1" Height="21" Width="84"/>
                     <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="90,19,0,0" TextWrapping="Wrap" Text="à" VerticalAlignment="Top" Height="21" Width="11" FontSize="16" RenderTransformOrigin="-2.545,0.81"/>
                     <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="106,19,0,0" VerticalAlignment="Top" Width="84" Height="21"/>

@@ -91,6 +91,7 @@ namespace AcoreApplication.Model
 
         public enum ETATFIN
         {
+            Finish,
             Arret_par_utilisateur,
             Stopped_by_user,
             Arret_sur_défaut,

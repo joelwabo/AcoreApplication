@@ -210,6 +210,7 @@
     <Compile Include="Model\AutomateService.cs" />
     <Compile Include="Model\Constantes.cs" />
     <Compile Include="Model\Historique.cs" />
+    <Compile Include="Model\HistoriqueData.cs" />
     <Compile Include="Model\HistoriqueService.cs" />
     <Compile Include="Model\IAutomateService.cs" />
     <Compile Include="Model\IRecetteService.cs" />

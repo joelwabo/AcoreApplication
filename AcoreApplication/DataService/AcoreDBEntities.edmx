@@ -20,7 +20,7 @@
           <Property Name="DateDebut" Type="datetime" Nullable="false" />
           <Property Name="IdUtilisateur" Type="int" Nullable="false" />
           <Property Name="IdRedresseur" Type="int" Nullable="false" />
-          <Property Name="IdRecette" Type="int" Nullable="false" />
+          <Property Name="IdRecette" Type="int" />
           <Property Name="DateFin" Type="datetime" />
           <Property Name="OrdreFabrication" Type="nvarchar" MaxLength="50" />
           <Property Name="EtatFin" Type="nvarchar" MaxLength="50" />
@@ -154,7 +154,7 @@
           <Property Name="Mdp" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="Historique_Recette">
-          <End Role="Recette" Type="Self.Recette" Multiplicity="1" />
+          <End Role="Recette" Type="Self.Recette" Multiplicity="0..1" />
           <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Recette">
@@ -394,7 +394,7 @@
           <Property Name="DateDebut" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IdUtilisateur" Type="Int32" Nullable="false" />
           <Property Name="IdRedresseur" Type="Int32" Nullable="false" />
-          <Property Name="IdRecette" Type="Int32" Nullable="false" />
+          <Property Name="IdRecette" Type="Int32" />
           <Property Name="DateFin" Type="DateTime" Precision="3" />
           <Property Name="OrdreFabrication" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EtatFin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -565,7 +565,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Historique_Recette">
-          <End Role="Recette" Type="Self.Recette" Multiplicity="1" />
+          <End Role="Recette" Type="Self.Recette" Multiplicity="0..1" />
           <End Role="Historique" Type="Self.Historique" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Recette">
