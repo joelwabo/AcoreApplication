@@ -20,12 +20,6 @@ namespace AcoreApplication.ViewModel
     public class MainViewModel : ViewModelBase
     {
         #region ATTRIBUTS 
-        IProcessService processService;
-        IRecetteService recetteService;
-        ISegmentService segmentService;
-        IAutomateService automateService;
-        IRedresseurService redresseurService;
-        IHistoriqueService historiqueService;
         public ICommand OnOffCommand { get; set; }
         public ICommand StartServiceCommand { get; set; }
         public ICommand SelectedProcessChangedCommand { get; set; }
@@ -103,20 +97,10 @@ namespace AcoreApplication.ViewModel
                 
         public MainViewModel(IAutomateService _automateService)
         {
-            automateService = _automateService;
-            processService = SimpleIoc.Default.GetInstance<IProcessService>();
-            recetteService = SimpleIoc.Default.GetInstance<IRecetteService>();
-            segmentService = SimpleIoc.Default.GetInstance<ISegmentService>();
-            redresseurService = SimpleIoc.Default.GetInstance<IRedresseurService>();
-            historiqueService = SimpleIoc.Default.GetInstance<IHistoriqueService>();
             ListAutomate = _automateService.GetAllData();
-            ListProcess = processService.GetAllData();
-            ListHistorique = historiqueService.GetAllData();
-            ListRedresseur = new ObservableCollection<Redresseur>();
-            //ListHistorique = new ObservableCollection<Historique>();
-            foreach (Automate automate in ListAutomate)
-                foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
-                    ListRedresseur.Add(redresseur);
+            ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
+            ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
+            ListRedresseur = SimpleIoc.Default.GetInstance<IRedresseurService>().GetAllData();
 
             DataLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(DataLoadingRow);
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
@@ -145,10 +129,10 @@ namespace AcoreApplication.ViewModel
         private void AddingNewRedresseur(AddingNewItemEventArgs arg)
         {
             foreach (Redresseur redresseur in ListRedresseur)
-                redresseurService.UpdateRedresseur(redresseur);
+                SimpleIoc.Default.GetInstance<IRedresseurService>().UpdateRedresseur(redresseur);
 
-            redresseurService.InsertRedresseur();
-            ListAutomate = automateService.GetAllData();
+            SimpleIoc.Default.GetInstance<IRedresseurService>().InsertRedresseur();
+            ListAutomate = SimpleIoc.Default.GetInstance<IAutomateService>().GetAllData();
         }
 
         private void AddingNewSegment(AddingNewItemEventArgs arg)
@@ -156,37 +140,39 @@ namespace AcoreApplication.ViewModel
             foreach (Process process in ListProcess)
                 foreach (Recette rec in process.Recettes)
                     foreach (Segment seg in rec.Segments)
-                        segmentService.UpdateSegment(seg);
+                        SimpleIoc.Default.GetInstance<ISegmentService>().UpdateSegment(seg);
 
-            segmentService.InsertSegment();
+            SimpleIoc.Default.GetInstance<ISegmentService>().InsertSegment();
         }
 
         private void AddingNewRecette(AddingNewItemEventArgs arg)
         {
             foreach (Process process in ListProcess)
                 foreach (Recette rec in process.Recettes)
-                    recetteService.UpdateRecette(rec);
+                    SimpleIoc.Default.GetInstance<IRecetteService>().UpdateRecette(rec);
 
-            recetteService.InsertRecette();
-            ListProcess = processService.GetAllData();
+            SimpleIoc.Default.GetInstance<IRecetteService>().InsertRecette();
+            ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
         }
 
         private void valideButton(Object obj)
         {
             foreach (Process process in ListProcess)
-            { 
-                processService.UpdateProcess(process);
+            {
+                SimpleIoc.Default.GetInstance<IProcessService>().UpdateProcess(process);
                 if (process.Recettes != null)
                     foreach (Recette rec in process.Recettes)
                     {
-                        recetteService.UpdateRecette(rec);
+                        SimpleIoc.Default.GetInstance<IRecetteService>().UpdateRecette(rec);
                         if (rec.Segments != null)
                             foreach (Segment seg in rec.Segments)
-                                    segmentService.UpdateSegment(seg);
+                                SimpleIoc.Default.GetInstance<ISegmentService>().UpdateSegment(seg);
                     }
             }
-            ListProcess = processService.GetAllData();
-            ListHistorique = historiqueService.GetAllData();
+            ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
+            ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
+            ListAutomate = SimpleIoc.Default.GetInstance<IAutomateService>().GetAllData();
+            ListRedresseur = SimpleIoc.Default.GetInstance<IRedresseurService>().GetAllData();
         }
 
         private void EditingProcess(DataGridCellEditEndingEventArgs arg)
@@ -196,10 +182,10 @@ namespace AcoreApplication.ViewModel
         private void AddingNewProcess(AddingNewItemEventArgs arg)
         {
             foreach (Process process in ListProcess)
-                processService.UpdateProcess(process);
+                SimpleIoc.Default.GetInstance<IProcessService>().UpdateProcess(process);
 
-            processService.InsertProcess();
-            ListProcess = processService.GetAllData();
+            SimpleIoc.Default.GetInstance<IProcessService>().InsertProcess();
+            ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
         }
 
         private void RegistreLoadingRow(DataGridRowEventArgs arg)

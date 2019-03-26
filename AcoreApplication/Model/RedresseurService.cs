@@ -13,29 +13,42 @@ namespace AcoreApplication.Model
     {
         public bool DeleteRedresseur(Redresseur redresseur)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var bdd = new DataService.AcoreDBEntities())
+                {
+                    string sql = "DELETE From Redresseur  WHERE Id = " + redresseur.Id;
+                    bdd.Redresseur.SqlQuery(sql);
+                    bdd.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                return false;
+            }
         }
 
         public ObservableCollection<Redresseur> GetAllData()
         {
             ObservableCollection<Redresseur> result = new ObservableCollection<Redresseur>();
-            try
-            {                
-                using (var bdd = new DataService.AcoreDBEntities())
-                {
-                    List<DataService.Redresseur> redresseur = bdd.Redresseur.ToList();
-                    foreach (DataService.Redresseur red in redresseur)
-                        result.Add(new Redresseur(red));
-                }
-                return result;
-            }
-            catch (Exception e)
+            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
             {
-                Console.WriteLine("Exception: {0}", e);
-                return result;
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT * FROM Redresseur", connection))
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Redresseur redresseur = new Redresseur(reader);
+                        result.Add(redresseur);
+                    }
+                }
             }
-
+            return result;
         }
+
 
         public bool InsertRedresseur()
         {

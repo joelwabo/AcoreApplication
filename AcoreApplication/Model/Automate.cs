@@ -10,6 +10,8 @@ using System.Threading;
 using static AcoreApplication.Model.Redresseur;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using GalaSoft.MvvmLight.Ioc;
+using System.Linq;
 
 namespace AcoreApplication.Model
 {
@@ -39,7 +41,8 @@ namespace AcoreApplication.Model
             Redresseurs = GetAllRedresseurFromAutotameId(IpAdresse);
 
             ClientTcp = new TcpClient();
-            Connection();
+            ModbusPoolingTask = new Thread(ModbusPooling);
+            ModbusPoolingTask.Start();
         }
 
         ~Automate()
@@ -54,89 +57,93 @@ namespace AcoreApplication.Model
 
         private void ModbusPooling(Object stateInfo)
         {
-            while(Mode == MODES.Connected)
+            while (true)
             {
-                // read Etat, Read On/Off, Read Marche/Arret
-                foreach (Redresseur redresseur in Redresseurs)
+                if (Mode == MODES.Connected)
                 {
-                    foreach (Registre registre in redresseur.Registres)
+                    // read Etat, Read On/Off, Read Marche/Arret
+                    foreach (Redresseur redresseur in Redresseurs.ToList())
                     {
-                        switch(registre.Nom)
+                        foreach (Registre registre in redresseur.Registres)
                         {
-                            case REGISTRE.Defaut:
-                                {
-                                    ushort[] Defaut = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    redresseur.Defaut = Convert.ToBoolean(Defaut[Redresseurs.IndexOf(redresseur)]);
-                                }
-                                break;
-                            case REGISTRE.OnOff:
-                                {
-                                    ushort[] OnOff = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    bool onOff = Convert.ToBoolean(OnOff[Redresseurs.IndexOf(redresseur)]);
-                                    redresseur.OnOff = onOff;
-                                }
-                                break;
-                            case REGISTRE.MarcheArret:
-                                {
-                                    ushort[] MarcheArret = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    redresseur.MiseSousTension = Convert.ToBoolean(MarcheArret[Redresseurs.IndexOf(redresseur)]);
-                                }
-                                break;
-                            case REGISTRE.Etat:
-                                {
-                                    ushort[] Etat = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    string etat = Etat[Redresseurs.IndexOf(redresseur)].ToString();
-                                    redresseur.Etat = (MODES)Enum.Parse(typeof(MODES), etat);
-                                }
-                                break;
+                            switch (registre.Nom)
+                            {
+                                case REGISTRE.ExistenceGroupe:
+                                    bool[] ExistenceGroupe = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                    if (!ExistenceGroupe[0])
+                                    {
+                                        Redresseurs.Remove(redresseur);
+                                        SimpleIoc.Default.GetInstance<IRedresseurService>().DeleteRedresseur(redresseur);
+                                    }
+                                    break;
+                                case REGISTRE.Defaut:
+                                    {
+                                        ushort[] Defaut = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        redresseur.Defaut = Convert.ToBoolean(Defaut[0]);
+                                    }
+                                    break;
+                                case REGISTRE.OnOff:
+                                    /*{
+                                        ushort[] OnOff = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        bool onOff = Convert.ToBoolean(OnOff[0]);
+                                        redresseur.OnOff = onOff;
+                                    }*/
+                                    break;
+                                case REGISTRE.MarcheArret:
+                                    {
+                                        ushort[] MarcheArret = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        redresseur.MiseSousTension = Convert.ToBoolean(MarcheArret[0]);
+                                    }
+                                    break;
+                                case REGISTRE.Etat:
+                                    {
+                                        ushort[] Etat = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        string etat = Etat[0].ToString();
+                                        redresseur.Etat = (MODES)Enum.Parse(typeof(MODES), etat);
+                                    }
+                                    break;
+                            }
                         }
                     }
                 }
+                else
+                    Connection();
                 Thread.Sleep(Cst_SleepTime);
             }
         }
                
         public void Connection()
         {
-            if (!ClientTcp.Connected)
+            try
             {
-                try
-                {
-                    ClientTcp.ConnectAsync(IpAdresse, Cst_PortModbus).Wait(100);
-                    var factory = new ModbusFactory();
-                    ModBusMaster = factory.CreateMaster(ClientTcp);
-                    Mode = MODES.Connected;
-
-                    ModbusPoolingTask = new Thread(ModbusPooling);
-                    ModbusPoolingTask.Start();
-                    foreach (Redresseur redresseur in Redresseurs)
-                        redresseur.ModBusMaster = ModBusMaster;
-                }
-                catch (ArgumentNullException e)
-                {
-                    Console.WriteLine("ArgumentNullException: {0}", e);
-                }
-                catch (SocketException e)
-                {
-                    Console.WriteLine("SocketException: {0}", e);
-                }
-                finally
-                {
-                    Mode = MODES.Disconnected;
-                }
+                ClientTcp.Connect(IpAdresse, Cst_PortModbus); 
+                var factory = new ModbusFactory();
+                ModBusMaster = factory.CreateMaster(ClientTcp);                   
+                foreach (Redresseur redresseur in Redresseurs)
+                    redresseur.ModBusMaster = ModBusMaster;
+                Mode = MODES.Connected;
             }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", e);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e);
+            }         
         }
 
         public void Disconnect()
         {
             if (ClientTcp.Connected)
             {
+                Mode = MODES.Disconnected;
                 ModbusPoolingTask.Abort();
                 foreach (Redresseur redresseur in Redresseurs)
                     redresseur.ModBusMaster.Dispose();
                 ModBusMaster.Dispose();
                 ClientTcp.Close();
-                Mode = MODES.Disconnected;
+                //SimpleIoc.Default.GetInstance<IAutomateService>().Update();
             }
         }
         #endregion
