@@ -19,11 +19,12 @@ namespace AcoreApplication.ViewModel
             else
             {
                 SimpleIoc.Default.Register<IAutomateService, AutomateService>();
+                SimpleIoc.Default.Register<IHistoriqueService, HistoriqueService>();
+                SimpleIoc.Default.Register<IOptionsService, OptionsService>();
                 SimpleIoc.Default.Register<IProcessService, ProcessService>();
                 SimpleIoc.Default.Register<IRecetteService, RecetteService>();
-                SimpleIoc.Default.Register<ISegmentService, SegmentService>();
                 SimpleIoc.Default.Register<IRedresseurService, RedresseurService>();
-                SimpleIoc.Default.Register<IHistoriqueService, HistoriqueService>();
+                SimpleIoc.Default.Register<ISegmentService, SegmentService>();
             }
 
             SimpleIoc.Default.Register<MainViewModel>();

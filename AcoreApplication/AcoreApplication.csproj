@@ -213,10 +213,11 @@
     <Compile Include="Model\HistoriqueData.cs" />
     <Compile Include="Model\HistoriqueService.cs" />
     <Compile Include="Model\IAutomateService.cs" />
+    <Compile Include="Model\IOptionsService.cs" />
     <Compile Include="Model\IRecetteService.cs" />
     <Compile Include="Model\IHistoriqueService.cs" />
     <Compile Include="Model\IRedresseurService.cs" />
-    <Compile Include="Model\Option.cs" />
+    <Compile Include="Model\OptionsService.cs" />
     <Compile Include="Model\Process.cs" />
     <Compile Include="Model\Recette.cs" />
     <Compile Include="Model\ProcessService.cs" />

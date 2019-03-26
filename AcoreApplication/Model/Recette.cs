@@ -1,11 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
 using static AcoreApplication.Model.Constantes;
-using static AcoreApplication.Model.Option;
 using static AcoreApplication.Model.Segment;
 
 namespace AcoreApplication.Model
@@ -63,8 +63,8 @@ namespace AcoreApplication.Model
             get { return segments; }
             set { NotifyPropertyChanged(ref segments, value); }
         }
-        private ObservableCollection<Option> options;
-        public ObservableCollection<Option> Options
+        private ObservableCollection<DataService.Options> options;
+        public ObservableCollection<DataService.Options> Options
         {
             get { return options; }
             set { NotifyPropertyChanged(ref options, value); }
@@ -85,7 +85,7 @@ namespace AcoreApplication.Model
             TempsRestant = new TimeSpan(0);
 
             Segments = GetAllSegmentFromRecetteId(Id);
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             foreach (Segment seg in Segments)
                 TempsRestant = TempsRestant + seg.Duree;
         }
@@ -100,7 +100,7 @@ namespace AcoreApplication.Model
             TempsRestant = new TimeSpan(0);
 
             Segments = GetAllSegmentFromRecetteId(Id);
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             foreach (Segment seg in Segments)
                 TempsRestant = TempsRestant + seg.Duree;
         }

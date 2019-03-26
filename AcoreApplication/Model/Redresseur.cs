@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using static AcoreApplication.Model.Constantes;
-using static AcoreApplication.Model.Option;
 using static AcoreApplication.Model.Registre;
 using GalaSoft.MvvmLight.Messaging;
 using AcoreApplication.DataService;
@@ -289,8 +288,8 @@ namespace AcoreApplication.Model
             set { NotifyPropertyChanged(ref valuesB, value); }
         }
         public SeriesCollection SeriesCollection { get; set; }
-        public ObservableCollection<Option> options;
-        public ObservableCollection<Option> Options
+        public ObservableCollection<DataService.Options> options;
+        public ObservableCollection<DataService.Options> Options
         {
             get { return options; }
             set { NotifyPropertyChanged(ref options, value); }
@@ -356,7 +355,7 @@ namespace AcoreApplication.Model
             DureeRampe = DateTime.Parse(red.DureeRampe.ToString());
             Defaut = red.Defaut;
 
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
             RedresseurPoolingTask = new Thread(RedresseurPooling);
@@ -396,7 +395,7 @@ namespace AcoreApplication.Model
             //OrdreFabrication = (string)reader["OrdreFabrication"];
             //EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
 
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = GetAllRegisterFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
 

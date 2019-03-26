@@ -1,11 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
 using static AcoreApplication.Model.Constantes;
-using static AcoreApplication.Model.Option;
 
 namespace AcoreApplication.Model
 {
@@ -133,8 +133,8 @@ namespace AcoreApplication.Model
             set { NotifyPropertyChanged(ref dureeRampe, value); }
         }
 
-        private ObservableCollection<Option> options;
-        public ObservableCollection<Option> Options
+        private ObservableCollection<DataService.Options> options;
+        public ObservableCollection<DataService.Options> Options
         {
             get { return options; }
             set { NotifyPropertyChanged(ref options, value); }
@@ -171,7 +171,7 @@ namespace AcoreApplication.Model
             Rampe = (bool)reader["Rampe"];
             DureeRampe = TimeSpan.Parse(reader["DureeRampe"].ToString());
 
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
         }
         #endregion
 
