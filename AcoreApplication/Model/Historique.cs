@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-using static AcoreApplication.Model.Constantes;
-using System.Collections.ObjectModel;
-using static AcoreApplication.Model.Redresseur;
-using System.Threading;
+﻿using System.Threading;
 
 namespace AcoreApplication.DataService
 {
