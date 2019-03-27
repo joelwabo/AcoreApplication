@@ -38,6 +38,10 @@ namespace AcoreApplication.ViewModel
         public ICommand AddingNewRecetteCommand { get; set; }
         public ICommand AddingNewRedresseurCommand { get; set; }
         public ICommand SelectedRecetteChangedCommand { get; set; }
+        public ICommand ARowEditEnding { get; set; }
+
+        
+
         private Redresseur redresseurSelected = null;
         public Redresseur RedresseurSelected
         {
@@ -60,11 +64,11 @@ namespace AcoreApplication.ViewModel
 
         private ObservableCollection<Redresseur> listRedresseur;
         public ObservableCollection<Redresseur> ListRedresseur
+
         {
             get { return listRedresseur; }
             set { NotifyPropertyChanged(ref listRedresseur, value); }
         }
-
         private ObservableCollection<Process> listProcess;
         public ObservableCollection<Process> ListProcess
         {
@@ -77,6 +81,26 @@ namespace AcoreApplication.ViewModel
         {
             get { return listHistorique; }
             set { NotifyPropertyChanged(ref listHistorique, value); }
+        }
+
+        private Visibility pulseVisibilityParam = Visibility.Visible;
+        public Visibility PulseVisibilityParam
+        {
+            get { return pulseVisibilityParam; }
+            set { NotifyPropertyChanged(ref pulseVisibilityParam, value); }
+        }
+        private Visibility tempoVisibilityParam = Visibility.Visible;
+        public Visibility TempoVisibilityParam
+        {
+            get { return tempoVisibilityParam; }
+            set { NotifyPropertyChanged(ref tempoVisibilityParam, value); }
+        }
+
+        private string imageSource = "../Resources/log_in1.png";
+        public string ImageSource
+        {
+            get { return imageSource; }
+            set { NotifyPropertyChanged(ref imageSource, value); }
         }
 
         #endregion
@@ -102,6 +126,14 @@ namespace AcoreApplication.ViewModel
             ListProcess = processService.GetAllData();
             ListRedresseur = new ObservableCollection<Redresseur>();
             ListHistorique = new ObservableCollection<Historique>();
+
+            pulseVisibilityParam = new Visibility();
+            PulseVisibilityParam = Visibility.Visible;
+
+            tempoVisibilityParam = new Visibility();
+            TempoVisibilityParam = Visibility.Visible;
+            imageSource = "../Resources/log_in1.png";
+
             foreach (Automate automate in ListAutomate)
                 foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
                 {
@@ -121,9 +153,56 @@ namespace AcoreApplication.ViewModel
             AddingNewSegmentCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewSegment);
             EditingProcessCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(EditingProcess);
             AddingNewRedresseurCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewRedresseur);
+            ARowEditEnding = new RelayCommand<SelectedCellsChangedEventArgs>(ARowEditEndingMethod);
             ValideButton = new RelayCommand<Object>(valideButton);
             RecetteSelected = ListProcess[0].Recettes[0];
             RedresseurSelected = ListRedresseur[0];
+            
+        }
+
+
+        private void ARowEditEndingMethod(SelectedCellsChangedEventArgs arg)
+        {
+            if (checkPulseVisibility())
+            {
+                PulseVisibilityParam = Visibility.Visible;
+            }
+            else
+            {
+                PulseVisibilityParam = Visibility.Collapsed;
+            }
+
+            if (checkTempoVisibility())
+            {
+                TempoVisibilityParam = Visibility.Visible;
+            }
+            else
+            {
+                TempoVisibilityParam = Visibility.Collapsed;
+            }
+
+        }
+
+        private bool checkPulseVisibility(){
+            foreach (Redresseur redresseur in ListRedresseur)
+            {
+                if (redresseur.Pulse == true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool checkTempoVisibility()
+        {
+            foreach (Redresseur redresseur in ListRedresseur)
+            {
+                if (redresseur.Temporisation == true)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void AddingNewRedresseur(AddingNewItemEventArgs arg)

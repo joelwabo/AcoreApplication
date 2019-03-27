@@ -279,6 +279,15 @@ namespace AcoreApplication.Model
         public Recette SelectedRecette = null;
         public IModbusMaster ModBusMaster { get; set; }
         private Thread RedresseurPoolingTask { get; set; }
+
+
+        //PPM TRY
+        private string etatImageSource;
+        public string EtatImageSource
+        {
+            get { return etatImageSource; }
+            set { NotifyPropertyChanged(ref etatImageSource, value); }
+        }
         #endregion 
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
@@ -359,6 +368,27 @@ namespace AcoreApplication.Model
             Historiques = GetHistoriquesFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
 
+            switch (Etat)
+            {
+                case MODES.LocalManuel:
+                    EtatImageSource = "../Resources/log_in1.png";
+                    break;
+                case MODES.LocalRecette:
+                    EtatImageSource = "../Resources/croix.png";
+                    break;
+                case MODES.RemoteManuel:
+                    EtatImageSource = "../Resources/fleche.png";
+                    break;
+                case MODES.RemoteRecette:
+                    EtatImageSource = "../Resources/power.png";
+                    break;
+                case MODES.Supervision:
+                    EtatImageSource = "../Resources/power2.png";
+                    break;
+            }
+            
+
+
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
         }
@@ -401,6 +431,24 @@ namespace AcoreApplication.Model
             {
                 if (OnOff)
                 {
+                    switch (Etat)
+                    {
+                        case MODES.LocalManuel:
+                            EtatImageSource = "../Resources/log_in1.png";
+                            break;
+                        case MODES.LocalRecette:
+                            EtatImageSource = "../Resources/croix.png";
+                            break;
+                        case MODES.RemoteManuel:
+                            EtatImageSource = "../Resources/fleche.png";
+                            break;
+                        case MODES.RemoteRecette:
+                            EtatImageSource = "../Resources/power.png";
+                            break;
+                        case MODES.Supervision:
+                            EtatImageSource = "../Resources/power2.png";
+                            break;
+                    }
                     switch (Etat)
                     {
                         case MODES.LocalManuel:
