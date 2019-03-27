@@ -69,7 +69,7 @@ namespace AcoreApplication.Model
                             switch (registre.Nom)
                             {
                                 case REGISTRE.ExistenceGroupe:
-                                    bool[] ExistenceGroupe = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                    bool[] ExistenceGroupe = redresseur.ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
                                     if (!ExistenceGroupe[0])
                                     {
                                         Redresseurs.Remove(redresseur);
@@ -78,7 +78,7 @@ namespace AcoreApplication.Model
                                     break;
                                 case REGISTRE.Defaut:
                                     {
-                                        ushort[] Defaut = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        ushort[] Defaut = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
                                         redresseur.Defaut = Convert.ToBoolean(Defaut[0]);
                                     }
                                     break;
@@ -91,13 +91,13 @@ namespace AcoreApplication.Model
                                     break;
                                 case REGISTRE.MarcheArret:
                                     {
-                                        ushort[] MarcheArret = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        ushort[] MarcheArret = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
                                         redresseur.MiseSousTension = Convert.ToBoolean(MarcheArret[0]);
                                     }
                                     break;
                                 case REGISTRE.Etat:
                                     {
-                                        ushort[] Etat = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        ushort[] Etat = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
                                         string etat = Etat[0].ToString();
                                         redresseur.Etat = (MODES)Enum.Parse(typeof(MODES), etat);
                                     }
@@ -125,10 +125,12 @@ namespace AcoreApplication.Model
             }
             catch (ArgumentNullException e)
             {
+                Mode = MODES.Disconnected;
                 Console.WriteLine("ArgumentNullException: {0}", e);
             }
             catch (SocketException e)
             {
+                Mode = MODES.Disconnected;
                 Console.WriteLine("SocketException: {0}", e);
             }         
         }

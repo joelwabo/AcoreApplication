@@ -129,7 +129,7 @@
             </TabItem>
             <TabItem Header="Historiques">
                 <Grid Margin="0,0,0,20.8">
-                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" SelectedItem="{Binding HistoriqueSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="165.8" VerticalAlignment="Top" Width="1001" Margin="10,58,0,0">
+                    <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="165.8" VerticalAlignment="Top" Width="1001" Margin="10,58,0,0">
                         <Interactivity:Interaction.Triggers>
                             <Interactivity:EventTrigger EventName="SelectionChanged" >
                                 <Command:EventToCommand Command="{Binding SelectedHistoriqueChangedCommand}" PassEventArgsToCommand="True"/>
@@ -145,12 +145,7 @@
                             <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <DataGrid ItemsSource="{Binding HistoriqueSelected.Recette.Segment, Mode=TwoWay }" AutoGenerateColumns="False" Margin="10,248,10,249.2">
-                        <Interactivity:Interaction.Triggers>
-                            <Interactivity:EventTrigger EventName="LoadingRow" >
-                                <Command:EventToCommand Command="{Binding DataLoadingRowCommand}" PassEventArgsToCommand="True"/>
-                            </Interactivity:EventTrigger>
-                        </Interactivity:Interaction.Triggers>
+                    <DataGrid ItemsSource="{Binding HistoriqueSelectedSegment, Mode=TwoWay }" AutoGenerateColumns="False" Margin="10,248,10,249.2">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Segment N°" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Consigne Depart V" Binding="{Binding ConsigneDepartV, Mode=OneWay}"/>

@@ -97,38 +97,49 @@ namespace AcoreApplication.Views
                 {
                     Title = "V",
                     Values = new ChartValues<ObservablePoint>(),
-                    PointGeometry = DefaultGeometries.Square,
-                    PointGeometrySize = 15
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 1
                 },
                 new LineSeries
                 {
                     Title = "A",
                     Values = new ChartValues<ObservablePoint>(),
-                    PointGeometry = DefaultGeometries.Square,
-                    PointGeometrySize = 15
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 1
                 },
                 new LineSeries
                 {
                     Title = "U",
                     Values = new ChartValues<ObservablePoint>(),
-                    PointGeometry = DefaultGeometries.Square,
-                    PointGeometrySize = 15
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 1
                 },
                 new LineSeries
                 {
                     Title = "I",
                     Values = new ChartValues<ObservablePoint>(),
-                    PointGeometry = DefaultGeometries.Square,
-                    PointGeometrySize = 15
+                    PointGeometry = DefaultGeometries.Circle,
+                    PointGeometrySize = 1
                 }
             };
             int i = 0;
-            foreach (DataService.HistoriqueData data in historique.HistoriqueData)
-            {
-                seriesCollection[0].Values.Add(new ObservablePoint(i, (double)data.ConsigneV));
-                seriesCollection[1].Values.Add(new ObservablePoint(i, (double)data.ConsineA));
-                i++;
-            }
+            if((historique.HistoriqueData != null)&& (historique.HistoriqueData.Count>0))
+                foreach (DataService.HistoriqueData data in historique.HistoriqueData)
+                {
+                    seriesCollection[0].Values.Add(new ObservablePoint(i, (double)data.ConsigneV));
+                    seriesCollection[1].Values.Add(new ObservablePoint(i, (double)data.ConsineA));
+                    i++;
+                }
+            i = 0;
+            if ((historique.Recette2.Segments != null)&& (historique.Recette2.Segments.Count>0))
+                foreach (Segment segment in historique.Recette2.Segments)
+                {
+                    seriesCollection[2].Values.Add(new ObservablePoint(i, segment.ConsigneDepartV));
+                    seriesCollection[2].Values.Add(new ObservablePoint(i + 1, segment.ConsigneArriveeV));
+                    seriesCollection[3].Values.Add(new ObservablePoint(i, segment.ConsigneDepartA));
+                    seriesCollection[3].Values.Add(new ObservablePoint(i + 1, segment.ConsigneArriveeA));
+                    i++;
+                }
             this.HistoriqueChart.Series = seriesCollection;
         }
 

@@ -17,7 +17,11 @@ namespace AcoreApplication.Model
                 {
                     List<Historique> historiques = bdd.Historique.ToList();
                     foreach (Historique his in historiques)
+                    {
+                        if(his.IdRecette!=null)
+                            his.Recette2 = RecetteService.GetRecetteFromId((int)his.IdRecette);
                         result.Add(his);
+                    }
                 }
             }
             catch (Exception e)

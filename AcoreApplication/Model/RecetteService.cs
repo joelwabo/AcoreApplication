@@ -53,6 +53,7 @@ namespace AcoreApplication.Model
                         recetteToUpdate.Nom = recette.Nom;
                         recetteToUpdate.Cyclage = recette.Cyclage;
                         recetteToUpdate.SegCours = recette.SegCours;
+
                         bdd.SaveChanges();
                     }
                 }
@@ -74,6 +75,25 @@ namespace AcoreApplication.Model
                     List<DataService.Recette> recettes = bdd.Recette.Where(rec => rec.IdProcess == idProcess).ToList();
                     foreach (DataService.Recette rec in recettes)
                         result.Add(new Recette(rec));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                return result;
+            }
+            return result;
+        }
+
+        public static Recette GetRecetteFromId(int id)
+        {
+            Recette result = new Recette();
+            try
+            {
+                using (var bdd = new DataService.AcoreDBEntities())
+                {
+                    DataService.Recette recette = bdd.Recette.Where(rec => rec.Id == id).First();
+                    result = new Recette(recette);
                 }
             }
             catch (Exception e)

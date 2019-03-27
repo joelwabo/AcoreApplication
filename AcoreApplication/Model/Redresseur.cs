@@ -465,7 +465,6 @@ namespace AcoreApplication.Model
                     tempData.ConsigneV = ConsigneV;
                     tempData.ConsineA = ConsigneA;
                     Historique.HistoriqueData.Add(tempData);
-
                 }
                 Thread.Sleep(Cst_SleepTime/5);
             }

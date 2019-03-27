@@ -14,6 +14,7 @@ namespace AcoreApplication.DataService
     public partial class Historique
     {
         #region ATTRIBUTS
+        public Model.Recette Recette2 = new Model.Recette(); //A supprimer
         bool Recording = false;
         private Thread RedresseurPoolingTask { get; set; }
         #endregion

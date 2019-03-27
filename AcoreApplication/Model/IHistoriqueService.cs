@@ -5,7 +5,6 @@ namespace AcoreApplication.Model
 {
     public interface IHistoriqueService
     {
-
         ObservableCollection<Historique> GetAllData();
         bool InsertHistorique(Historique historique);
     }
