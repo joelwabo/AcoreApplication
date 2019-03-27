@@ -33,11 +33,11 @@ namespace AcoreApplication.Views
         {
             InitializeComponent();
             this.ProcessComboBox.SelectedIndex = 0;
-
-            Messenger.Default.Register<Process>(this, AfficherListRecette);
+            
+            Messenger.Default.Register<DataService.Process>(this, AfficherListRecette);
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
             Messenger.Default.Register<DataService.Historique>(this, CreateHistoriqueChart);
-            Messenger.Default.Register<ObservableCollection<Registre>>(this, AfficherListRegistre);
+            Messenger.Default.Register<ObservableCollection<DataService.Registre>>(this, AfficherListRegistre);
         }
         
         private void Machine1_Loaded(object sender, RoutedEventArgs e)
@@ -46,13 +46,13 @@ namespace AcoreApplication.Views
             sb.Begin();
         }
 
-        private void AfficherListRecette(Process process)
+        private void AfficherListRecette(DataService.Process process)
         {
             this.ListRecetteDataGrid.ItemsSource = process.Recettes;
 
         }
 
-        private void AfficherListRegistre(ObservableCollection<Registre> registre)
+        private void AfficherListRegistre(ObservableCollection<DataService.Registre> registre)
         {
             this.ListRecetteDataGrid.ItemsSource = registre;
 

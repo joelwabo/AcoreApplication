@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
-using static AcoreApplication.Model.Constantes;
 using static AcoreApplication.Model.Segment;
 
 namespace AcoreApplication.Model
@@ -85,22 +84,7 @@ namespace AcoreApplication.Model
             TempsRestant = new TimeSpan(0);
 
             Segments = GetAllSegmentFromRecetteId(Id);
-            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
-            foreach (Segment seg in Segments)
-                TempsRestant = TempsRestant + seg.Duree;
-        }
-
-        public Recette(SqlDataReader reader)
-        {
-
-            Id = (int)reader["Id"];
-            IdProcess = (int)reader["IdProcess"];
-            Nom = (string)reader["Nom"];
-            Cyclage = (int?)reader["Cyclage"];
-            TempsRestant = new TimeSpan(0);
-
-            Segments = GetAllSegmentFromRecetteId(Id);
-            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             foreach (Segment seg in Segments)
                 TempsRestant = TempsRestant + seg.Duree;
         }
@@ -116,29 +100,7 @@ namespace AcoreApplication.Model
             RaisePropertyChanged(nomPropriete);
             return true;
         }
-
-        public static ObservableCollection<Recette> GetAllRecetteFromProcessId(int idProcess)
-        {
-            ObservableCollection<Recette> recettes = new ObservableCollection<Recette>();
-            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
-            {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Recette WHERE IdProcess = " + idProcess, connection))
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Recette recette = new Recette(reader);
-                        recettes.Add(recette);
-                    }
-                }
-            }
-            return recettes;
-        }
-
-
-
-
+                          
         #endregion
 
     }

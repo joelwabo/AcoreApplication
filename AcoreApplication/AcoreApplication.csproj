@@ -213,7 +213,6 @@
     <Compile Include="Model\HistoriqueData.cs" />
     <Compile Include="Model\HistoriqueService.cs" />
     <Compile Include="Model\IAutomateService.cs" />
-    <Compile Include="Model\IOptionsService.cs" />
     <Compile Include="Model\IRecetteService.cs" />
     <Compile Include="Model\IHistoriqueService.cs" />
     <Compile Include="Model\IRedresseurService.cs" />

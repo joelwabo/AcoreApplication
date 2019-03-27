@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static AcoreApplication.Model.Constantes;
+using AcoreApplication.DataService;
 
 namespace AcoreApplication.Model
 {
@@ -14,21 +15,23 @@ namespace AcoreApplication.Model
         public ObservableCollection<Process> GetAllData()
         {
             ObservableCollection<Process> result = new ObservableCollection<Process>();
-            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Process", connection))
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var bdd = new AcoreDBEntities())
                 {
-                    while (reader.Read())
+                    List<Process> processes = bdd.Process.ToList();
+                    foreach (Process pro in processes)
                     {
-                        Process process = new Process(reader);
-                        result.Add(process);
+                        pro.Recettes = RecetteService.GetListRecetteFromProcessId(pro.Id);
+                        pro.Options = OptionsService.GetAllOptionsFromTableId(pro.Id, "Id" + pro.GetType().Name);
+                        result.Add(pro);
                     }
-                    reader.Close();
                 }
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+            }
             return result;
         }
 

@@ -54,8 +54,8 @@ namespace AcoreApplication.ViewModel
             set { NotifyPropertyChanged(ref recetteSelected, value); }
         }
         
-        private ObservableCollection<Automate> listAutomate;
-        public ObservableCollection<Automate> ListAutomate
+        private ObservableCollection<DataService.Automate> listAutomate;
+        public ObservableCollection<DataService.Automate> ListAutomate
         {
             get { return listAutomate; }
             set { NotifyPropertyChanged(ref listAutomate, value); }
@@ -68,8 +68,8 @@ namespace AcoreApplication.ViewModel
             set { NotifyPropertyChanged(ref listRedresseur, value); }
         }
 
-        private ObservableCollection<Process> listProcess;
-        public ObservableCollection<Process> ListProcess
+        private ObservableCollection<DataService.Process> listProcess;
+        public ObservableCollection<DataService.Process> ListProcess
         {
             get { return listProcess; }
             set { NotifyPropertyChanged(ref listProcess, value); }
@@ -100,7 +100,7 @@ namespace AcoreApplication.ViewModel
             ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
             ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
             ListRedresseur = new ObservableCollection<Redresseur>();
-            foreach (Automate automate in ListAutomate)
+            foreach (DataService.Automate automate in ListAutomate)
                 foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
                     ListRedresseur.Add(redresseur);
 
@@ -132,7 +132,7 @@ namespace AcoreApplication.ViewModel
 
         private void AddingNewSegment(AddingNewItemEventArgs arg)
         {
-            foreach (Process process in ListProcess)
+            foreach (DataService.Process process in ListProcess)
                 foreach (Recette rec in process.Recettes)
                     foreach (Segment seg in rec.Segments)
                         SimpleIoc.Default.GetInstance<ISegmentService>().UpdateSegment(seg);
@@ -142,7 +142,7 @@ namespace AcoreApplication.ViewModel
 
         private void AddingNewRecette(AddingNewItemEventArgs arg)
         {
-            foreach (Process process in ListProcess)
+            foreach (DataService.Process process in ListProcess)
                 foreach (Recette rec in process.Recettes)
                     SimpleIoc.Default.GetInstance<IRecetteService>().UpdateRecette(rec);
 
@@ -152,7 +152,7 @@ namespace AcoreApplication.ViewModel
 
         private void valideButton(Object obj)
         {
-            foreach (Process process in ListProcess)
+            foreach (DataService.Process process in ListProcess)
             {
                 SimpleIoc.Default.GetInstance<IProcessService>().UpdateProcess(process);
                 if (process.Recettes != null)
@@ -175,7 +175,7 @@ namespace AcoreApplication.ViewModel
 
         private void AddingNewProcess(AddingNewItemEventArgs arg)
         {
-            foreach (Process process in ListProcess)
+            foreach (DataService.Process process in ListProcess)
                 SimpleIoc.Default.GetInstance<IProcessService>().UpdateProcess(process);
 
             SimpleIoc.Default.GetInstance<IProcessService>().InsertProcess();
@@ -200,8 +200,8 @@ namespace AcoreApplication.ViewModel
         private void SelectedProcessChanged(SelectionChangedEventArgs arg)
         {
             if(arg.AddedItems.Count>0)
-            { 
-                Process process = arg.AddedItems[0] as Process;
+            {
+                DataService.Process process = arg.AddedItems[0] as DataService.Process;
                 Messenger.Default.Send(process);
             }
         }

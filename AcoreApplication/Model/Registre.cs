@@ -7,35 +7,22 @@ using System.Text;
 using System.Threading.Tasks;
 using static AcoreApplication.Model.Constantes;
 
-namespace AcoreApplication.Model
+namespace AcoreApplication.DataService
 {
-    public class Registre
+    public partial class Registre
     {
         #region ATTRIBUTS
-        public int Id { get; set; }
-        public int IdRedresseur { get; set; }
-        public REGISTRE Nom { get; set; }
-        public TYPEMODBUS TypeModbus { get; set; }
-        public Type Type { get; set; }
-        public int AdresseDebut { get; set; }
-        public int AdresseFin { get; set; }
-        public int NumBit { get; set; }
 
         #endregion 
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Registre()
-        {
-
-        }
-
         public Registre(SqlDataReader reader)
         {
             Id = (int)reader["Id"];
             IdRedresseur = (int)reader["IdRedresseur"];
-            Nom = (REGISTRE)Enum.Parse(typeof(REGISTRE), (string)reader["Nom"]);
-            Type = Type.GetType(reader["Type"].ToString());
-            TypeModbus = (TYPEMODBUS)Enum.Parse(typeof(TYPEMODBUS), (string)reader["TypeModbus"]);
+            Nom = (string)reader["Nom"];
+            Type = reader["Type"].ToString();
+            TypeModbus = (string)reader["TypeModbus"];
             AdresseDebut = (int)reader["AdresseDebut"];
             AdresseFin = (int)reader["AdresseFin"];
             NumBit = (int)reader["NumBit"];
@@ -47,18 +34,18 @@ namespace AcoreApplication.Model
         public static ObservableCollection<Registre> GetAllRegisterFromRedresseurId(int id)
         {
             ObservableCollection<Registre> registres = new ObservableCollection<Registre>();
-            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Registre  WHERE IdRedresseur = " + id, connection))
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var bdd = new AcoreDBEntities())
                 {
-                    while (reader.Read())
-                    {
-                        Registre option = new Registre(reader);
-                        registres.Add(option);
-                    }
+                    List<Registre> regs = bdd.Registre.Where(reg => reg.IdRedresseur == id).ToList();
+                    foreach (Registre reg in regs)
+                        registres.Add(reg);
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
             }
             return registres;
         }

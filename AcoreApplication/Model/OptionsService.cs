@@ -3,14 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AcoreApplication.Model
 {
-    class OptionsService : IOptionsService
+    class OptionsService 
     {
-        public ObservableCollection<Options> GetAllOptionsFromTableId(int id, string table)
+        public static ObservableCollection<Options> GetAllOptionsFromTableId(int id, string table)
         {
             ObservableCollection<Options> result = new ObservableCollection<Options>();
             try

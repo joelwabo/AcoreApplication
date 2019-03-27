@@ -1,10 +1,8 @@
-﻿using System;
+﻿using AcoreApplication.DataService;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using static AcoreApplication.Model.Constantes;
+using System.Linq;
 
 namespace AcoreApplication.Model
 {
@@ -14,20 +12,22 @@ namespace AcoreApplication.Model
         public ObservableCollection<Automate> GetAllData()
         {
             ObservableCollection<Automate> result = new ObservableCollection<Automate>();
-            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Automate", connection))
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var bdd = new AcoreDBEntities())
                 {
-                    while (reader.Read())
+                    List<Automate> automates = bdd.Automate.ToList();
+                    foreach (Automate aut in automates)
                     {
-                        Automate automate = new Automate(reader);
-                        result.Add(automate);
+                        aut.CreateThread();
+                        result.Add(aut);
                     }
                 }
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+            }
             return result;
         }
     }

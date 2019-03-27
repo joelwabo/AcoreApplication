@@ -9,9 +9,6 @@
 
 namespace AcoreApplication.DataService
 {
-    using System;
-    using System.Collections.Generic;
-
     public partial class HistoriqueData
     {
 

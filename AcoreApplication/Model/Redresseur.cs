@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using static AcoreApplication.Model.Constantes;
-using static AcoreApplication.Model.Registre;
 using GalaSoft.MvvmLight.Messaging;
 using AcoreApplication.DataService;
 using GalaSoft.MvvmLight.Ioc;
@@ -355,8 +354,8 @@ namespace AcoreApplication.Model
             DureeRampe = DateTime.Parse(red.DureeRampe.ToString());
             Defaut = red.Defaut;
 
-            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
-            Registres = GetAllRegisterFromRedresseurId(Id);
+            Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Registres = Registre.GetAllRegisterFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
@@ -395,8 +394,8 @@ namespace AcoreApplication.Model
             //OrdreFabrication = (string)reader["OrdreFabrication"];
             //EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
 
-            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
-            Registres = GetAllRegisterFromRedresseurId(Id);
+            Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Registres = Registre.GetAllRegisterFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
 
             RedresseurPoolingTask = new Thread(RedresseurPooling);
@@ -474,7 +473,7 @@ namespace AcoreApplication.Model
         {
             foreach (Registre registre in Registres)
             {
-                switch (registre.Nom)
+                switch ((REGISTRE)Enum.Parse(typeof(MODES), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {
@@ -525,7 +524,7 @@ namespace AcoreApplication.Model
         {
             foreach (Registre registre in Registres)
             {
-                switch (registre.Nom)
+                switch ((REGISTRE)Enum.Parse(typeof(MODES), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {
@@ -609,7 +608,7 @@ namespace AcoreApplication.Model
         {
             foreach (Registre registre in Registres)
             {
-                switch (registre.Nom)
+                switch ((REGISTRE)Enum.Parse(typeof(MODES), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {

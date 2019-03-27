@@ -171,7 +171,7 @@ namespace AcoreApplication.Model
             Rampe = (bool)reader["Rampe"];
             DureeRampe = TimeSpan.Parse(reader["DureeRampe"].ToString());
 
-            Options = SimpleIoc.Default.GetInstance<IOptionsService>().GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
         }
         #endregion
 

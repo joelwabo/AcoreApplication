@@ -1,27 +1,20 @@
 ﻿using System;
 using NModbus;
 using System.Net.Sockets;
-using System.Collections.Generic;
 using static AcoreApplication.Model.Constantes;
-using System.Data.SqlClient;
-using System.Windows;
-using System.Net;
 using System.Threading;
-using static AcoreApplication.Model.Redresseur;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using GalaSoft.MvvmLight.Ioc;
 using System.Linq;
 
-namespace AcoreApplication.Model
+namespace AcoreApplication.DataService
 {
-    public class Automate 
+    public partial class Automate 
     {
         #region ATTRIBUTS
-        public MODES Mode { get; set; }
-        public string IpAdresse { get; set; }
+        //public MODES Mode { get; set; }
 
-        public ObservableCollection<Redresseur> Redresseurs { get; set; }
+        public ObservableCollection<Model.Redresseur> Redresseurs { get; set; }
 
         TcpClient ClientTcp { get; set; }
         IModbusMaster ModBusMaster { get; set; }
@@ -30,15 +23,10 @@ namespace AcoreApplication.Model
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Automate()
-        {
-        }
 
-        public Automate(SqlDataReader reader)
+        public void CreateThread()
         {
-            Mode = (MODES)Enum.Parse(typeof(MODES), (string)reader["Mode"]);
-            IpAdresse = (string)reader["IpAdresse"];
-            Redresseurs = GetAllRedresseurFromAutotameId(IpAdresse);
+            Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
 
             ClientTcp = new TcpClient();
             ModbusPoolingTask = new Thread(ModbusPooling);
@@ -59,21 +47,21 @@ namespace AcoreApplication.Model
         {
             while (true)
             {
-                if (Mode == MODES.Connected)
+                if (Mode == MODES.Connected.ToString())
                 {
                     // read Etat, Read On/Off, Read Marche/Arret
-                    foreach (Redresseur redresseur in Redresseurs.ToList())
+                    foreach (Model.Redresseur redresseur in Redresseurs.ToList())
                     {
                         foreach (Registre registre in redresseur.Registres)
                         {
-                            switch (registre.Nom)
+                            switch ((REGISTRE)Enum.Parse(typeof(MODES), registre.Nom))
                             {
                                 case REGISTRE.ExistenceGroupe:
                                     bool[] ExistenceGroupe = redresseur.ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
                                     if (!ExistenceGroupe[0])
                                     {
                                         Redresseurs.Remove(redresseur);
-                                        SimpleIoc.Default.GetInstance<IRedresseurService>().DeleteRedresseur(redresseur);
+                                        SimpleIoc.Default.GetInstance<Model.IRedresseurService>().DeleteRedresseur(redresseur);
                                     }
                                     break;
                                 case REGISTRE.Defaut:
@@ -119,18 +107,18 @@ namespace AcoreApplication.Model
                 ClientTcp.Connect(IpAdresse, Cst_PortModbus); 
                 var factory = new ModbusFactory();
                 ModBusMaster = factory.CreateMaster(ClientTcp);                   
-                foreach (Redresseur redresseur in Redresseurs)
+                foreach (Model.Redresseur redresseur in Redresseurs)
                     redresseur.ModBusMaster = ModBusMaster;
-                Mode = MODES.Connected;
+                Mode = MODES.Connected.ToString();
             }
             catch (ArgumentNullException e)
             {
-                Mode = MODES.Disconnected;
+                Mode = MODES.Disconnected.ToString();
                 Console.WriteLine("ArgumentNullException: {0}", e);
             }
             catch (SocketException e)
             {
-                Mode = MODES.Disconnected;
+                Mode = MODES.Disconnected.ToString();
                 Console.WriteLine("SocketException: {0}", e);
             }         
         }
@@ -139,9 +127,9 @@ namespace AcoreApplication.Model
         {
             if (ClientTcp.Connected)
             {
-                Mode = MODES.Disconnected;
+                Mode = MODES.Disconnected.ToString();
                 ModbusPoolingTask.Abort();
-                foreach (Redresseur redresseur in Redresseurs)
+                foreach (Model.Redresseur redresseur in Redresseurs)
                     redresseur.ModBusMaster.Dispose();
                 ModBusMaster.Dispose();
                 ClientTcp.Close();
