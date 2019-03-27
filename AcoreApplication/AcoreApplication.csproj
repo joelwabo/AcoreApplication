@@ -382,6 +382,12 @@
       <LastGenOutput>AcoreDBEntities.cs</LastGenOutput>
     </Content>
     <Content Include="DataBase\AcoreDB_create.sql" />
+    <Resource Include="Resources\supervisionPas.png" />
+    <Resource Include="Resources\supervision.png" />
+    <Resource Include="Resources\liasonPas.png" />
+    <Resource Include="Resources\liasonOkRecette.png" />
+    <Resource Include="Resources\liasonOkLocal.png" />
+    <Resource Include="Resources\liasonOkRemote.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

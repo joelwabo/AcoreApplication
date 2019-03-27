@@ -371,19 +371,19 @@ namespace AcoreApplication.Model
             switch (Etat)
             {
                 case MODES.LocalManuel:
-                    EtatImageSource = "../Resources/log_in1.png";
+                    EtatImageSource = "../Resources/liasonOkLocal.png";
                     break;
                 case MODES.LocalRecette:
-                    EtatImageSource = "../Resources/croix.png";
+                    EtatImageSource = "../Resources/liasonOkRecette.png";
                     break;
                 case MODES.RemoteManuel:
-                    EtatImageSource = "../Resources/fleche.png";
+                    EtatImageSource = "../Resources/liasonOkRemote.png";
                     break;
                 case MODES.RemoteRecette:
-                    EtatImageSource = "../Resources/power.png";
+                    EtatImageSource = "../Resources/liasonPas.png";
                     break;
                 case MODES.Supervision:
-                    EtatImageSource = "../Resources/power2.png";
+                    EtatImageSource = "../Resources/supervision.png";
                     break;
             }
             
@@ -402,6 +402,26 @@ namespace AcoreApplication.Model
             if (object.Equals(variable, valeur)) return false;
 
             variable = valeur;
+            if (nomPropriete == "Etat") {
+                switch (this.Etat)
+                {
+                    case MODES.LocalManuel:
+                        EtatImageSource = "../Resources/liasonOkLocal.png";
+                        break;
+                    case MODES.LocalRecette:
+                        EtatImageSource = "../Resources/liasonOkRecette.png";
+                        break;
+                    case MODES.RemoteManuel:
+                        EtatImageSource = "../Resources/liasonOkRemote.png";
+                        break;
+                    case MODES.RemoteRecette:
+                        EtatImageSource = "../Resources/liasonPas.png";
+                        break;
+                    case MODES.Supervision:
+                        EtatImageSource = "../Resources/supervision.png";
+                        break;
+                }
+            }
             RaisePropertyChanged(nomPropriete);
             return true;
         }
@@ -431,24 +451,7 @@ namespace AcoreApplication.Model
             {
                 if (OnOff)
                 {
-                    switch (Etat)
-                    {
-                        case MODES.LocalManuel:
-                            EtatImageSource = "../Resources/log_in1.png";
-                            break;
-                        case MODES.LocalRecette:
-                            EtatImageSource = "../Resources/croix.png";
-                            break;
-                        case MODES.RemoteManuel:
-                            EtatImageSource = "../Resources/fleche.png";
-                            break;
-                        case MODES.RemoteRecette:
-                            EtatImageSource = "../Resources/power.png";
-                            break;
-                        case MODES.Supervision:
-                            EtatImageSource = "../Resources/power2.png";
-                            break;
-                    }
+                    
                     switch (Etat)
                     {
                         case MODES.LocalManuel:

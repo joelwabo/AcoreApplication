@@ -31,10 +31,13 @@
                         
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Machine N°" Binding="{Binding Id}"/>
-                            <DataGridTemplateColumn Header="Machine état">
+                            <DataGridTemplateColumn Header="Machine Etat" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Image Source="{Binding EtatImageSource}" Width="10"  />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Id}" />
+                                            <Image Source="{Binding EtatImageSource, Mode=TwoWay}" Width="20"  />
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
