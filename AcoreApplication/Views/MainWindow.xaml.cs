@@ -40,7 +40,6 @@ namespace AcoreApplication.Views
             Messenger.Default.Register<ObservableCollection<Segment>>(this, CreateSegmentChart);
             Messenger.Default.Register<DataService.Historique>(this, CreateHistoriqueChart);
             Messenger.Default.Register<ObservableCollection<DataService.Registre>>(this, AfficherListRegistre);
-            Messenger.Default.Register<ObservableCollection<Registre>>(this, AfficherListRegistre);
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentCulture;
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
