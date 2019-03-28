@@ -9,8 +9,9 @@ namespace AcoreApplication.Model
 {
     public interface IRecetteService
     {
-        bool InsertRecette();
-        bool DeleteRecette(Recette recette);
-        bool UpdateRecette(Recette recette);
+        bool Insert();
+        bool Insert(Recette recette);
+        bool Delete(Recette recette);
+        bool Update(Recette recette);
     }
 }

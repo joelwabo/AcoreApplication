@@ -1,26 +1,21 @@
 ﻿using System;
 using NModbus;
 using System.Net.Sockets;
-using System.Collections.Generic;
 using static AcoreApplication.Model.Constantes;
-using System.Data.SqlClient;
-using System.Windows;
-using System.Net;
 using System.Threading;
-using static AcoreApplication.Model.Redresseur;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using GalaSoft.MvvmLight.Ioc;
+using System.Linq;
 
-namespace AcoreApplication.Model
+namespace AcoreApplication.DataService
 {
-    public class Automate 
+    public partial class Automate
     {
         #region ATTRIBUTS
-        public int Id { get; set; }
-        public MODES Mode { get; set; }
-        public string IpAdresse { get; set; }
+        //public MODES Mode { get; set; }
 
-        public ObservableCollection<Redresseur> Redresseurs { get; set; }
+        public ObservableCollection<Model.Redresseur> Redresseurs { get; set; }
+        public ObservableCollection<Registre> Registres { get; set; }
 
         TcpClient ClientTcp { get; set; }
         IModbusMaster ModBusMaster { get; set; }
@@ -29,19 +24,15 @@ namespace AcoreApplication.Model
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Automate()
-        {
-        }
 
-        public Automate(SqlDataReader reader)
+        public void CreateThread()
         {
-            Id = (int)reader["Id"];
-            Mode = (MODES)Enum.Parse(typeof(MODES), (string)reader["Mode"]);
-            IpAdresse = (string)reader["IpAdresse"];
-            Redresseurs = GetAllRedresseurFromAutotameId(Id);
-
+            Registres = Registre.GetAllRegisterFromRedresseurId(1);
+            Redresseurs = new ObservableCollection<Model.Redresseur>();
             ClientTcp = new TcpClient();
-            //Connection();
+            
+            ModbusPoolingTask = new Thread(ModbusPooling);
+            ModbusPoolingTask.Start();
         }
 
         ~Automate()
@@ -56,76 +47,92 @@ namespace AcoreApplication.Model
 
         private void ModbusPooling(Object stateInfo)
         {
-            while(Mode == MODES.Connected)
+            while (true)
             {
-                // read Etat, Read On/Off, Read Marche/Arret
-                foreach (Redresseur redresseur in Redresseurs)
+                if (Mode == MODES.Connected.ToString())
                 {
-                    foreach (Registre registre in redresseur.Registres)
+                    // read Etat, Read On/Off, Read Marche/Arret
+                    foreach (Model.Redresseur redresseur in Redresseurs.ToList())
                     {
-                        switch(registre.Nom)
+                        foreach (Registre registre in redresseur.Registres)
                         {
-                            case REGISTRE.Defaut:
-                                {
-                                    ushort[] Defaut = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    redresseur.Defaut = Convert.ToBoolean(Defaut[Redresseurs.IndexOf(redresseur)]);
-                                }
-                                break;
-                            case REGISTRE.OnOff:
-                                {
-                                    ushort[] OnOff = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    bool onOff = Convert.ToBoolean(OnOff[Redresseurs.IndexOf(redresseur)]);
-                                    redresseur.OnOff = onOff;
-                                }
-                                break;
-                            case REGISTRE.MarcheArret:
-                                {
-                                    ushort[] MarcheArret = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    redresseur.MiseSousTension = Convert.ToBoolean(MarcheArret[Redresseurs.IndexOf(redresseur)]);
-                                }
-                                break;
-                            case REGISTRE.Etat:
-                                {
-                                    ushort[] Etat = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    string etat = Etat[Redresseurs.IndexOf(redresseur)].ToString();
-                                    redresseur.Etat = (MODES)Enum.Parse(typeof(MODES), etat);
-                                }
-                                break;
+                            switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                            {
+                                case REGISTRE.Defaut:
+                                    {
+                                        ushort[] Defaut = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        redresseur.Defaut = Convert.ToBoolean(Defaut[0]);
+                                    }
+                                    break;
+                                case REGISTRE.OnOff:
+                                    /*{
+                                        ushort[] OnOff = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        bool onOff = Convert.ToBoolean(OnOff[0]);
+                                        redresseur.OnOff = onOff;
+                                    }*/
+                                    break;
+                                case REGISTRE.MarcheArret:
+                                    {
+                                        ushort[] MarcheArret = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        redresseur.MiseSousTension = Convert.ToBoolean(MarcheArret[0]);
+                                    }
+                                    break;
+                                case REGISTRE.Etat:
+                                    {
+                                        ushort[] Etat = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                        string etat = Etat[0].ToString();
+                                        redresseur.Etat = (MODES)Enum.Parse(typeof(MODES), etat);
+                                    }
+                                    break;
+                            }
                         }
                     }
                 }
+                else
+                    Connection();
                 Thread.Sleep(Cst_SleepTime);
             }
         }
-               
+
+        public void DeleteUnexistingGroupe()
+        {
+            foreach (Registre registre in Registres)
+            {
+                if ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom) == REGISTRE.ExistenceGroupe)
+                {
+                    bool[] ExistenceGroupe = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), 10);
+                    for (int i = 0; i < ExistenceGroupe.Count(); i++)
+                        if (!ExistenceGroupe[i])
+                        {
+                            SimpleIoc.Default.GetInstance<Model.IRedresseurService>().Delete(i+1);
+                        }
+                    break;
+                }
+            }
+        }
+
         public void Connection()
         {
-            if (!ClientTcp.Connected)
+            try
             {
-                try
-                {
-                    ClientTcp.Connect(IpAdresse, Cst_PortModbus);
-                    var factory = new ModbusFactory();
-                    ModBusMaster = factory.CreateMaster(ClientTcp);
-                    Mode = MODES.Connected;
-
-                    ModbusPoolingTask = new Thread(ModbusPooling);
-                    ModbusPoolingTask.Start();
-                    foreach (Redresseur redresseur in Redresseurs)
-                        redresseur.ModBusMaster = ModBusMaster;
-                }
-                catch (ArgumentNullException e)
-                {
-                    Console.WriteLine("ArgumentNullException: {0}", e);
-                }
-                catch (SocketException e)
-                {
-                    Console.WriteLine("SocketException: {0}", e);
-                }
-                finally
-                {
-                    Mode = MODES.Disconnected;
-                }
+                ClientTcp.Connect(IpAdresse, Cst_PortModbus);
+                var factory = new ModbusFactory();
+                ModBusMaster = factory.CreateMaster(ClientTcp);
+                //DeleteUnexistingGroupe();
+                Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
+                foreach (Model.Redresseur redresseur in Redresseurs)
+                    redresseur.ModBusMaster = ModBusMaster;
+                Mode = MODES.Connected.ToString();
+            }
+            catch (ArgumentNullException e)
+            {
+                Mode = MODES.Disconnected.ToString();
+                Console.WriteLine("ArgumentNullException: {0}", e);
+            }
+            catch (SocketException e)
+            {
+                Mode = MODES.Disconnected.ToString();
+                Console.WriteLine("SocketException: {0}", e);
             }
         }
 
@@ -133,12 +140,11 @@ namespace AcoreApplication.Model
         {
             if (ClientTcp.Connected)
             {
+                Mode = MODES.Disconnected.ToString();
                 ModbusPoolingTask.Abort();
-                foreach (Redresseur redresseur in Redresseurs)
-                    redresseur.ModBusMaster.Dispose();
                 ModBusMaster.Dispose();
                 ClientTcp.Close();
-                Mode = MODES.Disconnected;
+                Redresseurs = null;
             }
         }
         #endregion

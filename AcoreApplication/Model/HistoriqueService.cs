@@ -1,9 +1,8 @@
-﻿using System;
+﻿using AcoreApplication.DataService;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AcoreApplication.Model
 {
@@ -11,17 +10,44 @@ namespace AcoreApplication.Model
     {
         public ObservableCollection<Historique> GetAllData()
         {
-            throw new NotImplementedException();
+            ObservableCollection<Historique> result = new ObservableCollection<Historique>();
+            try
+            {
+                using (var bdd = new AcoreDBEntities())
+                {
+                    List<Historique> historiques = bdd.Historique.ToList();
+                    foreach (Historique his in historiques)
+                    {
+                        if(his.IdRecette!=null)
+                            his.Recette2 = RecetteService.GetRecetteFromId((int)his.IdRecette);
+                        result.Add(his);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+            }
+            return result;
         }
 
-        public bool InsertHistorique()
+        public bool Insert(Historique historique)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool UpdateHistorique(Redresseur redresseur)
-        {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                using (var bdd = new DataService.AcoreDBEntities())
+                {
+                    bdd.Historique.Add(historique);
+                    bdd.HistoriqueData.AddRange(historique.HistoriqueData);
+                    bdd.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                return false;
+            }
+        }                
     }
 }

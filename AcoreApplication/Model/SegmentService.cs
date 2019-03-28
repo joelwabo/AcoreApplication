@@ -9,43 +9,43 @@ namespace AcoreApplication.Model
     public class SegmentService : ISegmentService
     {
 
-        public bool DeleteSegment(Segment segment)
+        public bool Delete(Segment segment)
         {
             throw new NotImplementedException();
         }
 
-        public bool InsertSegment()
+        public bool Insert(Segment segment)
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    bdd.Segment.Add(new DataBase.Segment()
+                    bdd.Segment.Add(new DataService.Segment()
                     {
-                        IdRecette = 1,
-                        Nom = "new_seg",
-                        Etat = false,
-                        Type = "Anodique",
-                        Duree = new TimeSpan(0),
-                        ConsigneDepartV = 0,
-                        ConsigneDepartA = 0,
-                        ConsigneArriveeV = 0,
-                        ConsigneArriveeA = 0,
-                        TempsRestant = new TimeSpan(0),
-                        Pulse = false,
-                        CompteurAH = 0,
-                        Temporisation = false,
-                        TempsOn = new TimeSpan(0),
-                        TempsOff = new TimeSpan(0),
-                        AH = false,
-                        //CompteurAH = 0,
-                        CalibreAH = "A_H",
-                        Rampe = false,
-                        DureeRampe = new TimeSpan(0)
+                        IdRecette = segment.IdRecette,
+                        Nom = segment.Nom,
+                        Etat = segment.Etat,
+                        Type = segment.Type.ToString(),
+                        Duree = segment.Duree,
+                        ConsigneDepartV = segment.ConsigneDepartV,
+                        ConsigneDepartA = segment.ConsigneDepartA,
+                        ConsigneArriveeV = segment.ConsigneArriveeV,
+                        ConsigneArriveeA = segment.ConsigneArriveeA,
+                        TempsRestant = segment.TempsRestant,
+                        Pulse = segment.Pulse,
+                        CompteurAH = segment.CompteurAH,
+                        Temporisation = segment.Temporisation,
+                        TempsOn = segment.TempsOn,
+                        TempsOff = segment.TempsOff,
+                        AH = segment.AH,
+                        //CompteurAH = CompteurAH,
+                        CalibreAH = segment.CalibreAH.ToString(),
+                        Rampe = segment.Rampe,
+                        DureeRampe = segment.DureeRampe
                     });
                     bdd.SaveChanges();
+                    return true;
                 }
-                return true;
             }
             catch (Exception e)
             {
@@ -54,14 +54,14 @@ namespace AcoreApplication.Model
             }
         }
 
-        public bool UpdateSegment(Segment segment)
+        public bool Update(Segment segment)
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Segment> seg = bdd.Segment.ToList();
-                    DataBase.Segment segmentToUpdate = bdd.Segment.FirstOrDefault(segmentFound => segmentFound.Id == segment.Id);
+                    List<DataService.Segment> seg = bdd.Segment.ToList();
+                    DataService.Segment segmentToUpdate = bdd.Segment.FirstOrDefault(segmentFound => segmentFound.Id == segment.Id);
                     if (segmentToUpdate != null)
                     {
                         segmentToUpdate.IdRecette = segment.IdRecette;
@@ -69,22 +69,22 @@ namespace AcoreApplication.Model
                         segmentToUpdate.Etat = segment.Etat;
                         segmentToUpdate.Type = segment.Type.ToString();
                         var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                        //segmentToUpdate.Duree = TimeSpan.FromSeconds((segment.Duree.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.Duree = segment.Duree;
                         segmentToUpdate.ConsigneDepartV = segment.ConsigneDepartV;
                         segmentToUpdate.ConsigneDepartA = segment.ConsigneDepartA;
                         segmentToUpdate.ConsigneArriveeV = segment.ConsigneArriveeV;
                         segmentToUpdate.ConsigneArriveeA = segment.ConsigneArriveeA;
-                        //segmentToUpdate.TempsRestant = TimeSpan.FromSeconds((segment.TempsRestant.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.TempsRestant = segment.TempsRestant;
                         segmentToUpdate.Pulse = segment.Pulse;
                         segmentToUpdate.CompteurAH = segment.CompteurAH;
                         segmentToUpdate.Temporisation = segment.Temporisation;
-                        //segmentToUpdate.TempsOn = TimeSpan.FromSeconds((segment.TempsOn.ToUniversalTime() - epoch).TotalSeconds);
-                        //segmentToUpdate.TempsOff = TimeSpan.FromSeconds((segment.TempsOff.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.TempsOn = segment.TempsOn;
+                        segmentToUpdate.TempsOff = segment.TempsOff;
                         segmentToUpdate.AH = segment.AH;
                         //CompteurAH = CompteurAH;
                         segmentToUpdate.CalibreAH = segment.CalibreAH.ToString();
                         segmentToUpdate.Rampe = segment.Rampe;
-                        //segmentToUpdate.DureeRampe = TimeSpan.FromSeconds((segment.DureeRampe.ToUniversalTime() - epoch).TotalSeconds);
+                        segmentToUpdate.DureeRampe = segment.DureeRampe;
 
                         bdd.SaveChanges();
                     }

@@ -1,11 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
-using static AcoreApplication.Model.Constantes;
-using static AcoreApplication.Model.Option;
 using static AcoreApplication.Model.Segment;
 
 namespace AcoreApplication.Model
@@ -43,11 +42,18 @@ namespace AcoreApplication.Model
             get { return segCours; }
             set { NotifyPropertyChanged(ref segCours, value); }
         }
-        private DateTime tempsRestant;
-        public DateTime TempsRestant
+        private TimeSpan tempsRestant;
+        public TimeSpan TempsRestant
         {
             get { return tempsRestant; }
             set { NotifyPropertyChanged(ref tempsRestant, value); }
+        }
+
+        private DateTime tempsDebut;
+        public DateTime TempsDebut
+        {
+            get { return tempsDebut; }
+            set { NotifyPropertyChanged(ref tempsDebut, value); }
         }
 
         private ObservableCollection<Segment> segments;
@@ -56,8 +62,8 @@ namespace AcoreApplication.Model
             get { return segments; }
             set { NotifyPropertyChanged(ref segments, value); }
         }
-        private ObservableCollection<Option> options;
-        public ObservableCollection<Option> Options
+        private ObservableCollection<DataService.Options> options;
+        public ObservableCollection<DataService.Options> Options
         {
             get { return options; }
             set { NotifyPropertyChanged(ref options, value); }
@@ -65,29 +71,32 @@ namespace AcoreApplication.Model
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Recette(DataBase.Recette rec)
+        public Recette()
+        {
+
+        }
+        public Recette(int idPro)
+        {
+            IdProcess = idPro;
+            Nom = "new_recette";
+            Cyclage = 0;
+            SegCours = 0;
+            TempsRestant = new TimeSpan(0);
+            Segments = new ObservableCollection<Segment>();
+            Options = new ObservableCollection<DataService.Options>();
+        }
+        public Recette(DataService.Recette rec)
         {
             Id = rec.Id;
             IdProcess = rec.IdProcess;
             Nom = rec.Nom;
             Cyclage = rec.Cyclage;
-            TempsRestant = DateTime.Parse(rec.TempsRestant.ToString());
+            TempsRestant = new TimeSpan(0);
 
             Segments = GetAllSegmentFromRecetteId(Id);
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
-        }
-
-        public Recette(SqlDataReader reader)
-        {
-
-            Id = (int)reader["Id"];
-            IdProcess = (int)reader["IdProcess"];
-            Nom = (string)reader["Nom"];
-            Cyclage = (int?)reader["Cyclage"];
-            TempsRestant = DateTime.Parse(reader["TempsRestant"].ToString());
-
-            Segments = GetAllSegmentFromRecetteId(Id);
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            foreach (Segment seg in Segments)
+                TempsRestant = TempsRestant + seg.Duree;
         }
 
         #endregion
@@ -101,29 +110,7 @@ namespace AcoreApplication.Model
             RaisePropertyChanged(nomPropriete);
             return true;
         }
-
-        public static ObservableCollection<Recette> GetAllRecetteFromProcessId(int idProcess)
-        {
-            ObservableCollection<Recette> recettes = new ObservableCollection<Recette>();
-            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
-            {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Recette WHERE IdProcess = " + idProcess, connection))
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Recette recette = new Recette(reader);
-                        recettes.Add(recette);
-                    }
-                }
-            }
-            return recettes;
-        }
-
-
-
-
+                          
         #endregion
 
     }

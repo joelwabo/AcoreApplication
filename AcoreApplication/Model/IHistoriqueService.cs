@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AcoreApplication.DataService;
 using System.Collections.ObjectModel;
 
 namespace AcoreApplication.Model
@@ -10,7 +6,6 @@ namespace AcoreApplication.Model
     public interface IHistoriqueService
     {
         ObservableCollection<Historique> GetAllData();
-        bool InsertHistorique();
-        bool UpdateHistorique(Redresseur redresseur);
+        bool Insert(Historique historique);
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace AcoreApplication.Model
 {
@@ -12,7 +7,7 @@ namespace AcoreApplication.Model
         #region Constante 
         public const int Cst_SleepTime = 500;
         public const int Cst_PortModbus = 502;
-        public const int Cst_NbRedresseurs = 10;
+        public const int Cst_NbRedresseurs = 1;
         public const int Cst_SlaveNb = 1;
         #endregion
 
@@ -76,8 +71,13 @@ namespace AcoreApplication.Model
             ConsigneA,
             LectureV,
             LectureA,
-            OnOff,
+            RetourOnOff,
             Defaut,
+            Mode,
+            MiseSousTension,
+            ExistenceGroupe,
+            OnOff,
+            Nom,
             NumRecette,
             SegCours,
             NbSeg,
@@ -86,7 +86,9 @@ namespace AcoreApplication.Model
 
         public enum ETATFIN
         {
+            Finish,
             Arret_par_utilisateur,
+            Stopped_by_user,
             Arret_sur_défaut,
             Arret_sur_timer,
             Arret_A_H

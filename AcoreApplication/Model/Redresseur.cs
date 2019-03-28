@@ -15,15 +15,15 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using static AcoreApplication.Model.Constantes;
-using static AcoreApplication.Model.Option;
-using static AcoreApplication.Model.Registre;
-using static AcoreApplication.Model.Historique;
+using GalaSoft.MvvmLight.Messaging;
+using AcoreApplication.DataService;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace AcoreApplication.Model
 {
     public class Redresseur : ObservableObject
     {
-        #region Constante 
+        #region Constante
         private const int Cst_PortModbus = 502;
         private const int Cst_NbRedresseurs = 10;
         private const int Cst_SlaveNb = 1;
@@ -43,17 +43,52 @@ namespace AcoreApplication.Model
             get { return idProcess; }
             set { NotifyPropertyChanged(ref idProcess, value); }
         }
-        private int idAutomate;
-        public int IdAutomate
+        private string ipAdresse;
+        public string IpAdresse
         {
-            get { return idAutomate; }
-            set { NotifyPropertyChanged(ref idAutomate, value); }
+            get { return ipAdresse; }
+            set { NotifyPropertyChanged(ref ipAdresse, value); }
         }
         private bool onOff;
         public bool OnOff
         {
             get { return onOff; }
-            set{ NotifyPropertyChanged(ref onOff, value);}
+            set
+            {
+                NotifyPropertyChanged(ref onOff, value);
+                if (OnOff)
+                {
+                    if (Etat == MODES.RemoteRecette)
+                    {
+                        if (SelectedRecette != null)
+                        {
+                            SelectedRecette.TempsDebut = DateTime.Now;
+                        }
+                    }
+                    Historique = new Historique();
+                    Historique.DateDebut = DateTime.Now;
+                    Historique.IdUtilisateur = 1;
+                    Historique.IdRedresseur = Id;
+                    if ((Etat == MODES.LocalRecette) || (Etat == MODES.RemoteRecette))
+                    {
+                        Historique.IdRecette = SelectedRecette.Id;
+                        //Historique.Recette = SelectedRecette;
+                    }
+                    Historique.OrdreFabrication = OrdreFabrication;
+                    Historique.EtatFin = ETATFIN.Finish.ToString();
+                    Historique.Type = Etat.ToString();
+
+                }
+                else
+                {
+                    if(Historique!=null)
+                    {
+                        Historique.DateFin = DateTime.Now;
+                        SimpleIoc.Default.GetInstance<IHistoriqueService>().Insert(Historique);
+                        Historique = null;
+                    }
+                }
+            }
         }
         private bool miseSousTension;
         public bool MiseSousTension
@@ -252,8 +287,8 @@ namespace AcoreApplication.Model
             set { NotifyPropertyChanged(ref valuesB, value); }
         }
         public SeriesCollection SeriesCollection { get; set; }
-        public ObservableCollection<Option> options;
-        public ObservableCollection<Option> Options
+        public ObservableCollection<DataService.Options> options;
+        public ObservableCollection<DataService.Options> Options
         {
             get { return options; }
             set { NotifyPropertyChanged(ref options, value); }
@@ -264,12 +299,13 @@ namespace AcoreApplication.Model
             get { return registres; }
             set { NotifyPropertyChanged(ref registres, value); }
         }
-        private ObservableCollection<Historique> historiques;
-        public ObservableCollection<Historique> Historiques
+        private Historique historiques = null;
+        public Historique Historique
         {
             get { return historiques; }
             set { NotifyPropertyChanged(ref historiques, value); }
         }
+
         private ObservableCollection<Recette> listRecette;
         public ObservableCollection<Recette> ListRecette
         {
@@ -288,16 +324,16 @@ namespace AcoreApplication.Model
             get { return etatImageSource; }
             set { NotifyPropertyChanged(ref etatImageSource, value); }
         }
-        #endregion 
+        #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Redresseur(DataBase.Redresseur red)
+        public Redresseur(DataService.Redresseur red)
         {
             ValuesA = new ChartValues<double> { 0 };
             ValuesB = new ChartValues<double> { 0 };
             Id = red.Id;
             IdProcess = red.IdProcess;
-            IdAutomate = red.IdAutomate;
+            IpAdresse = red.IpAdresse;
             OnOff = red.OnOff;
             MiseSousTension = red.MiseSousTension;
             Etat = (MODES)Enum.Parse(typeof(MODES), red.Etat);
@@ -322,9 +358,8 @@ namespace AcoreApplication.Model
             DureeRampe = DateTime.Parse(red.DureeRampe.ToString());
             Defaut = red.Defaut;
 
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
-            Registres = GetAllRegisterFromRedresseurId(Id);
-            Historiques = GetHistoriquesFromRedresseurId(Id);
+            Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Registres = Registre.GetAllRegisterFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
@@ -336,7 +371,7 @@ namespace AcoreApplication.Model
             ValuesB = new ChartValues<double> { 0 };
             Id = (int)reader["Id"];
             IdProcess = (int)reader["IdProcess"];
-            IdAutomate = (int)reader["IdAutomate"];
+            IpAdresse = (string)reader["IpAdresse"];
             OnOff = (bool)reader["OnOff"];
             MiseSousTension = (bool)reader["MiseSousTension"];
             Etat = (MODES)Enum.Parse(typeof(MODES), (string)reader["Etat"]);
@@ -363,9 +398,8 @@ namespace AcoreApplication.Model
             //OrdreFabrication = (string)reader["OrdreFabrication"];
             //EtatFin = (ETATFIN)Enum.Parse(typeof(ETATFIN), (string)reader["EtatFin"]);
 
-            Options = GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
-            Registres = GetAllRegisterFromRedresseurId(Id);
-            Historiques = GetHistoriquesFromRedresseurId(Id);
+            Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
+            Registres = Registre.GetAllRegisterFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
 
             switch (Etat)
@@ -414,13 +448,17 @@ namespace AcoreApplication.Model
                     }
                     break;
             }
-            
+
 
 
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
         }
 
+        ~Redresseur()
+        {
+            ModBusMaster.Dispose();
+        }
         #endregion
 
         #region METHODES
@@ -482,13 +520,13 @@ namespace AcoreApplication.Model
             return true;
         }
 
-        public static ObservableCollection<Redresseur> GetAllRedresseurFromAutotameId(int idAutomate)
+        public static ObservableCollection<Redresseur> GetAllRedresseurFromAutotameId(string ipAdresse)
         {
             ObservableCollection<Redresseur> redresseurs = new ObservableCollection<Redresseur>();
             using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Redresseur WHERE IdAutomate = " + idAutomate, connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM Redresseur WHERE IpAdresse = N'" + ipAdresse + "'", connection))
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -507,7 +545,7 @@ namespace AcoreApplication.Model
             {
                 if (OnOff)
                 {
-                    
+                    HistoriqueData tempData = new HistoriqueData();
                     switch (Etat)
                     {
                         case MODES.LocalManuel:
@@ -525,6 +563,12 @@ namespace AcoreApplication.Model
                         case MODES.Supervision:
                             break;
                     }
+                    tempData.IdHistorique = Historique.Id;
+                    tempData.LectureA = LectureA;
+                    tempData.LectureV = LectureV;
+                    tempData.ConsigneV = ConsigneV;
+                    tempData.ConsigneA = ConsigneA;
+                    Historique.HistoriqueData.Add(tempData);
                 }
                 Thread.Sleep(Cst_SleepTime/5);
             }
@@ -534,7 +578,7 @@ namespace AcoreApplication.Model
         {
             foreach (Registre registre in Registres)
             {
-                switch (registre.Nom)
+                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {
@@ -585,7 +629,7 @@ namespace AcoreApplication.Model
         {
             foreach (Registre registre in Registres)
             {
-                switch (registre.Nom)
+                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {
@@ -614,12 +658,62 @@ namespace AcoreApplication.Model
                 }
             }
         }
-        
+
         private void RemoteManuel()
+        {
+            WriteModbus();
+        }
+
+        private void RemoteRecette()
+        {
+            if (SelectedRecette != null) //Consigne = coefDirect*t + consigneD
+            {
+                if (SelectedRecette.TempsDebut.Add(SelectedRecette.TempsRestant) >= DateTime.Now)
+                {
+                    if (SelectedRecette.TempsDebut.Add(SelectedRecette.Segments[SelectedRecette.SegCours].Duree) >= DateTime.Now)
+                    {
+                        TimeSpan t = DateTime.Now - SelectedRecette.TempsDebut;
+                        float coefDirectA = (SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneArriveeA - SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartA) / (float)SelectedRecette.Segments[SelectedRecette.SegCours].Duree.TotalSeconds;
+                        float coefDirectV = (SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneArriveeV - SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartV) / (float)SelectedRecette.Segments[SelectedRecette.SegCours].Duree.TotalSeconds;
+
+                        ConsigneA = (int)(coefDirectA * (float)t.TotalSeconds + SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartA);
+                        ConsigneV = (int)(coefDirectV * (float)t.TotalSeconds + SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartV);
+                        if (ValuesA.Count < 500)
+                        {
+                            ValuesA.Add(ConsigneV);
+                            ValuesB.Add(ConsigneA);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < ValuesA.Count - 1; i++)
+                            {
+                                ValuesA[i] = ValuesA[i + 1];
+                                ValuesB[i] = ValuesB[i + 1];
+                                ValuesA[ValuesA.Count - 1] = ConsigneV;
+                                ValuesB[ValuesA.Count - 1] = ConsigneA;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        SelectedRecette.SegCours++;
+                        if (SelectedRecette.SegCours >= SelectedRecette.Segments.Count)
+                        {
+                            SelectedRecette.SegCours--;
+                            OnOff = false;
+                            Messenger.Default.Send(SelectedRecette);
+                        }
+                    }
+                }
+                WriteModbus();
+            }
+        }
+
+        private void WriteModbus()
         {
             foreach (Registre registre in Registres)
             {
-                switch (registre.Nom)
+                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {
@@ -644,19 +738,6 @@ namespace AcoreApplication.Model
                         }
                         break;
                 }
-            }
-        }
-
-        private void RemoteRecette()
-        {
-            if (SelectedRecette != null)
-            { 
-                foreach(Segment seg in SelectedRecette.Segments)
-                {
-                    ConsigneA = ConsigneA + (seg.ConsigneDepartA - seg.ConsigneArriveeA)/Cst_SleepTime;
-                    ConsigneV = ConsigneV + (seg.ConsigneDepartV - seg.ConsigneArriveeV)/ Cst_SleepTime;
-                }
-
             }
         }
 

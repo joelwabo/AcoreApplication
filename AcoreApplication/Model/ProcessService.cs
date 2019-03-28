@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static AcoreApplication.Model.Constantes;
+using AcoreApplication.DataService;
 
 namespace AcoreApplication.Model
 {
@@ -14,31 +15,33 @@ namespace AcoreApplication.Model
         public ObservableCollection<Process> GetAllData()
         {
             ObservableCollection<Process> result = new ObservableCollection<Process>();
-            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Process", connection))
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var bdd = new AcoreDBEntities())
                 {
-                    while (reader.Read())
+                    List<Process> processes = bdd.Process.ToList();
+                    foreach (Process pro in processes)
                     {
-                        Process process = new Process(reader);
-                        result.Add(process);
+                        pro.Recettes = RecetteService.GetListRecetteFromProcessId(pro.Id);
+                        pro.Options = OptionsService.GetAllOptionsFromTableId(pro.Id, "Id" + pro.GetType().Name);
+                        result.Add(pro);
                     }
-                    reader.Close();
                 }
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+            }
             return result;
         }
 
-        public bool InsertProcess()
+        public bool Insert()
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    bdd.Process.Add(new DataBase.Process()
+                    bdd.Process.Add(new DataService.Process()
                     {
                         Nom = "new_Process"
                     });
@@ -53,14 +56,14 @@ namespace AcoreApplication.Model
             }
         }
 
-        public bool UpdateProcess(Process process)
+        public bool Update(Process process)
         {
             try
             {
-                using (var bdd = new DataBase.AcoreDBEntities())
+                using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    List<DataBase.Process> pro = bdd.Process.ToList();
-                    DataBase.Process processToUpdate = bdd.Process.FirstOrDefault(processFound => processFound.Id == process.Id);
+                    List<DataService.Process> pro = bdd.Process.ToList();
+                    DataService.Process processToUpdate = bdd.Process.FirstOrDefault(processFound => processFound.Id == process.Id);
                     if (processToUpdate != null)
                     {
                         processToUpdate.Nom = process.Nom;
@@ -80,7 +83,7 @@ namespace AcoreApplication.Model
             }
         }
 
-        public bool DeleteProcess(Process process)
+        public bool Delete(Process process)
         {
             throw new NotImplementedException();
         }
