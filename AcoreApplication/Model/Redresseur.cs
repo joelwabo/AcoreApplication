@@ -404,7 +404,14 @@ namespace AcoreApplication.Model
                     EtatImageSource = "../Resources/liasonPas.png";
                     break;
                 case MODES.Supervision:
-                    EtatImageSource = "../Resources/liasonPas.png";
+                    if (onOff)
+                    {
+                        EtatImageSource = "../Resources/supervision.png";
+                    }
+                    else
+                    {
+                        EtatImageSource = "../Resources/supervisionPas.png";
+                    }
                     break;
             }
             
@@ -425,7 +432,7 @@ namespace AcoreApplication.Model
             variable = valeur;
             if (nomPropriete == "Etat") {
                 switch (this.Etat)
-                {/*
+                {
                     case MODES.LocalManuel:
                         if (onOff)
                         {
@@ -460,9 +467,15 @@ namespace AcoreApplication.Model
                         EtatImageSource = "../Resources/liasonPas.png";
                         break;
                     case MODES.Supervision:
-                        EtatImageSource = "../Resources/liasonPas.png";
+                        if (onOff)
+                        {
+                            EtatImageSource = "../Resources/supervision.png";
+                        }
+                        else
+                        {
+                            EtatImageSource = "../Resources/supervisionPas.png";
+                        }
                         break;
-                        */
                 }
             }
             RaisePropertyChanged(nomPropriete);
