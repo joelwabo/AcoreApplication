@@ -117,7 +117,7 @@ namespace AcoreApplication.DataService
                 ClientTcp.Connect(IpAdresse, Cst_PortModbus); 
                 var factory = new ModbusFactory();
                 ModBusMaster = factory.CreateMaster(ClientTcp);
-                DeleteUnexistingGroupe();
+                //DeleteUnexistingGroupe();
                 Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
                 foreach (Model.Redresseur redresseur in Redresseurs)
                     redresseur.ModBusMaster = ModBusMaster;
