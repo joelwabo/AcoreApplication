@@ -45,6 +45,13 @@ namespace AcoreApplication.DataService
 
         #region METHODES
 
+        public void Reload()
+        {
+            Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
+            foreach (Model.Redresseur redresseur in Redresseurs)
+                redresseur.ModBusMaster = ModBusMaster;
+        }
+
         private void ModbusPooling(Object stateInfo)
         {
             while (true)

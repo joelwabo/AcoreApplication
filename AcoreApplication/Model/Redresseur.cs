@@ -563,12 +563,15 @@ namespace AcoreApplication.Model
                         case MODES.Supervision:
                             break;
                     }
-                    tempData.IdHistorique = Historique.Id;
-                    tempData.LectureA = LectureA;
-                    tempData.LectureV = LectureV;
-                    tempData.ConsigneV = ConsigneV;
-                    tempData.ConsigneA = ConsigneA;
-                    Historique.HistoriqueData.Add(tempData);
+                    if (tempData.Historique != null)
+                    {
+                        tempData.IdHistorique = Historique.Id;
+                        tempData.LectureA = LectureA;
+                        tempData.LectureV = LectureV;
+                        tempData.ConsigneV = ConsigneV;
+                        tempData.ConsigneA = ConsigneA;
+                        Historique.HistoriqueData.Add(tempData);
+                    }
                 }
                 Thread.Sleep(Cst_SleepTime/5);
             }

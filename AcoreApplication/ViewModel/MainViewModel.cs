@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using System.Linq;
 using GalaSoft.MvvmLight.Ioc;
+using static AcoreApplication.Model.Constantes;
 
 namespace AcoreApplication.ViewModel
 {
@@ -29,12 +30,12 @@ namespace AcoreApplication.ViewModel
         public ICommand EditingSegmentCommand { get; set; }
         public ICommand EditingRecetteCommand { get; set; }
         public ICommand EditingProcessCommand { get; set; }
-        public ICommand ValideButton { get; set; }
         public ICommand AddingProcessCommand { get; set; }
         public ICommand AddingSegmentCommand { get; set; }
         public ICommand AddingRecetteCommand { get; set; }
         public ICommand AddingRedresseurCommand { get; set; }
         public ICommand SelectedRecetteChangedCommand { get; set; }
+        public ICommand SelectionChangedTabCommand { get; set; }
         public ICommand ARowEditEnding { get; set; }
 
         private ObservableCollection<Segment> historiqueSelectedSegment = null;
@@ -154,7 +155,7 @@ namespace AcoreApplication.ViewModel
 
 
             ListEtats = new ObservableCollection<AcoreApplication.Model.Constantes.MODES>();
-            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "LocalRecette"));
+            ListEtats.Add(MODES.LocalRecette);
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "LocalManuel"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteManuel"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "Supervision"));
@@ -178,8 +179,18 @@ namespace AcoreApplication.ViewModel
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
             SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedRecetteChanged);
             SelectedHistoriqueChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedHistoriqueChanged);
-            ValideButton = new RelayCommand<Object>(valideButton);
+            SelectionChangedTabCommand = new RelayCommand<SelectionChangedEventArgs>(SelectionChangedTab);
         }
+
+        private void SelectionChangedTab(SelectionChangedEventArgs arg)
+        {
+            if (arg.AddedItems.Count > 0)
+            {
+                if ((arg.AddedItems[0] as TabItem).Header.ToString() == "Historiques")
+                    ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
+            }
+        }
+
         private void ARowEditEndingMethod(SelectedCellsChangedEventArgs arg)
         {
             if (checkPulseVisibility())
@@ -212,6 +223,7 @@ namespace AcoreApplication.ViewModel
             }
             return false;
         }
+
         private bool checkTempoVisibility()
         {
             foreach (Redresseur redresseur in ListRedresseur)
@@ -250,17 +262,7 @@ namespace AcoreApplication.ViewModel
             arg.NewItem = new Recette(ProcessSelected.Id);
             SimpleIoc.Default.GetInstance<IRecetteService>().Insert(arg.NewItem as Recette);
         }
-
-        private void valideButton(Object obj)
-        {
-            ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
-            ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
-            ListRedresseur = new ObservableCollection<Redresseur>();
-            foreach (DataService.Automate automate in ListAutomate)
-                foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
-                    ListRedresseur.Add(redresseur);
-        }
-
+        
         private void EditingProcess(DataGridRowEditEndingEventArgs arg)
         {
             DataService.Process process = arg.Row.Item as DataService.Process;
@@ -272,6 +274,14 @@ namespace AcoreApplication.ViewModel
             Segment segment = arg.Row.Item as Segment;
             SimpleIoc.Default.GetInstance<ISegmentService>().Update(segment);
             Messenger.Default.Send(RecetteSelected.Segments);
+
+            ListRedresseur = new ObservableCollection<Redresseur>();
+            foreach (DataService.Automate automate in ListAutomate)
+            {
+                automate.Reload();
+                foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
+                    ListRedresseur.Add(redresseur);
+            }
         }
 
         private void EditingRecette(DataGridRowEditEndingEventArgs arg)
