@@ -48,7 +48,9 @@
                             <DataGridTextColumn Header="Temp °C" Binding="{Binding Temperature}"/>
                             <DataGridTextColumn Header="{Binding Counter, Source={StaticResource LanguagesRes}}" Binding="{Binding CompteurAH}"/>
                             <DataGridCheckBoxColumn Header="ON/OFF" Binding="{Binding OnOff, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="{Binding State, Source={StaticResource LanguagesRes}}" Binding="{Binding Etat, Mode=TwoWay}"/>
+                            <DataGridComboBoxColumn Header="{Binding State, Source={StaticResource LanguagesRes}}"  
+                        SelectedItemBinding="{Binding Etat, Mode=TwoWay}" 
+                        ItemsSource="{Binding Source={x:Reference frameworkElement},  Path=DataContext.ListEtats}" />
                             <DataGridTextColumn Header="{Binding Type, Source={StaticResource LanguagesRes}}" Binding="{Binding Type, Mode=TwoWay}"/>
                             <DataGridCheckBoxColumn Header="Pulsé" Binding="{Binding Pulse, Mode=TwoWay}"/>
                             <DataGridTextColumn Header="Ton ms" Binding="{Binding TempsOn, Mode=TwoWay}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}"/>
@@ -59,6 +61,7 @@
                             <DataGridCheckBoxColumn Header="{Binding Ramp, Source={StaticResource LanguagesRes}}" Binding="{Binding Rampe, Mode=TwoWay}"/>
                             <DataGridTextColumn Header="Durée Rampe" Binding="{Binding DureeRampe, Mode=TwoWay}"/>
                             <DataGridTextColumn Header="Calibre " Binding="{Binding CalibreAH, Mode=TwoWay}"/>
+                            
                         </DataGrid.Columns>
                     </DataGrid>
                     <Grid Background="#FFFCFCFC" Margin="10,304.4,10,397.2">

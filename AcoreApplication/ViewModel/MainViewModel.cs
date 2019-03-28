@@ -103,6 +103,14 @@ namespace AcoreApplication.ViewModel
             set { NotifyPropertyChanged(ref imageSource, value); }
         }
 
+        private ObservableCollection<AcoreApplication.Model.Constantes.MODES> listEtats;
+        public ObservableCollection<AcoreApplication.Model.Constantes.MODES> ListEtats
+
+        {
+            get { return listEtats; }
+            set { NotifyPropertyChanged(ref listEtats, value); }
+        }
+
         #endregion
 
         #region Methode
@@ -141,7 +149,14 @@ namespace AcoreApplication.ViewModel
                     foreach (Historique historique in redresseur.Historiques)
                         ListHistorique.Add(historique);
                 }
-            
+
+            ListEtats = new ObservableCollection<AcoreApplication.Model.Constantes.MODES>();
+            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "LocalRecette"));
+            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "LocalManuel"));
+            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteManuel"));
+            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "Supervision"));
+            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteRecette"));
+
 
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
             SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(RecetteChangedCommand);
