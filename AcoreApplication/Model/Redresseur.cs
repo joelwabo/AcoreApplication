@@ -371,19 +371,40 @@ namespace AcoreApplication.Model
             switch (Etat)
             {
                 case MODES.LocalManuel:
-                    EtatImageSource = "../Resources/liasonOkLocal.png";
+                    if (onOff)
+                    {
+                        EtatImageSource = "../Resources/liasonOkLocal.png";
+                    }
+                    else
+                    {
+                        EtatImageSource = "../Resources/liasonPas.png";
+                    }
                     break;
                 case MODES.LocalRecette:
-                    EtatImageSource = "../Resources/liasonOkRecette.png";
+                    if (onOff)
+                    {
+                        EtatImageSource = "../Resources/liasonOkRecette.png";
+                    }
+                    else
+                    {
+                        EtatImageSource = "../Resources/liasonPas.png";
+                    }
                     break;
                 case MODES.RemoteManuel:
-                    EtatImageSource = "../Resources/liasonOkRemote.png";
+                    if (onOff)
+                    {
+                        EtatImageSource = "../Resources/liasonOkRemote.png";
+                    }
+                    else
+                    {
+                        EtatImageSource = "../Resources/liasonPas.png";
+                    }
                     break;
                 case MODES.RemoteRecette:
                     EtatImageSource = "../Resources/liasonPas.png";
                     break;
                 case MODES.Supervision:
-                    EtatImageSource = "../Resources/supervision.png";
+                    EtatImageSource = "../Resources/liasonPas.png";
                     break;
             }
             
@@ -404,22 +425,44 @@ namespace AcoreApplication.Model
             variable = valeur;
             if (nomPropriete == "Etat") {
                 switch (this.Etat)
-                {
+                {/*
                     case MODES.LocalManuel:
-                        EtatImageSource = "../Resources/liasonOkLocal.png";
+                        if (onOff)
+                        {
+                            EtatImageSource = "../Resources/liasonOkLocal.png";
+                        }
+                        else
+                        {
+                            EtatImageSource = "../Resources/liasonPas.png";
+                        }
                         break;
                     case MODES.LocalRecette:
-                        EtatImageSource = "../Resources/liasonOkRecette.png";
+                        if (onOff)
+                        {
+                            EtatImageSource = "../Resources/liasonOkRecette.png";
+                        }
+                        else
+                        {
+                            EtatImageSource = "../Resources/liasonPas.png";
+                        }
                         break;
                     case MODES.RemoteManuel:
-                        EtatImageSource = "../Resources/liasonOkRemote.png";
+                        if (onOff)
+                        {
+                            EtatImageSource = "../Resources/liasonOkRemote.png";
+                        }
+                        else
+                        {
+                            EtatImageSource = "../Resources/liasonPas.png";
+                        }
                         break;
                     case MODES.RemoteRecette:
                         EtatImageSource = "../Resources/liasonPas.png";
                         break;
                     case MODES.Supervision:
-                        EtatImageSource = "../Resources/supervision.png";
+                        EtatImageSource = "../Resources/liasonPas.png";
                         break;
+                        */
                 }
             }
             RaisePropertyChanged(nomPropriete);
