@@ -6,10 +6,9 @@ using System.Linq;
 
 namespace AcoreApplication.Model
 {
-    public class AutomateService : IAutomateService
-    {
-        
-        public ObservableCollection<Automate> GetAllData()
+    public class AutomateService 
+    {        
+        public static ObservableCollection<Automate> GetAllData()
         {
             ObservableCollection<Automate> result = new ObservableCollection<Automate>();
             try

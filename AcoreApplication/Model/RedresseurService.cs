@@ -11,15 +11,35 @@ namespace AcoreApplication.Model
 {
     public class RedresseurService : IRedresseurService
     {
-        public bool DeleteRedresseur(Redresseur redresseur)
+        public bool Delete(Redresseur redresseur)
         {
             try
             {
                 using (var bdd = new DataService.AcoreDBEntities())
                 {
-                    string sql = "DELETE From Redresseur  WHERE Id = " + redresseur.Id;
-                    bdd.Redresseur.SqlQuery(sql);
+                    DataService.Redresseur red = bdd.Redresseur.Where(r => r.Id == redresseur.Id).First();
+                    bdd.Redresseur.Remove(red);
                     bdd.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                return false;
+            }
+        }
+
+        public bool Delete(int id)
+        {
+            try
+            {
+                using (var bdd = new DataService.AcoreDBEntities())
+                {
+                    DataService.Redresseur red = bdd.Redresseur.Where(r => r.Id == id).First();
+                    bdd.Redresseur.Remove(red);
+                    bdd.SaveChanges();
+                    List<DataService.Redresseur> red2 = bdd.Redresseur.ToList();
                 }
                 return true;
             }
@@ -49,8 +69,7 @@ namespace AcoreApplication.Model
             return result;
         }
 
-
-        public bool InsertRedresseur()
+        public bool Insert()
         {
             try
             {
@@ -95,7 +114,7 @@ namespace AcoreApplication.Model
             }
         }
 
-        public bool UpdateRedresseur(Redresseur redresseur)
+        public bool Update(Redresseur redresseur)
         {
             try
             {

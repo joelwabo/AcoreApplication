@@ -127,7 +127,7 @@ namespace AcoreApplication.Views
                 foreach (DataService.HistoriqueData data in historique.HistoriqueData)
                 {
                     seriesCollection[0].Values.Add(new ObservablePoint(i, (double)data.ConsigneV));
-                    seriesCollection[1].Values.Add(new ObservablePoint(i, (double)data.ConsineA));
+                    seriesCollection[1].Values.Add(new ObservablePoint(i, (double)data.ConsigneA));
                     i++;
                 }
             i = 0;

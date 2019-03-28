@@ -8,7 +8,7 @@ namespace AcoreApplication.Design
 {
     class DesignProcessService : IProcessService
     {
-        public bool DeleteProcess(Process process)
+        public bool Delete(Process process)
         {
             throw new NotImplementedException();
         }
@@ -28,12 +28,12 @@ namespace AcoreApplication.Design
             return result;
         }
 
-        public bool InsertProcess()
+        public bool Insert()
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateProcess(Process process)
+        public bool Update(Process process)
         {
             throw new NotImplementedException();
         }

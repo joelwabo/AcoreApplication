@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fb160b20abfb4391868edab690c6cbc8" Name="Diagram1" ZoomLevel="86">
+      <Diagram DiagramId="bf258bdcddd8417f851b3fdb9e50dda6" Name="Diagram1" ZoomLevel="75">
         <EntityTypeShape EntityType="DataService.Automate" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DataService.Historique" Width="1.5" PointX="5.25" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DataService.HistoriqueData" Width="1.5" PointX="7.5" PointY="12.375" IsExpanded="true" />

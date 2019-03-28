@@ -68,7 +68,8 @@ namespace AcoreApplication.Views
                 Dot.Margin = LeftSide;
             }
             Redresseur red = (Redresseur)this.DataContext;
-            red.OnOff = Toogled;
+            if(red != null)
+                red.OnOff = Toogled;
         }
     }
 }

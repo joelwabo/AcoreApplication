@@ -147,6 +147,31 @@ namespace AcoreApplication.Model
         {
         }
 
+        public Segment(int idRecette)
+        {
+            IdRecette = idRecette;
+            Nom = "new_seg";
+            Etat = false;
+            Type = TYPEREDRESSEUR.Anodique;
+            Duree = new TimeSpan(0);
+            ConsigneDepartV = 0;
+            ConsigneDepartA = 0;
+            ConsigneArriveeV = 0;
+            ConsigneArriveeA = 0;
+            TempsRestant = new TimeSpan(0);
+            Pulse = false;
+            CompteurAH = 0;
+            Temporisation = false;
+            TempsOn = new TimeSpan(0);
+            TempsOff = new TimeSpan(0);
+            AH = false;
+            //CompteurAH = 0,
+            CalibreAH = CALIBRE.A_H;
+            Rampe = false;
+            DureeRampe = new TimeSpan(0);
+            Options = new ObservableCollection<DataService.Options>();
+        }
+
         public Segment(SqlDataReader reader)
         {
             Id = (int)reader["Id"];

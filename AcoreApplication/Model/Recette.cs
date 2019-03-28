@@ -75,6 +75,16 @@ namespace AcoreApplication.Model
         {
 
         }
+        public Recette(int idPro)
+        {
+            IdProcess = idPro;
+            Nom = "new_recette";
+            Cyclage = 0;
+            SegCours = 0;
+            TempsRestant = new TimeSpan(0);
+            Segments = new ObservableCollection<Segment>();
+            Options = new ObservableCollection<DataService.Options>();
+        }
         public Recette(DataService.Recette rec)
         {
             Id = rec.Id;

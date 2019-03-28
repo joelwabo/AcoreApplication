@@ -9,12 +9,12 @@ namespace AcoreApplication.Model
     public class SegmentService : ISegmentService
     {
 
-        public bool DeleteSegment(Segment segment)
+        public bool Delete(Segment segment)
         {
             throw new NotImplementedException();
         }
 
-        public bool InsertSegment()
+        public bool Insert(Segment segment)
         {
             try
             {
@@ -22,30 +22,30 @@ namespace AcoreApplication.Model
                 {
                     bdd.Segment.Add(new DataService.Segment()
                     {
-                        IdRecette = 1,
-                        Nom = "new_seg",
-                        Etat = false,
-                        Type = "Anodique",
-                        Duree = new TimeSpan(0),
-                        ConsigneDepartV = 0,
-                        ConsigneDepartA = 0,
-                        ConsigneArriveeV = 0,
-                        ConsigneArriveeA = 0,
-                        TempsRestant = new TimeSpan(0),
-                        Pulse = false,
-                        CompteurAH = 0,
-                        Temporisation = false,
-                        TempsOn = new TimeSpan(0),
-                        TempsOff = new TimeSpan(0),
-                        AH = false,
-                        //CompteurAH = 0,
-                        CalibreAH = "A_H",
-                        Rampe = false,
-                        DureeRampe = new TimeSpan(0)
+                        IdRecette = segment.IdRecette,
+                        Nom = segment.Nom,
+                        Etat = segment.Etat,
+                        Type = segment.Type.ToString(),
+                        Duree = segment.Duree,
+                        ConsigneDepartV = segment.ConsigneDepartV,
+                        ConsigneDepartA = segment.ConsigneDepartA,
+                        ConsigneArriveeV = segment.ConsigneArriveeV,
+                        ConsigneArriveeA = segment.ConsigneArriveeA,
+                        TempsRestant = segment.TempsRestant,
+                        Pulse = segment.Pulse,
+                        CompteurAH = segment.CompteurAH,
+                        Temporisation = segment.Temporisation,
+                        TempsOn = segment.TempsOn,
+                        TempsOff = segment.TempsOff,
+                        AH = segment.AH,
+                        //CompteurAH = CompteurAH,
+                        CalibreAH = segment.CalibreAH.ToString(),
+                        Rampe = segment.Rampe,
+                        DureeRampe = segment.DureeRampe
                     });
                     bdd.SaveChanges();
+                    return true;
                 }
-                return true;
             }
             catch (Exception e)
             {
@@ -54,7 +54,7 @@ namespace AcoreApplication.Model
             }
         }
 
-        public bool UpdateSegment(Segment segment)
+        public bool Update(Segment segment)
         {
             try
             {

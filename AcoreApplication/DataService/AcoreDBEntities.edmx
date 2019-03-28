@@ -33,7 +33,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdHistorique" Type="int" Nullable="false" />
           <Property Name="ConsigneV" Type="int" />
-          <Property Name="ConsineA" Type="int" />
+          <Property Name="ConsigneA" Type="int" />
           <Property Name="LectureV" Type="int" />
           <Property Name="LectureA" Type="int" />
         </EntityType>
@@ -411,7 +411,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdHistorique" Type="Int32" Nullable="false" />
           <Property Name="ConsigneV" Type="Int32" />
-          <Property Name="ConsineA" Type="Int32" />
+          <Property Name="ConsigneA" Type="Int32" />
           <Property Name="LectureV" Type="Int32" />
           <Property Name="LectureA" Type="Int32" />
           <NavigationProperty Name="Historique" Relationship="Self.HistoriqueData_Historique" FromRole="HistoriqueData" ToRole="Historique" />
@@ -807,7 +807,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IdHistorique" ColumnName="IdHistorique" />
                 <ScalarProperty Name="ConsigneV" ColumnName="ConsigneV" />
-                <ScalarProperty Name="ConsineA" ColumnName="ConsineA" />
+                <ScalarProperty Name="ConsigneA" ColumnName="ConsigneA" />
                 <ScalarProperty Name="LectureV" ColumnName="LectureV" />
                 <ScalarProperty Name="LectureA" ColumnName="LectureA" />
               </MappingFragment>

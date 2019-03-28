@@ -10,8 +10,9 @@ namespace AcoreApplication.Model
     public interface IRedresseurService
     {
         ObservableCollection<Redresseur> GetAllData();
-        bool InsertRedresseur();
-        bool DeleteRedresseur(Redresseur redresseur);
-        bool UpdateRedresseur(Redresseur redresseur);
+        bool Insert();
+        bool Delete(int id);
+        bool Delete(Redresseur redresseur);
+        bool Update(Redresseur redresseur);
     }
 }

@@ -6,8 +6,8 @@ namespace AcoreApplication.Model
     public interface IProcessService
     {
         ObservableCollection<Process> GetAllData();
-        bool InsertProcess();
-        bool DeleteProcess(Process process);
-        bool UpdateProcess(Process process);
+        bool Insert();
+        bool Delete(Process process);
+        bool Update(Process process);
     }
 }

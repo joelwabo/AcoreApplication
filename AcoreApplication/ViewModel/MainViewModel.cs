@@ -25,14 +25,15 @@ namespace AcoreApplication.ViewModel
         public ICommand SelectedProcessChangedCommand { get; set; }
         public ICommand SelectedHistoriqueChangedCommand { get; set; }
         public ICommand RegistreLoadingRowCommand { get; set; }
-        public ICommand SegmentLoadingRowCommand { get; set; }
-        public ICommand SegmentCellEditCommand { get; set; }
-        public ICommand AddingNewProcessCommand { get; set; }
+        public ICommand LoadingSegmentCommand { get; set; }
+        public ICommand EditingSegmentCommand { get; set; }
+        public ICommand EditingRecetteCommand { get; set; }
         public ICommand EditingProcessCommand { get; set; }
         public ICommand ValideButton { get; set; }
-        public ICommand AddingNewSegmentCommand { get; set; }
-        public ICommand AddingNewRecetteCommand { get; set; }
-        public ICommand AddingNewRedresseurCommand { get; set; }
+        public ICommand AddingProcessCommand { get; set; }
+        public ICommand AddingSegmentCommand { get; set; }
+        public ICommand AddingRecetteCommand { get; set; }
+        public ICommand AddingRedresseurCommand { get; set; }
         public ICommand SelectedRecetteChangedCommand { get; set; }
 
         private ObservableCollection<Segment> historiqueSelectedSegment = null;
@@ -41,19 +42,28 @@ namespace AcoreApplication.ViewModel
             get { return historiqueSelectedSegment; }
             set { NotifyPropertyChanged(ref historiqueSelectedSegment, value); }
         }
+
         private Redresseur redresseurSelected = null;
         public Redresseur RedresseurSelected
         {
             get { return redresseurSelected; }
             set { NotifyPropertyChanged(ref redresseurSelected, value); }
         }
+
+        private DataService.Process processSelected = null;
+        public DataService.Process ProcessSelected
+        {
+            get { return processSelected; }
+            set { NotifyPropertyChanged(ref processSelected, value); }
+        }
+
         private Recette recetteSelected = null;
         public Recette RecetteSelected
         {
             get { return recetteSelected; }
             set { NotifyPropertyChanged(ref recetteSelected, value); }
         }
-        
+
         private ObservableCollection<DataService.Automate> listAutomate;
         public ObservableCollection<DataService.Automate> ListAutomate
         {
@@ -94,9 +104,9 @@ namespace AcoreApplication.ViewModel
             return true;
         }
                 
-        public MainViewModel(IAutomateService _automateService)
+        public MainViewModel(IProcessService _processService)
         {
-            ListAutomate = _automateService.GetAllData();
+            ListAutomate = AutomateService.GetAllData();
             ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
             ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
             ListRedresseur = new ObservableCollection<Redresseur>();
@@ -104,95 +114,88 @@ namespace AcoreApplication.ViewModel
                 foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
                     ListRedresseur.Add(redresseur);
 
+            RedresseurSelected = null;
+            ProcessSelected = ListProcess[0];
+            RecetteSelected = ProcessSelected.Recettes[0];
+            historiqueSelectedSegment = null;
+
+            AddingProcessCommand = new RelayCommand<Object>(AddingProcess);
+            AddingRecetteCommand = new RelayCommand<AddingNewItemEventArgs>(AddingRecette);
+            AddingSegmentCommand = new RelayCommand<AddingNewItemEventArgs>(AddingSegment);
+            AddingRedresseurCommand = new RelayCommand<AddingNewItemEventArgs>(AddingRedresseur);
+            LoadingSegmentCommand = new RelayCommand<DataGridRowEventArgs>(LoadingSegment);
+            EditingSegmentCommand = new RelayCommand<DataGridRowEditEndingEventArgs>(EditingSegment);
+            EditingRecetteCommand = new RelayCommand<DataGridRowEditEndingEventArgs>(EditingRecette);
+            EditingProcessCommand = new RelayCommand<DataGridRowEditEndingEventArgs>(EditingProcess);
+            RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
             SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedRecetteChanged);
             SelectedHistoriqueChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedHistoriqueChanged);
-            SegmentLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(SegmentLoadingRow);
-            RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
-            SegmentCellEditCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(CellEditCommand);
-            AddingNewProcessCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewProcess);
-            AddingNewRecetteCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewRecette);
-            AddingNewSegmentCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewSegment);
-            EditingProcessCommand = new RelayCommand<DataGridCellEditEndingEventArgs>(EditingProcess);
-            AddingNewRedresseurCommand = new RelayCommand<AddingNewItemEventArgs>(AddingNewRedresseur);
             ValideButton = new RelayCommand<Object>(valideButton);
-            RecetteSelected = ListProcess[0].Recettes[0];
-            RedresseurSelected = ListRedresseur[0];
-            historiqueSelectedSegment = null ;
-        }              
+        }
 
-        private void AddingNewRedresseur(AddingNewItemEventArgs arg)
+        private void AddingProcess(Object obj)
+        {
+            SimpleIoc.Default.GetInstance<IProcessService>().Insert();
+            ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
+        }
+
+        private void AddingRedresseur(AddingNewItemEventArgs arg)
         {
             foreach (Redresseur redresseur in ListRedresseur)
-                SimpleIoc.Default.GetInstance<IRedresseurService>().UpdateRedresseur(redresseur);
+                SimpleIoc.Default.GetInstance<IRedresseurService>().Update(redresseur);
 
-            SimpleIoc.Default.GetInstance<IRedresseurService>().InsertRedresseur();
-            ListAutomate = SimpleIoc.Default.GetInstance<IAutomateService>().GetAllData();
+            SimpleIoc.Default.GetInstance<IRedresseurService>().Insert();
+            ListAutomate = AutomateService.GetAllData();
         }
 
-        private void AddingNewSegment(AddingNewItemEventArgs arg)
+        private void AddingSegment(AddingNewItemEventArgs arg)
         {
-            foreach (DataService.Process process in ListProcess)
-                foreach (Recette rec in process.Recettes)
-                    foreach (Segment seg in rec.Segments)
-                        SimpleIoc.Default.GetInstance<ISegmentService>().UpdateSegment(seg);
-
-            SimpleIoc.Default.GetInstance<ISegmentService>().InsertSegment();
+            arg.NewItem = new Segment(RecetteSelected.Id);
+            SimpleIoc.Default.GetInstance<ISegmentService>().Insert(arg.NewItem as Segment);
         }
 
-        private void AddingNewRecette(AddingNewItemEventArgs arg)
+        private void AddingRecette(AddingNewItemEventArgs arg)
         {
-            foreach (DataService.Process process in ListProcess)
-                foreach (Recette rec in process.Recettes)
-                    SimpleIoc.Default.GetInstance<IRecetteService>().UpdateRecette(rec);
-
-            SimpleIoc.Default.GetInstance<IRecetteService>().InsertRecette();
-            ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
+            arg.NewItem = new Recette(ProcessSelected.Id);
+            SimpleIoc.Default.GetInstance<IRecetteService>().Insert(arg.NewItem as Recette);
         }
 
         private void valideButton(Object obj)
         {
-            foreach (DataService.Process process in ListProcess)
-            {
-                SimpleIoc.Default.GetInstance<IProcessService>().UpdateProcess(process);
-                if (process.Recettes != null)
-                    foreach (Recette rec in process.Recettes)
-                    {
-                        SimpleIoc.Default.GetInstance<IRecetteService>().UpdateRecette(rec);
-                        if (rec.Segments != null)
-                            foreach (Segment seg in rec.Segments)
-                                SimpleIoc.Default.GetInstance<ISegmentService>().UpdateSegment(seg);
-                    }
-            }
             ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
             ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
-            ListAutomate = SimpleIoc.Default.GetInstance<IAutomateService>().GetAllData();
+            ListRedresseur = new ObservableCollection<Redresseur>();
+            foreach (DataService.Automate automate in ListAutomate)
+                foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
+                    ListRedresseur.Add(redresseur);
         }
 
-        private void EditingProcess(DataGridCellEditEndingEventArgs arg)
+        private void EditingProcess(DataGridRowEditEndingEventArgs arg)
         {
+            DataService.Process process = arg.Row.Item as DataService.Process;
+            SimpleIoc.Default.GetInstance<IProcessService>().Update(process);
         }
 
-        private void AddingNewProcess(AddingNewItemEventArgs arg)
+        private void EditingSegment(DataGridRowEditEndingEventArgs arg)
         {
-            foreach (DataService.Process process in ListProcess)
-                SimpleIoc.Default.GetInstance<IProcessService>().UpdateProcess(process);
-
-            SimpleIoc.Default.GetInstance<IProcessService>().InsertProcess();
-            ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
+            Segment segment = arg.Row.Item as Segment;
+            SimpleIoc.Default.GetInstance<ISegmentService>().Update(segment);
+            Messenger.Default.Send(RecetteSelected.Segments);
         }
 
+        private void EditingRecette(DataGridRowEditEndingEventArgs arg)
+        {
+            Recette recette = arg.Row.Item as Recette;
+            SimpleIoc.Default.GetInstance<IRecetteService>().Update(recette);
+        }
+        
         private void RegistreLoadingRow(DataGridRowEventArgs arg)
         {
             Messenger.Default.Send(RedresseurSelected.Registres);
         }
 
-        private void SegmentLoadingRow(DataGridRowEventArgs arg)
-        {
-            Messenger.Default.Send(RecetteSelected.Segments);
-        }
-
-        private void CellEditCommand(DataGridCellEditEndingEventArgs arg)
+        private void LoadingSegment(DataGridRowEventArgs arg)
         {
             Messenger.Default.Send(RecetteSelected.Segments);
         }
@@ -202,7 +205,7 @@ namespace AcoreApplication.ViewModel
             if(arg.AddedItems.Count>0)
             {
                 DataService.Process process = arg.AddedItems[0] as DataService.Process;
-                Messenger.Default.Send(process);
+                ProcessSelected = process;
             }
         }
 

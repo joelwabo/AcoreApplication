@@ -35,7 +35,7 @@ namespace AcoreApplication.Model
             return result;
         }
 
-        public bool InsertProcess()
+        public bool Insert()
         {
             try
             {
@@ -56,7 +56,7 @@ namespace AcoreApplication.Model
             }
         }
 
-        public bool UpdateProcess(Process process)
+        public bool Update(Process process)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace AcoreApplication.Model
             }
         }
 
-        public bool DeleteProcess(Process process)
+        public bool Delete(Process process)
         {
             throw new NotImplementedException();
         }

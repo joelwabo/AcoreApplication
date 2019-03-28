@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2019-03-25 13:18:08.808
+-- Last modification date: 2019-03-27 16:23:48.516
 
 -- tables
 -- Table: Automate
@@ -15,7 +15,7 @@ CREATE TABLE Historique (
     DateDebut datetime  NOT NULL DEFAULT 0,
     IdUtilisateur int  NOT NULL DEFAULT 1,
     IdRedresseur int  NOT NULL,
-    IdRecette int  NOT NULL,
+    IdRecette int  NULL,
     DateFin datetime  NULL,
     OrdreFabrication nvarchar(50)  NULL,
     EtatFin nvarchar(50)  NULL,
@@ -28,7 +28,7 @@ CREATE TABLE HistoriqueData (
     Id int  NOT NULL IDENTITY,
     IdHistorique int  NOT NULL,
     ConsigneV int  NULL DEFAULT 0,
-    ConsineA int  NULL DEFAULT 0,
+    ConsigneA int  NULL DEFAULT 0,
     LectureV int  NULL DEFAULT 0,
     LectureA int  NULL DEFAULT 0,
     CONSTRAINT HistoriqueData_pk PRIMARY KEY  (Id)
@@ -228,7 +228,7 @@ INSERT INTO [dbo].[Segment] ([IdRecette], [Nom], [Etat], [Type], [Duree], [Consi
 INSERT INTO [dbo].[Segment] ([IdRecette], [Nom], [Etat], [Type], [Duree], [ConsigneDepartV], [ConsigneDepartA], [ConsigneArriveeV], [ConsigneArriveeA], [TempsRestant], [Pulse], [Temporisation], [TempsOn], [TempsOff], [AH], [CompteurAH], [CalibreAH], [Rampe], [DureeRampe]) VALUES (2, N'Seg1', 0,  N'Anodique', N'0:0:10', 50, 10, 10, 0, N'0:0:10', 0, 0, N'0:0:10', N'0:0:10', 0, 0, N'A_H', 0, N'0:0:10')
 INSERT INTO [dbo].[Segment] ([IdRecette], [Nom], [Etat], [Type], [Duree], [ConsigneDepartV], [ConsigneDepartA], [ConsigneArriveeV], [ConsigneArriveeA], [TempsRestant], [Pulse], [Temporisation], [TempsOn], [TempsOff], [AH], [CompteurAH], [CalibreAH], [Rampe], [DureeRampe]) VALUES (3, N'Seg1', 0,  N'Cathodique', N'0:0:10', 50, 10, 10, 0, N'0:0:10', 0, 0, N'0:0:10', N'0:0:10', 0, 0, N'A_H', 0, N'0:0:10')
 
-INSERT INTO [dbo].[Automate] ([IpAdresse],  [Mode]) VALUES (N'192.168.1.111', N'Connected')
+INSERT INTO [dbo].[Automate] ([IpAdresse],  [Mode]) VALUES (N'192.168.1.111', N'Disconnected')
 INSERT INTO [dbo].[Automate] ([IpAdresse],  [Mode]) VALUES (N'192.168.1.112',  N'Disconnected')
 
 INSERT INTO [dbo].[Utilisateur] ([Nom], [Mdp]) VALUES ( N'Ayan', N'laptop')
@@ -243,7 +243,7 @@ INSERT INTO [dbo].[Redresseur] ([IdProcess], [IpAdresse], [OnOff], [MiseSousTens
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'MiseSousTension', N'CoilRegister', N'Bit', 2230, 2230, 1)
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'RetourOnOff', N'CoilRegister', N'Bit', 2240, 2340, 1)
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'Defaut', N'CoilRegister', N'Bit', 2250, 2250, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'ExistanceGroupe', N'CoilRegister', N'Bit', 2280, 2280, 1)
+INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'ExistenceGroupe', N'CoilRegister', N'Bit', 2280, 2280, 1)
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'ConsigneV', N'HoldingRegister', N'Int', 2290, 2290, 1)
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'ConsigneA', N'HoldingRegister', N'Int', 2300, 2300, 1)
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'LectureV', N'HoldingRegister', N'Int', 2310, 2310, 1)
@@ -251,28 +251,6 @@ INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [Adre
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'Mode', N'HoldingRegister', N'int', 2350, 2350, 1)
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'OnOff', N'CoilRegister', N'Bit', 2300, 2300, 1)
 INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 1, N'Nom', N'HoldingRegister', N'int', 2400, 2404, 5)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'MiseSousTension', N'CoilRegister', N'Bit', 2231, 2231, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'RetourOnOff', N'CoilRegister', N'Bit', 2241, 2341, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'Defaut', N'CoilRegister', N'Bit', 2251, 2251, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'ExistanceGroupe', N'CoilRegister', N'Bit', 2281, 2281, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'ConsigneV', N'HoldingRegister', N'Int', 2291, 2291, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'ConsigneA', N'HoldingRegister', N'Int', 2301, 2301, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'LectureV', N'HoldingRegister', N'Int', 2311, 2311, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'LectureA', N'HoldingRegister', N'Int', 2321, 2321, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'Mode', N'HoldingRegister', N'int', 2351, 2351, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'OnOff', N'CoilRegister', N'Bit', 2301, 2301, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 2, N'Nom', N'HoldingRegister', N'int', 2405, 249, 5)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'MiseSousTension', N'CoilRegister', N'Bit', 2232, 2232, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'RetourOnOff', N'CoilRegister', N'Bit', 2242, 2342, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'Defaut', N'CoilRegister', N'Bit', 2252, 2252, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'ExistanceGroupe', N'CoilRegister', N'Bit', 2282, 2282, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'ConsigneV', N'HoldingRegister', N'Int', 2292, 2292, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'ConsigneA', N'HoldingRegister', N'Int', 2302, 2302, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'LectureV', N'HoldingRegister', N'Int', 2312, 2312, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'LectureA', N'HoldingRegister', N'Int', 2322, 2322, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'Mode', N'HoldingRegister', N'int', 2352, 2352, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'OnOff', N'CoilRegister', N'Bit', 2302, 2302, 1)
-INSERT INTO [dbo].[Registre] ([IdRedresseur], [Nom], [TypeModbus], [Type], [AdresseDebut], [AdresseFin], [NumBit]) VALUES ( 3, N'Nom', N'HoldingRegister', N'int', 2410, 2414, 5)
 
 INSERT INTO [dbo].[Options] ([IdRedresseur], [IdSegment], [IdRecette], [IdProcess], [nom]) VALUES ( 1, 1, 1, 1, N'Statique')
 INSERT INTO [dbo].[Options] ([IdRedresseur], [IdSegment], [IdRecette], [IdProcess], [nom]) VALUES ( 1, 1, 1, 1, N'Pulse')
@@ -293,7 +271,7 @@ INSERT INTO [dbo].[Options] ([IdRedresseur], [IdSegment], [IdRecette], [IdProces
 
 INSERT INTO [dbo].[Utilisateur] ([Nom], [Mdp]) VALUES ( N'Ayan', N'laptop')
 
-INSERT INTO [dbo].[Historique] ([DateDebut], [IdRedresseur], [IdUtilisateur], [IdRecette], [DateFin], [OrdreFabrication], [EtatFin],  [Type]) VALUES ( N'2019-01-03 12:00:00', 1, 1, 1, N'2019-02-03 12:00:00', N'000567', N'Stopped by default', N'Manuel')
+INSERT INTO [dbo].[Historique] ([DateDebut], [IdRedresseur], [IdUtilisateur], [IdRecette], [DateFin], [OrdreFabrication], [EtatFin],  [Type]) VALUES ( N'2019-01-03 12:00:00', 1, 1, 1, N'2019-02-03 12:00:00', N'000567', N'Stopped_by_user', N'Manuel')
 
 INSERT INTO [dbo].[HistoriqueData] ([IdHistorique]) VALUES ( 1);
 

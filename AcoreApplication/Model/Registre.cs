@@ -16,16 +16,8 @@ namespace AcoreApplication.DataService
         #endregion 
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Registre(SqlDataReader reader)
+        public Registre()
         {
-            Id = (int)reader["Id"];
-            IdRedresseur = (int)reader["IdRedresseur"];
-            Nom = (string)reader["Nom"];
-            Type = reader["Type"].ToString();
-            TypeModbus = (string)reader["TypeModbus"];
-            AdresseDebut = (int)reader["AdresseDebut"];
-            AdresseFin = (int)reader["AdresseFin"];
-            NumBit = (int)reader["NumBit"];
         }
 
         #endregion 
@@ -49,7 +41,7 @@ namespace AcoreApplication.DataService
             }
             return registres;
         }
-
+        
         #endregion
     }
 }

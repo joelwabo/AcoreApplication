@@ -15,6 +15,7 @@ namespace AcoreApplication.DataService
         //public MODES Mode { get; set; }
 
         public ObservableCollection<Model.Redresseur> Redresseurs { get; set; }
+        public ObservableCollection<Registre> Registres { get; set; }
 
         TcpClient ClientTcp { get; set; }
         IModbusMaster ModBusMaster { get; set; }
@@ -26,8 +27,8 @@ namespace AcoreApplication.DataService
 
         public void CreateThread()
         {
-            Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
-
+            Registres = Registre.GetAllRegisterFromRedresseurId(1);
+            Redresseurs = new ObservableCollection<Model.Redresseur>();
             ClientTcp = new TcpClient();
             ModbusPoolingTask = new Thread(ModbusPooling);
             ModbusPoolingTask.Start();
@@ -54,16 +55,8 @@ namespace AcoreApplication.DataService
                     {
                         foreach (Registre registre in redresseur.Registres)
                         {
-                            switch ((REGISTRE)Enum.Parse(typeof(MODES), registre.Nom))
+                            switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
                             {
-                                case REGISTRE.ExistenceGroupe:
-                                    bool[] ExistenceGroupe = redresseur.ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                    if (!ExistenceGroupe[0])
-                                    {
-                                        Redresseurs.Remove(redresseur);
-                                        SimpleIoc.Default.GetInstance<Model.IRedresseurService>().DeleteRedresseur(redresseur);
-                                    }
-                                    break;
                                 case REGISTRE.Defaut:
                                     {
                                         ushort[] Defaut = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
@@ -99,14 +92,33 @@ namespace AcoreApplication.DataService
                 Thread.Sleep(Cst_SleepTime);
             }
         }
-               
+        
+        public void DeleteUnexistingGroupe()
+        {
+            foreach (Registre registre in Registres)
+            {
+                if ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom) == REGISTRE.ExistenceGroupe)
+                {
+                    bool[] ExistenceGroupe = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), 10);
+                    for (int i = 0; i < ExistenceGroupe.Count(); i++)
+                        if (!ExistenceGroupe[i])
+                        {
+                            SimpleIoc.Default.GetInstance<Model.IRedresseurService>().Delete(i+1);
+                        }
+                    break;
+                }
+            }
+        }
+        
         public void Connection()
         {
             try
             {
                 ClientTcp.Connect(IpAdresse, Cst_PortModbus); 
                 var factory = new ModbusFactory();
-                ModBusMaster = factory.CreateMaster(ClientTcp);                   
+                ModBusMaster = factory.CreateMaster(ClientTcp);
+                DeleteUnexistingGroupe();
+                Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
                 foreach (Model.Redresseur redresseur in Redresseurs)
                     redresseur.ModBusMaster = ModBusMaster;
                 Mode = MODES.Connected.ToString();
@@ -129,11 +141,9 @@ namespace AcoreApplication.DataService
             {
                 Mode = MODES.Disconnected.ToString();
                 ModbusPoolingTask.Abort();
-                foreach (Model.Redresseur redresseur in Redresseurs)
-                    redresseur.ModBusMaster.Dispose();
                 ModBusMaster.Dispose();
                 ClientTcp.Close();
-                //SimpleIoc.Default.GetInstance<IAutomateService>().Update();
+                Redresseurs = null;
             }
         }
         #endregion

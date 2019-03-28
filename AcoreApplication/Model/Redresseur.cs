@@ -84,7 +84,7 @@ namespace AcoreApplication.Model
                     if(Historique!=null)
                     {
                         Historique.DateFin = DateTime.Now;
-                        SimpleIoc.Default.GetInstance<IHistoriqueService>().InsertHistorique(Historique);
+                        SimpleIoc.Default.GetInstance<IHistoriqueService>().Insert(Historique);
                         Historique = null;
                     }
                 }
@@ -318,11 +318,6 @@ namespace AcoreApplication.Model
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
-        public Redresseur()
-        {
-
-        }
-
         public Redresseur(DataService.Redresseur red)
         {
             ValuesA = new ChartValues<double> { 0 };
@@ -402,6 +397,10 @@ namespace AcoreApplication.Model
             RedresseurPoolingTask.Start();
         }
 
+        ~Redresseur()
+        {
+            ModBusMaster.Dispose();
+        }
         #endregion
 
         #region METHODES
@@ -462,7 +461,7 @@ namespace AcoreApplication.Model
                     tempData.LectureA = LectureA;
                     tempData.LectureV = LectureV;
                     tempData.ConsigneV = ConsigneV;
-                    tempData.ConsineA = ConsigneA;
+                    tempData.ConsigneA = ConsigneA;
                     Historique.HistoriqueData.Add(tempData);
                 }
                 Thread.Sleep(Cst_SleepTime/5);
@@ -473,7 +472,7 @@ namespace AcoreApplication.Model
         {
             foreach (Registre registre in Registres)
             {
-                switch ((REGISTRE)Enum.Parse(typeof(MODES), registre.Nom))
+                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {
@@ -524,7 +523,7 @@ namespace AcoreApplication.Model
         {
             foreach (Registre registre in Registres)
             {
-                switch ((REGISTRE)Enum.Parse(typeof(MODES), registre.Nom))
+                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {
@@ -608,7 +607,7 @@ namespace AcoreApplication.Model
         {
             foreach (Registre registre in Registres)
             {
-                switch ((REGISTRE)Enum.Parse(typeof(MODES), registre.Nom))
+                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
                 {
                     case REGISTRE.ConsigneA:
                         {

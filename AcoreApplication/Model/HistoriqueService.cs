@@ -31,7 +31,7 @@ namespace AcoreApplication.Model
             return result;
         }
 
-        public bool InsertHistorique(Historique historique)
+        public bool Insert(Historique historique)
         {
             try
             {

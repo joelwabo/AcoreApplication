@@ -17,7 +17,7 @@ namespace AcoreApplication.DataService
         public int Id { get; set; }
         public int IdHistorique { get; set; }
         public Nullable<int> ConsigneV { get; set; }
-        public Nullable<int> ConsineA { get; set; }
+        public Nullable<int> ConsigneA { get; set; }
         public Nullable<int> LectureV { get; set; }
         public Nullable<int> LectureA { get; set; }
     

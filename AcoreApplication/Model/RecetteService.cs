@@ -7,12 +7,12 @@ namespace AcoreApplication.Model
 {
     public class RecetteService : IRecetteService
     {
-        public bool DeleteRecette(Recette recette)
+        public bool Delete(Recette recette)
         {
             throw new NotImplementedException();
         }
 
-        public bool InsertRecette()
+        public bool Insert()
         {
             try
             {
@@ -37,7 +37,32 @@ namespace AcoreApplication.Model
             }
         }
 
-        public bool UpdateRecette(Recette recette)
+        public bool Insert(Recette recette)
+        {
+            try
+            {
+                using (var bdd = new DataService.AcoreDBEntities())
+                {
+                    bdd.Recette.Add(new DataService.Recette()
+                    {
+                        IdProcess = recette.IdProcess,
+                        Nom = recette.Nom,
+                        Cyclage = recette.Cyclage,
+                        SegCours = recette.SegCours,
+                        TempsRestant = recette.TempsRestant
+                    });
+                    bdd.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                return false;
+            }
+        }
+
+        public bool Update(Recette recette)
         {
             try
             {
