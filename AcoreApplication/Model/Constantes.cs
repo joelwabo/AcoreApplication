@@ -5,7 +5,7 @@ namespace AcoreApplication.Model
     public class Constantes
     {
         #region Constante 
-        public const int Cst_SleepTime = 500;
+        public const int Cst_SleepTime = 1000;
         public const int Cst_PortModbus = 502;
         public const int Cst_NbRedresseurs = 1;
         public const int Cst_SlaveNb = 1;

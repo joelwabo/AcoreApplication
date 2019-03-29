@@ -573,7 +573,7 @@ namespace AcoreApplication.Model
                         Historique.HistoriqueData.Add(tempData);
                     }
                 }
-                Thread.Sleep(Cst_SleepTime/5);
+                Thread.Sleep(Cst_SleepTime);
             }
         }
 
