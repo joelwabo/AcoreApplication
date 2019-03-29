@@ -28,7 +28,8 @@ namespace AcoreApplication.DataService
         public void CreateThread()
         {
             Registres = Registre.GetAllRegisterFromRedresseurId(1);
-            Redresseurs = new ObservableCollection<Model.Redresseur>();
+            //Redresseurs = new ObservableCollection<Model.Redresseur>();
+            Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
             ClientTcp = new TcpClient();
             
             ModbusPoolingTask = new Thread(ModbusPooling);
@@ -119,7 +120,7 @@ namespace AcoreApplication.DataService
                 var factory = new ModbusFactory();
                 ModBusMaster = factory.CreateMaster(ClientTcp);
                 //DeleteUnexistingGroupe();
-                Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
+                //Redresseurs = Model.Redresseur.GetAllRedresseurFromAutotameId(IpAdresse);
                 foreach (Model.Redresseur redresseur in Redresseurs)
                     redresseur.ModBusMaster = ModBusMaster;
                 Mode = MODES.Connected.ToString();
