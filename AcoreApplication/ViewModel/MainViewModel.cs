@@ -156,7 +156,7 @@ namespace AcoreApplication.ViewModel
 
             ListEtats = new ObservableCollection<AcoreApplication.Model.Constantes.MODES>();
             ListEtats.Add(MODES.LocalRecette);
-            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "LocalManuel"));
+            ListEtats.Add(MODES.LocalManuel);
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteManuel"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "Supervision"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteRecette"));
@@ -184,11 +184,11 @@ namespace AcoreApplication.ViewModel
 
         private void SelectionChangedTab(SelectionChangedEventArgs arg)
         {
-            if (arg.AddedItems.Count > 0)
+           /* if (arg.AddedItems.Count > 0)
             {
                 if ((arg.AddedItems[0] as TabItem).Header.ToString() == "Historiques")
                     ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
-            }
+            }*/
         }
 
         private void ARowEditEndingMethod(SelectedCellsChangedEventArgs arg)
