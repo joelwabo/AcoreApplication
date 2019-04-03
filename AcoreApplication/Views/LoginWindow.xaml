@@ -43,8 +43,8 @@
                 <ImageBrush ImageSource="../Resources/user.png"/>
             </Ellipse.Fill>
         </Ellipse>
-        <TextBlock HorizontalAlignment="Center" Margin="61.301,10,61.301,0" TextWrapping="Wrap" Text="User name" VerticalAlignment="Top" Background="#FFE2DFE2" FontSize="14" Padding="5,7,7,8" MinWidth="400" Grid.Row="2" Grid.ColumnSpan="2" MinHeight="38"/>
-        <TextBlock HorizontalAlignment="Center" Margin="96.8,60.8,96.8,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Background="#FFE2DFE2" FontSize="14" Padding="5,7,7,8" Grid.Row="2" Grid.ColumnSpan="2" MinWidth="400" MinHeight="38"/>
+        <TextBox HorizontalAlignment="Center" Margin="61.301,10,61.301,0" TextWrapping="Wrap" Text="User name" VerticalAlignment="Top" Background="#FFE2DFE2" FontSize="14" Padding="5,7,7,8" MinWidth="400" Grid.Row="2" Grid.ColumnSpan="2" MinHeight="38"/>
+        <TextBox HorizontalAlignment="Center" Margin="96.8,60.8,96.8,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Background="#FFE2DFE2" FontSize="14" Padding="5,7,7,8" Grid.Row="2" Grid.ColumnSpan="2" MinWidth="400" MinHeight="38"/>
         <Button Content="Register" HorizontalAlignment="Center" Margin="90,23.157,0,23.157" VerticalAlignment="Center" FontSize="14" Grid.Row="3" MinWidth="160" MinHeight="50"/>
         <Button x:Name="LoginBtn" Content="Login" HorizontalAlignment="Center" Margin="0,23.157,90,23.157" VerticalAlignment="Center" FontSize="14" Click="LoginBtn_Clk" Command="{Binding loginButtonCommand}"
                 CommandParameter="{Binding}" Grid.Row="3" Grid.Column="1" MinWidth="160" MinHeight="50"/>
