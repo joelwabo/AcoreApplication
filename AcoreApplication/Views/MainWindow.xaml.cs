@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -44,6 +45,8 @@ namespace AcoreApplication.Views
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
             AcoreApplication.Resources.Lang.Wrapper.ChangeCulture(Thread.CurrentThread.CurrentUICulture);
+
+
         }
 
         private void Spanish_click(object sender, RoutedEventArgs e)
@@ -165,6 +168,33 @@ namespace AcoreApplication.Views
                     i++;
                 }
             this.HistoriqueChart.Series = seriesCollection;
+        }
+
+
+
+        private void DataGrid_MouseRightButtonUp(object sender,
+                                        MouseButtonEventArgs e)
+        {
+            //TODO: Left show down the item
+            //TODO: Right show dropdown
+            //listBox.Items.Add( new TextBox());
+            int i = 1;
+        }
+
+        private void Ton_click(object sender, RoutedEventArgs e)
+        {
+            string headerText = (string)TonContextMenu.Header;
+            if (headerText == "Show Tonms")
+            {
+
+                MachineDataGrid.Columns[12].Visibility = Visibility.Visible;
+                TonContextMenu.Header="Hide Tonms";
+            }
+            else if (headerText == "Hide Tonms")
+            {
+                MachineDataGrid.Columns[12].Visibility = Visibility.Hidden;
+                TonContextMenu.Header = "Show Tonms";
+            }
         }
 
     }

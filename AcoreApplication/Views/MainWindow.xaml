@@ -22,13 +22,13 @@
                 </TabItem.Header>
                 <Grid Background="#FFE5E5E5">
                     <FrameworkElement Name="frameworkElement" />
-                    <DataGrid Name="MachineDataGrid"  ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="202.6" Margin="10,10,0,0" VerticalAlignment="Top" Width="998" CanUserReorderColumns="False">
+                    <DataGrid Name="MachineDataGrid"  SelectedItem="{Binding RedresseurSelected}" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="202.6" Margin="10,10,0,0" VerticalAlignment="Top" Width="998" CanUserReorderColumns="False" MouseRightButtonUp="DataGrid_MouseRightButtonUp">
                         <Interactivity:Interaction.Triggers>
                             <Interactivity:EventTrigger EventName="SelectedCellsChanged" >
                                 <Command:EventToCommand Command="{Binding ARowEditEnding}" PassEventArgsToCommand="True"/>
                             </Interactivity:EventTrigger>
                         </Interactivity:Interaction.Triggers>
-
+                      
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Machine N°" Binding="{Binding Id}"/>
                             <DataGridTemplateColumn Header="Machine Etat" >
@@ -48,31 +48,64 @@
                             <DataGridTextColumn Header="Temp °C" Binding="{Binding Temperature}"/>
                             <DataGridTextColumn Header="{Binding Counter, Source={StaticResource LanguagesRes}}" Binding="{Binding CompteurAH}"/>
                             <DataGridCheckBoxColumn Header="ON/OFF" Binding="{Binding OnOff, Mode=TwoWay}"/>
-                            <DataGridComboBoxColumn Header="{Binding State, Source={StaticResource LanguagesRes}}"
-                        SelectedItemBinding="{Binding Etat, Mode=TwoWay}"
-                        ItemsSource="{Binding Source={x:Reference frameworkElement},  Path=DataContext.ListEtats}" />
-                            <DataGridTextColumn Header="{Binding Type, Source={StaticResource LanguagesRes}}" Binding="{Binding Type, Mode=TwoWay}"/>
-                            <DataGridCheckBoxColumn Header="Pulsé" Binding="{Binding Pulse, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Ton ms" Binding="{Binding TempsOn, Mode=TwoWay}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}"/>
-                            <DataGridTextColumn Header="Toff ms" Binding="{Binding TempsOff, Mode=TwoWay}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}"/>
-                            <DataGridCheckBoxColumn Header="Tempo" Binding="{Binding Temporisation, Mode=TwoWay}" />
-                            <DataGridTextColumn Header="Durée Tempo" Binding="{Binding DureeTempo, Mode=TwoWay}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TempoVisibilityParam}"/>
-                            <DataGridTextColumn Header="Durée rest" Binding="{Binding DureeRestante, Mode=TwoWay}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TempoVisibilityParam}"/>
-                            <DataGridCheckBoxColumn Header="{Binding Ramp, Source={StaticResource LanguagesRes}}" Binding="{Binding Rampe, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Durée Rampe" Binding="{Binding DureeRampe, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="Calibre " Binding="{Binding CalibreAH, Mode=TwoWay}"/>
+                            <DataGridComboBoxColumn Header="{Binding State, Source={StaticResource LanguagesRes}}" SelectedItemBinding="{Binding Etat, Mode=TwoWay}" ItemsSource="{Binding Source={x:Reference frameworkElement},  Path=DataContext.ListEtats}" />
+                            <DataGridTextColumn Header="{Binding Type, Source={StaticResource LanguagesRes}}" Binding="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TypeVisibilityParam}"/>
+                            <DataGridCheckBoxColumn Header="Pulsé"  Binding="{Binding Pulse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn  Header="Ton ms" Binding="{Binding TempsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}"/>
+                            <DataGridTextColumn Header="Toff ms" Binding="{Binding TempsOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}"/>
+                            <DataGridCheckBoxColumn Header="Tempo" Binding="{Binding Temporisation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <DataGridTextColumn Header="Durée Tempo" Binding="{Binding DureeTempo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TempoVisibilityParam}"/>
+                            <DataGridTextColumn Header="Durée rest" Binding="{Binding DureeRestante, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TempoVisibilityParam}"/>
+                            <DataGridCheckBoxColumn Header="{Binding Ramp, Source={StaticResource LanguagesRes}}" Binding="{Binding Rampe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Durée Rampe" Binding="{Binding DureeRampe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridComboBoxColumn Header="Calibre " SelectedItemBinding="{Binding CalibreAH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Reference frameworkElement},  Path=DataContext.ListCalibres}"/>
 
                         </DataGrid.Columns>
+                        <DataGrid.ContextMenu >
+                            <ContextMenu>
+                                <MenuItem Header="Show Tonms" Name="TonContextMenu" Click="Ton_click"></MenuItem>
+                                <MenuItem Header="Show Toffms"></MenuItem>
+                                <MenuItem Header="Show Recette"></MenuItem>
+                                <MenuItem Header="Show Segment"></MenuItem>
+                                <MenuItem Header="Show OF"></MenuItem>
+                                <MenuItem Header="Show A/h"></MenuItem>
+                            </ContextMenu>
+                            
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                     <Grid Background="#FFFCFCFC" Margin="10,304.4,10,397.2">
                     </Grid>
-                    <DockPanel  Margin="10,329.6,10,0" Height="380">
-                        <Grid Height="30"></Grid>
+                    <ListBox  x:Name="listBox" Margin="0,300,0,0" ItemsSource="{Binding ListRedresseurToShow}" >
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel  Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <local:MachineControle  DataContext="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    
+                    <DockPanel  Margin="10,329.6,10,0" Height="380" >
+                        <local:MachineControle x:Name="Machine1" HorizontalAlignment="Left" Loaded="Machine1_Loaded" DataContext="{Binding MainView.ListRedresseur[0], Source={StaticResource Locator}, Mode=TwoWay}" Visibility="Hidden" />
+                    </DockPanel>
+                    <!--
+                    <DockPanel  Margin="10,329.6,10,0" Height="380" >
                         <local:MachineControle x:Name="Machine1" HorizontalAlignment="Left" Loaded="Machine1_Loaded" DataContext="{Binding MainView.ListRedresseur[0], Source={StaticResource Locator}, Mode=TwoWay}"/>
                         <local:MachineControle x:Name="Machine2" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[1], Source={StaticResource Locator}, Mode=TwoWay}" Width="3"/>
                         <local:MachineControle x:Name="Machine3" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[2], Source={StaticResource Locator}, Mode=TwoWay}"/>
                         <local:MachineControle x:Name="Machine4" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[3], Source={StaticResource Locator}, Mode=TwoWay}"/>
+                        <local:MachineControle x:Name="Machine5" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[4], Source={StaticResource Locator}, Mode=TwoWay}"/>
+                        <local:MachineControle x:Name="Machine6" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[5], Source={StaticResource Locator}, Mode=TwoWay}"/>
+
                     </DockPanel>
+                    -->
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Recipe, Source={StaticResource LanguagesRes}}">

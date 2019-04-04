@@ -26,5 +26,13 @@ namespace AcoreApplication.Views
             InitializeComponent();
 
         }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            TotalGrid.Visibility = Visibility.Collapsed;
+        }
+
     }
 }

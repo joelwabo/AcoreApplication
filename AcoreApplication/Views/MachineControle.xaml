@@ -10,7 +10,6 @@
              xmlns:Command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d"
 
-        DataContext="{Binding MainView.ListRedresseur[0], Source={StaticResource Locator}}"
              d:DesignHeight="450" d:DesignWidth="800" Width="378" Height="380">
     <UserControl.Resources>
         <Storyboard x:Key="Storyboard1">
@@ -85,7 +84,7 @@
             <BeginStoryboard Storyboard="{StaticResource Storyboard3}"/>
         </EventTrigger>
     </UserControl.Triggers>
-    <Grid>
+    <Grid Name="TotalGrid">
         <Grid Margin="0,0,0,360" Background="#FF4472C4" Height="20" Grid.ColumnSpan="2" Width="189" HorizontalAlignment="Left">
             <TextBlock HorizontalAlignment="Left" Height="20" Margin="2.4,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62" Foreground="White"><Run Text="Machine N"/><Run Text="°"/></TextBlock>
             <TextBlock HorizontalAlignment="Left" Height="20" Margin="64.4,0,0,0" TextWrapping="Wrap" Text="{Binding Id}" VerticalAlignment="Top" Width="14.4" Foreground="White"/>
@@ -99,7 +98,7 @@
             <ComboBox Name="RecetteComboBox"  HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Height="26" Width="134" ItemsSource="{Binding Path=ListRecette}">
                 <Interactivity:Interaction.Triggers>
                     <Interactivity:EventTrigger EventName="SelectionChanged" >
-                        <Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>
+                        <!--<Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>-->
                     </Interactivity:EventTrigger>
                 </Interactivity:Interaction.Triggers>
                 <ComboBox.ItemTemplate>
@@ -163,7 +162,13 @@
         <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Center" Height="380" VerticalAlignment="Center" Width="1" Background="#FFA1A1A2"/>
         <Grid x:Name="grid" Margin="0,0,0,360" Background="#FF4472C4" Height="20" Width="189" HorizontalAlignment="Right" Grid.ColumnSpan="2">
             <Button x:Name="button1" Content="&lt;-" HorizontalAlignment="Left" Height="20" Margin="134.728,0,0,0" VerticalAlignment="Top" Width="20" Padding="0" Background="{x:Null}" Foreground="White"/>
-            <Button Content="X" HorizontalAlignment="Left" Height="20" Margin="156.928,0,0,-0.341" VerticalAlignment="Top" Width="20" Padding="0" Background="{x:Null}" Foreground="White"/>
+            <Button Content="X" HorizontalAlignment="Left" Height="20" Margin="156.928,0,0,-0.341" VerticalAlignment="Top" Width="20">
+                <Interactivity:Interaction.Triggers>
+                    <Interactivity:EventTrigger EventName="Click" >
+                        <Command:EventToCommand Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True" CommandParameter="{Binding Id}" />
+                    </Interactivity:EventTrigger>
+                </Interactivity:Interaction.Triggers>
+            </Button>
         </Grid>
         <Grid x:Name="grid1" Margin="0,20,0,0" Width="189" HorizontalAlignment="Right" Grid.ColumnSpan="2">
             <TabControl HorizontalAlignment="Left" Height="104.4" Margin="0,18.1,0,0" VerticalAlignment="Top" Width="177">

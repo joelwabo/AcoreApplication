@@ -468,7 +468,7 @@ namespace AcoreApplication.Model
             if (object.Equals(variable, valeur)) return false;
 
             variable = valeur;
-            if (nomPropriete == "Etat") {
+            if (nomPropriete == "Etat"|| nomPropriete=="OnOff") {
                 switch (this.Etat)
                 {
                     case MODES.LocalManuel:

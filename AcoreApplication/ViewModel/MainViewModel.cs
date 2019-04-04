@@ -35,6 +35,8 @@ namespace AcoreApplication.ViewModel
         public ICommand AddingRecetteCommand { get; set; }
         public ICommand AddingRedresseurCommand { get; set; }
         public ICommand SelectedRecetteChangedCommand { get; set; }
+
+        public ICommand CloseButtonCommand { get; set; }
         public ICommand ARowEditEnding { get; set; }
 
         private ObservableCollection<Segment> historiqueSelectedSegment = null;
@@ -80,6 +82,14 @@ namespace AcoreApplication.ViewModel
             set { NotifyPropertyChanged(ref listRedresseur, value); }
         }
 
+        private ObservableCollection<Redresseur> listRedresseurToShow;
+        public ObservableCollection<Redresseur> ListRedresseurToShow
+
+        {
+            get { return listRedresseurToShow; }
+            set { NotifyPropertyChanged(ref listRedresseurToShow, value); }
+        }
+
         private ObservableCollection<DataService.Process> listProcess;
         public ObservableCollection<DataService.Process> ListProcess
         {
@@ -100,6 +110,14 @@ namespace AcoreApplication.ViewModel
             get { return pulseVisibilityParam; }
             set { NotifyPropertyChanged(ref pulseVisibilityParam, value); }
         }
+            
+        private Visibility typeVisibilityParam = Visibility.Visible;
+        public Visibility TypeVisibilityParam
+        {
+            get { return typeVisibilityParam; }
+            set { NotifyPropertyChanged(ref typeVisibilityParam, value); }
+        }
+
         private Visibility tempoVisibilityParam = Visibility.Visible;
         public Visibility TempoVisibilityParam
         {
@@ -122,6 +140,13 @@ namespace AcoreApplication.ViewModel
             set { NotifyPropertyChanged(ref listEtats, value); }
         }
 
+        private ObservableCollection<AcoreApplication.Model.Constantes.CALIBRE> listCalibres;
+        public ObservableCollection<AcoreApplication.Model.Constantes.CALIBRE> ListCalibres
+
+        {
+            get { return listCalibres; }
+            set { NotifyPropertyChanged(ref listCalibres, value); }
+        }
         #endregion
 
         #region Methode
@@ -131,6 +156,7 @@ namespace AcoreApplication.ViewModel
 
             variable = valeur;
             RaisePropertyChanged(nomPropriete);
+            checkChanges();
             return true;
         }
 
@@ -140,17 +166,21 @@ namespace AcoreApplication.ViewModel
             ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
             ListHistorique = SimpleIoc.Default.GetInstance<IHistoriqueService>().GetAllData();
             ListRedresseur = new ObservableCollection<Redresseur>();
+            ListRedresseurToShow = new ObservableCollection<Redresseur>();
 
-            pulseVisibilityParam = new Visibility();
-            PulseVisibilityParam = Visibility.Visible;
+            PulseVisibilityParam = Visibility.Collapsed;
+            TypeVisibilityParam = Visibility.Visible;
 
             tempoVisibilityParam = new Visibility();
             TempoVisibilityParam = Visibility.Visible;
             imageSource = "../Resources/log_in1.png";
 
             foreach (DataService.Automate automate in ListAutomate)
-                foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs)
+            {
+                foreach (Redresseur redresseur in ListAutomate[ListAutomate.IndexOf(automate)].Redresseurs) {
                     ListRedresseur.Add(redresseur);
+                }
+            }
 
 
             ListEtats = new ObservableCollection<AcoreApplication.Model.Constantes.MODES>();
@@ -159,6 +189,14 @@ namespace AcoreApplication.ViewModel
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteManuel"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "Supervision"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteRecette"));
+
+
+
+            ListCalibres = new ObservableCollection<AcoreApplication.Model.Constantes.CALIBRE>();
+            ListCalibres.Add((AcoreApplication.Model.Constantes.CALIBRE)Enum.Parse(typeof(AcoreApplication.Model.Constantes.CALIBRE), "A_H"));
+            ListCalibres.Add((AcoreApplication.Model.Constantes.CALIBRE)Enum.Parse(typeof(AcoreApplication.Model.Constantes.CALIBRE), "A_S"));
+            ListCalibres.Add((AcoreApplication.Model.Constantes.CALIBRE)Enum.Parse(typeof(AcoreApplication.Model.Constantes.CALIBRE), "A_MN"));
+
 
 
             RedresseurSelected = null;
@@ -177,11 +215,31 @@ namespace AcoreApplication.ViewModel
             RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
             SelectedRecetteChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedRecetteChanged);
+            CloseButtonCommand = new RelayCommand<Object>(CloseButtonCommandMethod);
             SelectedHistoriqueChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedHistoriqueChanged);
+
+            ARowEditEnding = new RelayCommand<SelectedCellsChangedEventArgs>(ARowEditEndingMethod);
             ValideButton = new RelayCommand<Object>(valideButton);
+            
+
         }
-        private void ARowEditEndingMethod(SelectedCellsChangedEventArgs arg)
+
+        private void CloseButtonCommandMethod(Object obj)
         {
+            if (ListRedresseurToShow != null)
+            {
+                foreach (Redresseur redresseur in ListRedresseurToShow)
+                {
+                    if (redresseur.Id == (int) obj)
+                    {
+                        ListRedresseurToShow.Remove(redresseur);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void checkChanges() {
             if (checkPulseVisibility())
             {
                 PulseVisibilityParam = Visibility.Visible;
@@ -198,27 +256,85 @@ namespace AcoreApplication.ViewModel
             else
             {
                 TempoVisibilityParam = Visibility.Collapsed;
+                
+            }
+
+            if (checkTypeVisibility())
+            {
+                TypeVisibilityParam = Visibility.Visible;
+            }
+            else
+            {
+                TypeVisibilityParam = Visibility.Collapsed;
+            }
+
+        }
+
+        private bool checkTypeVisibility()
+        {
+            if (ListRedresseur != null)
+            {
+                foreach (Redresseur redresseur in ListRedresseur)
+                {
+                    if (redresseur.Inverseur == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void ARowEditEndingMethod(SelectedCellsChangedEventArgs arg)
+        {
+            checkChanges();
+            if (ListRedresseur != null)
+            {
+                foreach (Redresseur redresseur2 in ListRedresseurToShow)
+                {
+                    if (redresseur2.Id == (int)redresseurSelected.Id)
+                    {
+                        return;
+                    }
+                }
+
+                foreach (Redresseur redresseur in ListRedresseur)
+                {
+                    if (redresseur.Id == redresseurSelected.Id)
+                    {
+                        ListRedresseurToShow.Add(redresseur);
+                      
+                    }
+                }
             }
 
         }
 
         private bool checkPulseVisibility(){
-            foreach (Redresseur redresseur in ListRedresseur)
+            if (ListRedresseur!=null)
             {
-                if (redresseur.Pulse == true)
+                foreach (Redresseur redresseur in ListRedresseur)
                 {
-                    return true;
+                    if (redresseur.Pulse == true)
+                    {
+
+                        
+                        return true;
+                    }
                 }
             }
             return false;
         }
         private bool checkTempoVisibility()
         {
-            foreach (Redresseur redresseur in ListRedresseur)
+            if (ListRedresseur != null)
             {
-                if (redresseur.Temporisation == true)
+                foreach (Redresseur redresseur in ListRedresseur)
                 {
-                    return true;
+                    if (redresseur.Temporisation == true)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
