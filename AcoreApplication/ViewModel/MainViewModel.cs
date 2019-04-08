@@ -14,6 +14,9 @@ using System.Windows.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using System.Linq;
 using GalaSoft.MvvmLight.Ioc;
+using System.Text;
+using System.IO;
+using Microsoft.Win32;
 
 namespace AcoreApplication.ViewModel
 {
@@ -220,7 +223,10 @@ namespace AcoreApplication.ViewModel
 
             ARowEditEnding = new RelayCommand<SelectedCellsChangedEventArgs>(ARowEditEndingMethod);
             ValideButton = new RelayCommand<Object>(valideButton);
-            
+
+
+
+            //exportCSV("C:/Users/Pablo.PEREZ-MARTINEZ/Downloads/csvHeader.csv");
 
         }
 
@@ -439,6 +445,23 @@ namespace AcoreApplication.ViewModel
         private bool CanExecuteOnOff(Redresseur redresseur)
         {
             return true;
+        }
+
+        private void exportCSV(string filePath) {
+            //before your loop
+
+            //filePath = "C://csvHeader.csv";
+            var csv = new StringBuilder();
+
+            //in your loop
+            var first = "HELLO";
+            var second = "HELLO2";
+            var third = "HELLO3";
+            var newLine = string.Format("{0},{1},{2}", first,second,third);
+            csv.AppendLine(newLine);
+
+            //after your loop
+            File.WriteAllText(filePath, csv.ToString());
         }
 
         #endregion

@@ -9,7 +9,6 @@
              xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:Command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d"
-
              d:DesignHeight="450" d:DesignWidth="800" Width="378" Height="380">
     <UserControl.Resources>
         <Storyboard x:Key="Storyboard1">
@@ -84,140 +83,183 @@
             <BeginStoryboard Storyboard="{StaticResource Storyboard3}"/>
         </EventTrigger>
     </UserControl.Triggers>
-    <Grid Name="TotalGrid">
-        <Grid Margin="0,0,0,360" Background="#FF4472C4" Height="20" Grid.ColumnSpan="2" Width="189" HorizontalAlignment="Left">
-            <TextBlock HorizontalAlignment="Left" Height="20" Margin="2.4,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62" Foreground="White"><Run Text="Machine N"/><Run Text="°"/></TextBlock>
-            <TextBlock HorizontalAlignment="Left" Height="20" Margin="64.4,0,0,0" TextWrapping="Wrap" Text="{Binding Id}" VerticalAlignment="Top" Width="14.4" Foreground="White"/>
-            <Image HorizontalAlignment="Left" Height="20" Margin="83.8,0,0,0" VerticalAlignment="Top" Width="25.067"/>
-            <Button x:Name="button" Content="-&gt;" HorizontalAlignment="Left" Margin="156.794,0,0,-0.341" Width="20" Padding="0" Background="{x:Null}" Foreground="White" Height="20" RenderTransformOrigin="0.5,0.5"/>
-        </Grid>
-        <Grid Margin="0,20,0,0" Width="189" HorizontalAlignment="Left">
-            <Button Content="O" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.537,0.367"/>
-            <local:ToggleButton x:Name="ToggleButton" Margin="40,10,99,324.459" Width="40" Height="25" />
-            <TextBlock Text="{Binding Path=Etat}" Margin="10,44,46,291" Height="25"/>
-            <ComboBox Name="RecetteComboBox"  HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Height="26" Width="134" ItemsSource="{Binding Path=ListRecette}">
-                <Interactivity:Interaction.Triggers>
-                    <Interactivity:EventTrigger EventName="SelectionChanged" >
-                        <!--<Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>-->
-                    </Interactivity:EventTrigger>
-                </Interactivity:Interaction.Triggers>
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Nom}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <Grid Margin="10,99.6,0,170.4">
-                <Border BorderThickness="1" BorderBrush="Black" Margin="0,10,103.2,62.9">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-2" TextWrapping="Wrap" Text="Consignes VA" VerticalAlignment="Top"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="76.2,10,65.4,62.9">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-0.86" TextWrapping="Wrap" Text="{Binding Path=ConsigneV, Mode=TwoWay}" VerticalAlignment="Top" Width="74.4"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="113.6,10,27.4,62.9">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-0.86" TextWrapping="Wrap" Text="{Binding Path=ConsigneA, Mode=TwoWay}" VerticalAlignment="Top" Width="37"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="0,27.1,103.2,45.8">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-2" TextWrapping="Wrap" Text="Mesures VA" VerticalAlignment="Top"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="75.8,27.1,65.4,45.8">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-0.86" TextWrapping="Wrap" Text="{Binding Path=LectureV}" VerticalAlignment="Top" Width="74.4"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="113.6,27.1,27.8,45.8">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-0.86" TextWrapping="Wrap" Text="{Binding Path=LectureA}" VerticalAlignment="Top" Width="36.6"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="0,44.2,103.2,28.7">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-2" TextWrapping="Wrap" Text="Compteur AH" VerticalAlignment="Top"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="75.8,44.2,27.8,28.7">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-0.86" TextWrapping="Wrap" Text="{Binding Path=CompteurAH, Mode=TwoWay}" VerticalAlignment="Top" Width="74.4"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="0,61.3,103.2,11.6">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-2" TextWrapping="Wrap" Text="Temp °C" VerticalAlignment="Top"/>
-                </Border>
-                <Border BorderThickness="1" BorderBrush="Black" Margin="76.2,61.3,27.4,11.6">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,-1,-0.86" TextWrapping="Wrap" Text="{Binding Path=Temperature, Mode=TwoWay}" VerticalAlignment="Top" Width="74.4"/>
-                </Border>
+
+    <Border BorderBrush="Black" BorderThickness="2" Margin="3 -5 0 0" >
+        <Grid Name="TotalGrid" >
+            <Grid Margin="0,0,0,360" Background="#FF4472C4" Height="20" Grid.ColumnSpan="2" Width="200" HorizontalAlignment="Left">
+                <TextBlock HorizontalAlignment="Left" Height="20" Padding="2.4,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62" Foreground="White"><Run Text="Machine N"/><Run Text="°"/></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Height="20" Margin="64.4,0,0,0" TextWrapping="Wrap" Text="{Binding Id}" VerticalAlignment="Top" Width="14.4" Foreground="White"/>
+                <Image HorizontalAlignment="Left" Height="20" Margin="83.8,0,0,0" VerticalAlignment="Top" Width="25.067" Source="{Binding EtatImageSource, Mode=TwoWay}"/>
+                <Button x:Name="button" Content="-&gt;" HorizontalAlignment="Left" Margin="156.794,0,0,-0.341" Width="20" Padding="0" Background="{x:Null}" Foreground="White" Height="20" RenderTransformOrigin="0.5,0.5"/>
             </Grid>
-            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="31.6" Margin="11.6,194.6,0,0" Stroke="Black" VerticalAlignment="Top" Width="172"/>
-            <TextBlock HorizontalAlignment="Center" Height="31.6" Margin="11.6,194.6,143.2,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34.2" Padding="10,8,0,0"><Run Text="OF"/><Run Text=" :"/></TextBlock>
-            <TextBlock HorizontalAlignment="Left" Height="31.6" Margin="50.8,194.6,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="111.2" Padding="0,8,0,0"/>
-            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="53" Margin="11.6,239.2,0,0" Stroke="Black" VerticalAlignment="Top" Width="172"/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="20,249,0,0" TextWrapping="Wrap" Text="Recette" VerticalAlignment="Top" Width="41"/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="66,249,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="14"/>
-            <TextBlock HorizontalAlignment="Left" Height="19.2" Margin="85.2,248.8,0,0" TextWrapping="Wrap" Text="Indice :  A" VerticalAlignment="Top" Width="59.8"/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="150,249,0,0" TextWrapping="Wrap" Text="N°" VerticalAlignment="Top" Width="17"/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="167,249,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="14"/>
-            <TextBlock HorizontalAlignment="Left" Height="19.2" Margin="20.4,273,0,0" TextWrapping="Wrap" Text="Temps : 00 : 00 : 00" VerticalAlignment="Top" Width="124.6"/>
-            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="28.8" Margin="11.6,292.2,0,0" Stroke="Black" VerticalAlignment="Top" Width="172"/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="20,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Text="Segment : "/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="80,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="10" Text=""/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="92,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="8" Text="/"/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="100,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="15" Text=""/>
-            <TextBlock HorizontalAlignment="Left" Height="19" Margin="120,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Text="00 : 00 : 00"/>
+            <Grid Margin="0,20,0,0" Width="200" HorizontalAlignment="Left">
+                <Button HorizontalAlignment="Left" Height="33" Margin="10,10,0,0" VerticalAlignment="Top" Width="33" RenderTransformOrigin="0.537,0.367">
+                    <Image Source="{Binding MiseSousTensionImageSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Button>
+                <local:ToggleButton x:Name="ToggleButton" Margin="40,10,99,324.459" Width="40" Height="25" />
+                <TextBlock Text="{Binding Path=Etat}" Margin="10,44,46,291" Height="25" Foreground="Black"/>
+                <ComboBox Name="RecetteComboBox"  HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Height="26" Width="134" ItemsSource="{Binding Path=ListRecette}">
+                    <Interactivity:Interaction.Triggers>
+                        <Interactivity:EventTrigger EventName="SelectionChanged" >
+                            <!--<Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>-->
+                        </Interactivity:EventTrigger>
+                    </Interactivity:Interaction.Triggers>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Nom}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Grid Margin="10,100,0,170.4">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="17*" />
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="11*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border BorderBrush="Black" BorderThickness="2 2 2 0">
+                        <TextBlock Grid.ColumnSpan="1" Text="Consignes" TextAlignment="Center"  Foreground="Black"/>
+                    </Border>
+
+                    <Border BorderBrush="Black"  Grid.Column="1" BorderThickness="0 2 0 0">
+                        <TextBlock Grid.ColumnSpan="1" Grid.Column="1" TextWrapping="Wrap"  TextAlignment="Center" Foreground="Black" Margin="0,0,12,0">
+                        <Run Text="{Binding Path=ConsigneV, Mode=TwoWay}"></Run>
+                        <Run Text="V"></Run>
+                        </TextBlock>
+                    </Border>
+
+                    <Border BorderBrush="Black"  Grid.Column="1" BorderThickness="2 2 2 0" Margin="37,0,32,0" Grid.ColumnSpan="2">
+                        <TextBlock Grid.ColumnSpan="1" Grid.Column="3" TextWrapping="Wrap"  TextAlignment="Center" Foreground="Black" Margin="0,0,-2,0">
+                        <Run Text="{Binding Path=ConsigneA, Mode=TwoWay}"></Run>
+                        <Run Text="A"></Run>
+                        </TextBlock>
+                    </Border>
+
+
+                    <Border BorderBrush="Black"  Grid.Column="0" Grid.Row="1" BorderThickness="2 2 2 0">
+                        <TextBlock Grid.ColumnSpan="1" Grid.Row="1" Text="Lectures" TextAlignment="Center"  Foreground="Black"/>
+                    </Border>
+
+                    <Border BorderBrush="Black"  Grid.Column="1" Grid.Row="1" BorderThickness="0 2 0 0">
+                        <TextBlock Grid.ColumnSpan="1" Grid.Column="1" TextWrapping="Wrap"  TextAlignment="Center" Foreground="Black" Margin="0,0,12,0">
+                        <Run Text="{Binding Path=LectureV, Mode=TwoWay}"></Run>
+                        <Run Text="V"></Run>
+                        </TextBlock>
+                    </Border>
+
+                    <Border BorderBrush="Black"  Grid.Column="1" Grid.Row="1" BorderThickness="2 2 2 0" Margin="37,0,32,0" Grid.ColumnSpan="2">
+                        <TextBlock Grid.ColumnSpan="1" Grid.Column="3" TextWrapping="Wrap"  TextAlignment="Center" Foreground="Black" Margin="0,0,-2,0">
+                        <Run Text="{Binding Path=LectureA, Mode=TwoWay}"></Run>
+                        <Run Text="A"></Run>
+                        </TextBlock>
+                    </Border>
+
+                    <Border BorderBrush="Black"  Grid.Column="0" Grid.Row="2" BorderThickness="2 2 2 0">
+                        <TextBlock Grid.ColumnSpan="1" Grid.Row="1" Text="Compteur" TextAlignment="Center"  Foreground="Black"/>
+                    </Border>
+
+                    <Border BorderBrush="Black"  Grid.Column="1" Grid.Row="2" BorderThickness="0 2 2 0" Grid.ColumnSpan="2" Margin="0,0,32,0" >
+                        <TextBlock Grid.ColumnSpan="2"  Text="{Binding Path=CompteurAH, Mode=TwoWay}" TextAlignment="Center" Foreground="Black"/>
+                    </Border>
+
+                    <Border BorderBrush="Black"  Grid.Column="0" Grid.Row="3" BorderThickness="2 2 2 2">
+                        <TextBlock Grid.ColumnSpan="1" Grid.Row="1" Text="Temperature" TextAlignment="Center"  Foreground="Black"/>
+                    </Border>
+
+                    <Border BorderBrush="Black"  Grid.Column="1" Grid.Row="3" BorderThickness="0 2 2 2" Grid.ColumnSpan="2" Margin="0,0,32,0" >
+                        <TextBlock Grid.ColumnSpan="2" Grid.Column="1" TextWrapping="Wrap"  TextAlignment="Center" Foreground="Black" Margin="0,0,12,0">
+                        <Run Text="{Binding Path=Temperature, Mode=TwoWay}"></Run>
+                        <Run Text="°C"></Run>
+                        </TextBlock>
+                    </Border>
+                </Grid>
+                <Rectangle HorizontalAlignment="Left" Height="31" Margin="12,195,0,0" Stroke="Black" VerticalAlignment="Top" Width="156"/>
+                <TextBlock HorizontalAlignment="Center" Height="31.6" Margin="11.6,194.6,143.2,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34.2" Padding="10,8,0,0" Foreground="Black"><Run Text="OF"/><Run Text=" :"/></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Height="31.6" Margin="50.8,194.6,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="111.2" Padding="0,8,0,0" Foreground="Black"/>
+                <Rectangle HorizontalAlignment="Left" Height="53" Margin="12,239,0,0" Stroke="Black" VerticalAlignment="Top" Width="156" />
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="20,249,0,0" TextWrapping="Wrap" Text="Recette" VerticalAlignment="Top" Width="41" Foreground="Black"/>
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="66,249,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="14"/>
+                <TextBlock HorizontalAlignment="Left" Height="19.2" Margin="85.2,248.8,0,0" TextWrapping="Wrap" Text="Indice :  A" VerticalAlignment="Top" Width="59.8" Foreground="Black"/>
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="150,249,0,0" TextWrapping="Wrap" Text="N°" VerticalAlignment="Top" Width="17" Foreground="Black"/>
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="167,249,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="14"/>
+                <TextBlock HorizontalAlignment="Left" Height="19.2" Margin="20.4,273,0,0" TextWrapping="Wrap" Text="Temps : 00 : 00 : 00" VerticalAlignment="Top" Width="124.6" Foreground="Black"/>
+                <Rectangle HorizontalAlignment="Left" Height="29" Margin="12,292,0,0" Stroke="Black" VerticalAlignment="Top" Width="156"/>
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="20,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Text="Segment : " Foreground="Black"/>
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="80,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="10" Text=""/>
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="83,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="17" Text="/" Foreground="Black"/>
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="100,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="15" Text=""/>
+                <TextBlock HorizontalAlignment="Left" Height="19" Margin="103,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Text="00 : 00 : 00" Foreground="Black"/>
+
+            </Grid>
+            <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Center" Height="380" VerticalAlignment="Center" Width="1" Background="#FFA1A1A2"/>
+            <Grid x:Name="grid" Margin="0,0,0,360" Background="#FF4472C4" Height="20" Width="189" HorizontalAlignment="Right" Grid.ColumnSpan="2">
+                <Button x:Name="button1" Content="&lt;-" HorizontalAlignment="Left" Height="20" Margin="134.728,0,0,0" VerticalAlignment="Top" Width="20" Padding="0" Background="{x:Null}" Foreground="White"/>
+                <Button Content="X" HorizontalAlignment="Left" Height="20" Margin="156.928,0,0,-0.341" VerticalAlignment="Top" Width="20">
+                    <Interactivity:Interaction.Triggers>
+                        <Interactivity:EventTrigger EventName="Click" >
+                            <!--<Command:EventToCommand Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True" CommandParameter="{Binding Id}" />-->
+                        </Interactivity:EventTrigger>
+                    </Interactivity:Interaction.Triggers>
+                </Button>
+            </Grid>
+            <Grid x:Name="grid1" Margin="0,20,0,0" Width="178" HorizontalAlignment="Right">
+                <TabControl HorizontalAlignment="Left" Height="104.4" Margin="0,18.1,0,0" VerticalAlignment="Top" Width="177">
+                    <TabItem Header="Pulse">
+                        <Grid Background="#FFE5E5E5">
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
+                            <CheckBox IsChecked="{Binding Path=Pulse, Mode=TwoWay}" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Temps ON : "/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="82.067,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=TempsOn, Mode=TwoWay}"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067"><Run Text="Temps "/><Run Text="OFF"/><Run Text=": "/></TextBlock>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="82.067,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=TempsOff, Mode=TwoWay}"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="A/H">
+                        <Grid Background="#FFE5E5E5">
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
+                            <CheckBox Content="" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Calibre :"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=CalibreAH, Mode=TwoWay}"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067"><Run Text="Valeur"/><Run Text=" : "/></TextBlock>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=CompteurAH, Mode=TwoWay}"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Tempo">
+                        <Grid Background="#FFE5E5E5">
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
+                            <CheckBox  HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8" IsChecked="{Binding Path=Temporisation, Mode=TwoWay}"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Value_text, Source={StaticResource LanguagesRes}}"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=DureeTempo, Mode=TwoWay}"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Ramp">
+                        <Grid Background="#FFE5E5E5">
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
+                            <CheckBox Content="" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8" IsChecked="{Binding Path=Rampe, Mode=TwoWay}"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Valeur : "/>
+                            <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="59.667,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=DureeRampe, Mode=TwoWay}"/>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+                <lvc:CartesianChart  Grid.Row="1" LegendLocation="Right" Margin="0,175,0,29" HorizontalAlignment="Right" Width="179">
+                    <lvc:CartesianChart.Series>
+                        <lvc:LineSeries Title="V" Values="{Binding ValuesA}" PointGeometry="{x:Null}"/>
+                        <lvc:LineSeries Title="A" Values="{Binding ValuesB}" PointGeometry="{x:Null}"/>
+                    </lvc:CartesianChart.Series>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Temps (s)" ></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
+            </Grid>
 
         </Grid>
-        <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Center" Height="380" VerticalAlignment="Center" Width="1" Background="#FFA1A1A2"/>
-        <Grid x:Name="grid" Margin="0,0,0,360" Background="#FF4472C4" Height="20" Width="189" HorizontalAlignment="Right" Grid.ColumnSpan="2">
-            <Button x:Name="button1" Content="&lt;-" HorizontalAlignment="Left" Height="20" Margin="134.728,0,0,0" VerticalAlignment="Top" Width="20" Padding="0" Background="{x:Null}" Foreground="White"/>
-            <Button Content="X" HorizontalAlignment="Left" Height="20" Margin="156.928,0,0,-0.341" VerticalAlignment="Top" Width="20">
-                <Interactivity:Interaction.Triggers>
-                    <Interactivity:EventTrigger EventName="Click" >
-                        <Command:EventToCommand Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True" CommandParameter="{Binding Id}" />
-                    </Interactivity:EventTrigger>
-                </Interactivity:Interaction.Triggers>
-            </Button>
-        </Grid>
-        <Grid x:Name="grid1" Margin="0,20,0,0" Width="189" HorizontalAlignment="Right" Grid.ColumnSpan="2">
-            <TabControl HorizontalAlignment="Left" Height="104.4" Margin="0,18.1,0,0" VerticalAlignment="Top" Width="177">
-                <TabItem Header="Pulse">
-                    <Grid Background="#FFE5E5E5">
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
-                        <CheckBox IsChecked="{Binding Path=Pulse, Mode=TwoWay}" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Temps ON : "/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="82.067,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=TempsOn, Mode=TwoWay}"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067"><Run Text="Temps "/><Run Text="OFF"/><Run Text=": "/></TextBlock>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="82.067,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=TempsOff, Mode=TwoWay}"/>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="A/H">
-                    <Grid Background="#FFE5E5E5">
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
-                        <CheckBox Content="" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Calibre :"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=CalibreAH, Mode=TwoWay}"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067"><Run Text="Valeur"/><Run Text=" : "/></TextBlock>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=CompteurAH, Mode=TwoWay}"/>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Tempo">
-                    <Grid Background="#FFE5E5E5">
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
-                        <CheckBox  HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8" IsChecked="{Binding Path=Temporisation, Mode=TwoWay}"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Value_text, Source={StaticResource LanguagesRes}}"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=DureeTempo, Mode=TwoWay}"/>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Ramp">
-                    <Grid Background="#FFE5E5E5">
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
-                        <CheckBox Content="" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8" IsChecked="{Binding Path=Rampe, Mode=TwoWay}"/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Valeur : "/>
-                        <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="59.667,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=DureeRampe, Mode=TwoWay}"/>
-                    </Grid>
-                </TabItem>
-            </TabControl>
-            <lvc:CartesianChart  Grid.Row="1" LegendLocation="Right" Margin="0,175,0,29" HorizontalAlignment="Right" Width="179">
-                <lvc:CartesianChart.Series>
-                    <lvc:LineSeries Title="V" Values="{Binding ValuesA}" PointGeometry="{x:Null}"/>
-                    <lvc:LineSeries Title="A" Values="{Binding ValuesB}" PointGeometry="{x:Null}"/>
-                </lvc:CartesianChart.Series>
-                <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Temps (s)" ></lvc:Axis>
-                </lvc:CartesianChart.AxisX>
-            </lvc:CartesianChart>
-        </Grid>
-    </Grid>
+    </Border>
 </UserControl>

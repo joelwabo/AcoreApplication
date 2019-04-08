@@ -88,24 +88,23 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Background" Value="GhostWhite"/>
+                                <Setter Property="Padding" Value="0,0,0,0"/>
+                                <Setter Property="Margin" Value="0,0,0,0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                                <Style.Resources>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray"/>
+                                </Style.Resources>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
 
                     </ListBox>
-
-                    
-                    <DockPanel  Margin="10,329.6,10,0" Height="380" >
-                        <local:MachineControle x:Name="Machine1" HorizontalAlignment="Left" Loaded="Machine1_Loaded" DataContext="{Binding MainView.ListRedresseur[0], Source={StaticResource Locator}, Mode=TwoWay}" Visibility="Hidden" />
-                    </DockPanel>
-                    <!--
-                    <DockPanel  Margin="10,329.6,10,0" Height="380" >
-                        <local:MachineControle x:Name="Machine1" HorizontalAlignment="Left" Loaded="Machine1_Loaded" DataContext="{Binding MainView.ListRedresseur[0], Source={StaticResource Locator}, Mode=TwoWay}"/>
-                        <local:MachineControle x:Name="Machine2" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[1], Source={StaticResource Locator}, Mode=TwoWay}" Width="3"/>
-                        <local:MachineControle x:Name="Machine3" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[2], Source={StaticResource Locator}, Mode=TwoWay}"/>
-                        <local:MachineControle x:Name="Machine4" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[3], Source={StaticResource Locator}, Mode=TwoWay}"/>
-                        <local:MachineControle x:Name="Machine5" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[4], Source={StaticResource Locator}, Mode=TwoWay}"/>
-                        <local:MachineControle x:Name="Machine6" HorizontalAlignment="Left" Margin="10,0,0,0" DataContext="{Binding MainView.ListRedresseur[5], Source={StaticResource Locator}, Mode=TwoWay}"/>
-
-                    </DockPanel>
-                    -->
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Recipe, Source={StaticResource LanguagesRes}}">
@@ -244,9 +243,7 @@
                                         <DataGridTextColumn Header="Permissions" Binding="{Binding Segments.Count, Mode=OneWay}">
                                             <!--
                                             <DataGridTextColumn Header="Params" Binding="{Binding Segments.Count, Mode=OneWay}"/>
-
                                             <DataGridTextColumn Header="Historiques" Binding="{Binding Segments.Count, Mode=OneWay}"/>
-
                                             <DataGridTextColumn Header="Recetes" Binding="{Binding Segments.Count, Mode=OneWay}"/>-->
                                         </DataGridTextColumn>
                                     </DataGrid.Columns>
@@ -258,7 +255,7 @@
                                 <DataGrid Margin="10,0" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" SelectedItem="{Binding RedresseurSelected, Mode=TwoWay}" AutoGenerateColumns="False"  VerticalAlignment="Top" Width="968" Height="219.4">
                                     <Interactivity:Interaction.Triggers>
                                         <Interactivity:EventTrigger EventName="AddingNewItem" >
-                                            <!--<Command:EventToCommand Command="{Binding AddingNewRedresseurCommand}" PassEventArgsToCommand="True"/>-->
+                                            <Command:EventToCommand Command="{Binding AddingNewRedresseurCommand}" PassEventArgsToCommand="True"/>
                                         </Interactivity:EventTrigger>
                                     </Interactivity:Interaction.Triggers>
                                     <DataGrid.Columns>
@@ -282,7 +279,7 @@
                                 <DataGrid ItemsSource="{Binding RedresseurSelected.Registres, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="202.906" Margin="10,245.161,0,0" VerticalAlignment="Top" Width="968">
                                     <Interactivity:Interaction.Triggers>
                                         <Interactivity:EventTrigger EventName="LoadingRow" >
-                                            <!--<Command:EventToCommand Command="{Binding RegistreLoadingRowCommand}" PassEventArgsToCommand="True"/>-->
+                                            <Command:EventToCommand Command="{Binding RegistreLoadingRowCommand}" PassEventArgsToCommand="True"/>
                                         </Interactivity:EventTrigger>
                                     </Interactivity:Interaction.Triggers>
                                     <DataGrid.Columns>

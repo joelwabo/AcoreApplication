@@ -18,6 +18,7 @@ using static AcoreApplication.Model.Constantes;
 using GalaSoft.MvvmLight.Messaging;
 using AcoreApplication.DataService;
 using GalaSoft.MvvmLight.Ioc;
+using NModbus.Extensions.Enron;
 
 namespace AcoreApplication.Model
 {
@@ -324,6 +325,15 @@ namespace AcoreApplication.Model
             get { return etatImageSource; }
             set { NotifyPropertyChanged(ref etatImageSource, value); }
         }
+
+
+
+        private string miseSousTensionImageSource;
+        public string MiseSousTensionImageSource
+        {
+            get { return miseSousTensionImageSource; }
+            set { NotifyPropertyChanged(ref miseSousTensionImageSource, value); }
+        }
         #endregion
 
         #region CONSTRUCTEUR(S)/DESTRUCTEUR(S)
@@ -449,7 +459,14 @@ namespace AcoreApplication.Model
                     break;
             }
 
-
+            if (miseSousTension == true)
+            {
+                miseSousTensionImageSource = "../Resources/power2.png";
+            }
+            else
+            {
+                miseSousTensionImageSource = "../Resources/power.png";
+            }
 
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
@@ -516,6 +533,17 @@ namespace AcoreApplication.Model
                         break;
                 }
             }
+            if (nomPropriete == "MiseSousTension")
+            {
+                if (miseSousTension == true)
+                {
+                    miseSousTensionImageSource = "../Resources/power2.png";
+                }
+                else
+                {
+                    miseSousTensionImageSource = "../Resources/power.png";
+                }
+            }
             RaisePropertyChanged(nomPropriete);
             return true;
         }
@@ -543,6 +571,7 @@ namespace AcoreApplication.Model
         {
             while (true)
             {
+                readInfo();
                 if (OnOff)
                 {
                     HistoriqueData tempData = new HistoriqueData();
@@ -571,6 +600,60 @@ namespace AcoreApplication.Model
                     Historique.HistoriqueData.Add(tempData);
                 }
                 Thread.Sleep(Cst_SleepTime/5);
+            }
+        }
+
+        private void readInfo()
+        {
+
+            foreach (Registre registre in Registres)
+            {
+                try
+                {
+                    switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                    {
+                        case REGISTRE.ConsigneA:
+                            {
+                                ushort[] readConsigneA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                ConsigneA = readConsigneA[0];
+                            }
+                            break;
+                        case REGISTRE.ConsigneV:
+                            {
+                                ushort[] readConsigneV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                ConsigneV = readConsigneV[0];
+                            }
+                            break;
+                        case REGISTRE.LectureA:
+                            {
+                                ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                LectureA = readLectureA[0];
+                            }
+                            break;
+                        case REGISTRE.LectureV:
+                            {
+                                ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                LectureV = readLectureV[0];
+                            }
+                            break;
+
+                        case REGISTRE.MiseSousTension:
+                            {
+                                ushort x = Convert.ToUInt16(registre.AdresseDebut);
+
+                                bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
+
+                                //short[] readMiseSousTension = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToInt32(registre.AdresseDebut), Cst_NbRedresseurs);
+                                //MiseSousTension = readMiseSousTension[0];
+                                if (readMiseSousTension!= null) {
+                                    MiseSousTension = readMiseSousTension[0];
+                                }
+                            }
+                            break;
+
+                    }
+                }
+                catch { }
             }
         }
 

@@ -64,12 +64,12 @@ namespace AcoreApplication.Views
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
             AcoreApplication.Resources.Lang.Wrapper.ChangeCulture(Thread.CurrentThread.CurrentUICulture);
         }
-
+        /*
         private void Machine1_Loaded(object sender, RoutedEventArgs e)
         {
             Storyboard sb = this.Machine1.FindResource("Storyboard1") as Storyboard;
             sb.Begin();
-        }
+        }*/
 
         private void AfficherListRecette(DataService.Process process)
         {
