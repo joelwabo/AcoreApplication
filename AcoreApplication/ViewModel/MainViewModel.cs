@@ -298,9 +298,12 @@ namespace AcoreApplication.ViewModel
             {
                 foreach (Redresseur redresseur2 in ListRedresseurToShow)
                 {
-                    if (redresseur2.Id == (int)redresseurSelected.Id)
+                    if (redresseurSelected != null)
                     {
-                        return;
+                        if (redresseur2.Id == (int)redresseurSelected.Id)
+                        {
+                            return;
+                        }
                     }
                 }
 

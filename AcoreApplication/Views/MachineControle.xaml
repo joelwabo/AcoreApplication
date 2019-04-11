@@ -31,6 +31,9 @@
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="button">
                 <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Hidden}"/>
             </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="button2">
+                <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Hidden}"/>
+            </ObjectAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="userControl">
                 <EasingDoubleKeyFrame KeyTime="0" Value="189"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:1" Value="378"/>
@@ -38,6 +41,10 @@
         </Storyboard>
         <Storyboard x:Key="Storyboard2">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="button">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}"/>
+                <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="button2">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}"/>
                 <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
@@ -90,7 +97,14 @@
                 <TextBlock HorizontalAlignment="Left" Height="20" Padding="2.4,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62" Foreground="White"><Run Text="Machine N"/><Run Text="°"/></TextBlock>
                 <TextBlock HorizontalAlignment="Left" Height="20" Margin="64.4,0,0,0" TextWrapping="Wrap" Text="{Binding Id}" VerticalAlignment="Top" Width="14.4" Foreground="White"/>
                 <Image HorizontalAlignment="Left" Height="20" Margin="83.8,0,0,0" VerticalAlignment="Top" Width="25.067" Source="{Binding EtatImageSource, Mode=TwoWay}"/>
-                <Button x:Name="button" Content="-&gt;" HorizontalAlignment="Left" Margin="156.794,0,0,-0.341" Width="20" Padding="0" Background="{x:Null}" Foreground="White" Height="20" RenderTransformOrigin="0.5,0.5"/>
+                <Button x:Name="button" Content="-&gt;" HorizontalAlignment="Left" Margin="136.794,0,0,-0.341" Width="20" Padding="0" Background="{x:Null}" Foreground="White" Height="20" RenderTransformOrigin="0.5,0.5"/>
+                <Button x:Name="button2" Content="X" HorizontalAlignment="Left" Height="20" Margin="160.928,0,0,-0.341" VerticalAlignment="Top" Width="20">
+                    <Interactivity:Interaction.Triggers>
+                        <Interactivity:EventTrigger EventName="Click" >
+                            <Command:EventToCommand Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True" CommandParameter="{Binding Id}" />
+                        </Interactivity:EventTrigger>
+                    </Interactivity:Interaction.Triggers>
+                </Button>
             </Grid>
             <Grid Margin="0,20,0,0" Width="200" HorizontalAlignment="Left">
                 <Button HorizontalAlignment="Left" Height="33" Margin="10,10,0,0" VerticalAlignment="Top" Width="33" RenderTransformOrigin="0.537,0.367">
@@ -101,7 +115,7 @@
                 <ComboBox Name="RecetteComboBox"  HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Height="26" Width="134" ItemsSource="{Binding Path=ListRecette}">
                     <Interactivity:Interaction.Triggers>
                         <Interactivity:EventTrigger EventName="SelectionChanged" >
-                            <!--<Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>-->
+                            <Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>
                         </Interactivity:EventTrigger>
                     </Interactivity:Interaction.Triggers>
                     <ComboBox.ItemTemplate>
@@ -205,7 +219,7 @@
                 <Button Content="X" HorizontalAlignment="Left" Height="20" Margin="156.928,0,0,-0.341" VerticalAlignment="Top" Width="20">
                     <Interactivity:Interaction.Triggers>
                         <Interactivity:EventTrigger EventName="Click" >
-                            <!--<Command:EventToCommand Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True" CommandParameter="{Binding Id}" />-->
+                            <Command:EventToCommand Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True" CommandParameter="{Binding Id}" />
                         </Interactivity:EventTrigger>
                     </Interactivity:Interaction.Triggers>
                 </Button>

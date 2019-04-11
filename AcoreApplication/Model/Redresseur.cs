@@ -72,7 +72,10 @@ namespace AcoreApplication.Model
                     Historique.IdRedresseur = Id;
                     if ((Etat == MODES.LocalRecette) || (Etat == MODES.RemoteRecette))
                     {
-                        Historique.IdRecette = SelectedRecette.Id;
+                        if (SelectedRecette != null)
+                        {
+                            Historique.IdRecette = SelectedRecette.Id;
+                        }
                         //Historique.Recette = SelectedRecette;
                     }
                     Historique.OrdreFabrication = OrdreFabrication;
@@ -142,7 +145,7 @@ namespace AcoreApplication.Model
         private int consigneA;
         public int ConsigneA
         {
-            get { return id; }
+            get { return consigneA; }
             set { NotifyPropertyChanged(ref consigneA, value); }
         }
         private int? lectureV;
@@ -427,7 +430,7 @@ namespace AcoreApplication.Model
                 case MODES.LocalRecette:
                     if (onOff)
                     {
-                        EtatImageSource = "../Resources/liasonOkRecette.png";
+                        EtatImageSource = "../Resources/liasonOkLocal.png";
                     }
                     else
                     {
@@ -445,7 +448,14 @@ namespace AcoreApplication.Model
                     }
                     break;
                 case MODES.RemoteRecette:
-                    EtatImageSource = "../Resources/liasonPas.png";
+                    if (onOff)
+                    {
+                        EtatImageSource = "../Resources/liasonOkRecette.png";
+                    }
+                    else
+                    {
+                        EtatImageSource = "../Resources/liasonPas.png";
+                    }
                     break;
                 case MODES.Supervision:
                     if (onOff)
@@ -501,7 +511,7 @@ namespace AcoreApplication.Model
                     case MODES.LocalRecette:
                         if (onOff)
                         {
-                            EtatImageSource = "../Resources/liasonOkRecette.png";
+                            EtatImageSource = "../Resources/liasonOkLocal.png";
                         }
                         else
                         {
@@ -519,7 +529,14 @@ namespace AcoreApplication.Model
                         }
                         break;
                     case MODES.RemoteRecette:
-                        EtatImageSource = "../Resources/liasonPas.png";
+                        if (onOff)
+                        {
+                            EtatImageSource = "../Resources/liasonOkRecette.png";
+                        }
+                        else
+                        {
+                            EtatImageSource = "../Resources/liasonPas.png";
+                        }
                         break;
                     case MODES.Supervision:
                         if (onOff)
@@ -537,11 +554,11 @@ namespace AcoreApplication.Model
             {
                 if (miseSousTension == true)
                 {
-                    miseSousTensionImageSource = "../Resources/power2.png";
+                    MiseSousTensionImageSource = "../Resources/power2.png";
                 }
                 else
                 {
-                    miseSousTensionImageSource = "../Resources/power.png";
+                    MiseSousTensionImageSource = "../Resources/power.png";
                 }
             }
             RaisePropertyChanged(nomPropriete);
@@ -571,34 +588,57 @@ namespace AcoreApplication.Model
         {
             while (true)
             {
-                readInfo();
-                if (OnOff)
+                
+                switch (Etat)
                 {
-                    HistoriqueData tempData = new HistoriqueData();
-                    switch (Etat)
-                    {
-                        case MODES.LocalManuel:
-                            LocaleManuel();
-                            break;
-                        case MODES.LocalRecette:
-                            LocaleRecette();
-                            break;
-                        case MODES.RemoteManuel:
-                            RemoteManuel();
-                            break;
-                        case MODES.RemoteRecette:
-                            RemoteRecette();
-                            break;
-                        case MODES.Supervision:
-                            break;
-                    }
-                    tempData.IdHistorique = Historique.Id;
-                    tempData.LectureA = LectureA;
-                    tempData.LectureV = LectureV;
-                    tempData.ConsigneV = ConsigneV;
-                    tempData.ConsigneA = ConsigneA;
-                    Historique.HistoriqueData.Add(tempData);
+                    case MODES.LocalManuel:
+                        LocaleManuel();
+                        break;
+                    case MODES.LocalRecette:
+                        LocaleRecette();
+                        break;
+                    case MODES.RemoteManuel:
+                        RemoteManuel();
+                        break;
+                    case MODES.RemoteRecette:
+                        RemoteRecette();
+                        break;
+                    case MODES.Supervision:
+                        break;
                 }
+
+
+               
+
+                /*
+                 if (OnOff)
+                 {
+                     HistoriqueData tempData = new HistoriqueData();
+                     switch (Etat)
+                     {
+                         case MODES.LocalManuel:
+                             LocaleManuel();
+                             break;
+                         case MODES.LocalRecette:
+                             LocaleRecette();
+                             break;
+                         case MODES.RemoteManuel:
+                             RemoteManuel();
+                             break;
+                         case MODES.RemoteRecette:
+                             RemoteRecette();
+                             break;
+                         case MODES.Supervision:
+                             break;
+                     }
+                     tempData.IdHistorique = Historique.Id;
+                     tempData.LectureA = LectureA;
+                     tempData.LectureV = LectureV;
+                     tempData.ConsigneV = ConsigneV;
+                     tempData.ConsigneA = ConsigneA;
+                     Historique.HistoriqueData.Add(tempData);
+                 }
+                 */
                 Thread.Sleep(Cst_SleepTime/5);
             }
         }
@@ -642,11 +682,24 @@ namespace AcoreApplication.Model
                                 ushort x = Convert.ToUInt16(registre.AdresseDebut);
 
                                 bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
+                                
+                                if (readMiseSousTension!= null) {
+                                    MiseSousTension = readMiseSousTension[0];
+                                }
+                            }
+                            break;
+                        case REGISTRE.RetourOnOff:
+                            {
+                                ushort x = Convert.ToUInt16(registre.AdresseDebut);
+
+                                bool[] readOnOff = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
 
                                 //short[] readMiseSousTension = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToInt32(registre.AdresseDebut), Cst_NbRedresseurs);
                                 //MiseSousTension = readMiseSousTension[0];
-                                if (readMiseSousTension!= null) {
-                                    MiseSousTension = readMiseSousTension[0];
+                                if (readOnOff != null)
+                                {
+                                    int i = 0;
+                                   // OnOff = readOnOff[0];
                                 }
                             }
                             break;
@@ -659,50 +712,103 @@ namespace AcoreApplication.Model
 
         private void LocaleRecette()
         {
-            foreach (Registre registre in Registres)
+            if (OnOff)
             {
-                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                foreach (Registre registre in Registres)
                 {
-                    case REGISTRE.ConsigneA:
-                        {
-                            ushort[] readConsigneA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                            ConsigneA = readConsigneA[0];
-                        }
-                        break;
-                    case REGISTRE.ConsigneV:
-                        {
-                            ushort[] readConsigneV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                            ConsigneV = readConsigneV[0];
-                            if (ValuesA.Count < 500)
-                                ValuesA.Add(ConsigneV);
-                            else
+                    switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                    {
+                        case REGISTRE.ConsigneA:
                             {
-                                for (int i = 0; i < ValuesA.Count - 1; i++)
-                                    ValuesA[i] = ValuesA[i + 1];
-                                ValuesA[ValuesA.Count - 1] = ConsigneV;
+                                ushort[] readConsigneA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                ConsigneA = readConsigneA[0];
                             }
-                        }
-                        break;
-                    case REGISTRE.LectureA:
-                        {
-                            ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                            LectureA = readLectureA[0];
-                            if (ValuesB.Count < 500)
-                                ValuesB.Add(ConsigneA);
-                            else
+                            break;
+                        case REGISTRE.ConsigneV:
                             {
-                                for (int i = 0; i < ValuesA.Count - 1; i++)
-                                    ValuesB[i] = ValuesB[i + 1];
-                                ValuesB[ValuesA.Count - 1] = ConsigneA;
+                                ushort[] readConsigneV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                ConsigneV = readConsigneV[0];
+                                if (ValuesA.Count < 500)
+                                    ValuesA.Add(ConsigneV);
+                                else
+                                {
+                                    for (int i = 0; i < ValuesA.Count - 1; i++)
+                                        ValuesA[i] = ValuesA[i + 1];
+                                    ValuesA[ValuesA.Count - 1] = ConsigneV;
+                                }
                             }
-                        }
-                        break;
-                    case REGISTRE.LectureV:
-                        {
-                            ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                            LectureV = readLectureV[0];
-                        }
-                        break;
+                            break;
+                        case REGISTRE.LectureA:
+                            {
+                                ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                LectureA = readLectureA[0];
+                                if (ValuesB.Count < 500)
+                                    ValuesB.Add(ConsigneA);
+                                else
+                                {
+                                    for (int i = 0; i < ValuesA.Count - 1; i++)
+                                        ValuesB[i] = ValuesB[i + 1];
+                                    ValuesB[ValuesA.Count - 1] = ConsigneA;
+                                }
+                            }
+                            break;
+                        case REGISTRE.LectureV:
+                            {
+                                ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                LectureV = readLectureV[0];
+                            }
+                            break;
+                        case REGISTRE.MiseSousTension:
+                            {
+                                bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+
+                                if (readMiseSousTension != null)
+                                {
+                                    MiseSousTension = readMiseSousTension[0];
+                                }
+                            }
+                            break;
+                        case REGISTRE.RetourOnOff:
+                            {
+                                ushort x = Convert.ToUInt16(registre.AdresseDebut);
+
+                                bool[] readOnOff = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
+                                if (readOnOff != null)
+                                {
+                                    OnOff = readOnOff[0];
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+            else {
+                foreach (Registre registre in Registres)
+                {
+                    switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                    {
+                        case REGISTRE.MiseSousTension:
+                            {
+                                bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+
+                                if (readMiseSousTension != null)
+                                {
+                                    MiseSousTension = readMiseSousTension[0];
+                                }
+                            }
+                            break;
+                        case REGISTRE.RetourOnOff:
+                            {
+                                ushort x = Convert.ToUInt16(registre.AdresseDebut);
+
+                                bool[] readOnOff = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
+                                if (readOnOff != null)
+                                {
+                                    OnOff = readOnOff[0];
+                                }
+                            }
+                            break;
+                    }
                 }
             }
 
@@ -738,57 +844,124 @@ namespace AcoreApplication.Model
                             LectureV = readLectureV[0];
                         }
                         break;
+                    case REGISTRE.MiseSousTension:
+                        {
+                            bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+
+                            if (readMiseSousTension != null)
+                            {
+                                MiseSousTension = readMiseSousTension[0];
+                            }
+                        }
+                        break;
+                    case REGISTRE.RetourOnOff:
+                        {
+                            ushort x = Convert.ToUInt16(registre.AdresseDebut);
+
+                            bool[] readOnOff = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
+                            if (readOnOff != null)
+                            {
+                                OnOff = readOnOff[0];
+                            }
+                        }
+                        break;
                 }
             }
         }
 
         private void RemoteManuel()
         {
-            WriteModbus();
+
+            if (OnOff)
+            {
+                WriteModbus();
+            }
+            else {
+                checkStates();
+            }
+        }
+
+        private void checkStates()
+        {
+            foreach (Registre registre in Registres)
+            {
+                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                {
+                    case REGISTRE.MiseSousTension:
+                        {
+                            try
+                            {
+                                ushort x = Convert.ToUInt16(registre.AdresseDebut);
+                                
+                                bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), 1);
+
+                                if (readMiseSousTension != null)
+                                {
+                                    MiseSousTension = readMiseSousTension[0];
+                                }
+                            }
+                            catch (Exception e) { }
+                           
+                        }
+                        break;
+                    case REGISTRE.OnOff:
+                        {
+                            try
+                            {
+                                ModBusMaster.WriteSingleCoil(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), onOff);
+                            }
+                            catch (Exception e) { }
+
+                        }
+                        break;
+                }
+            }
+
         }
 
         private void RemoteRecette()
-        {
-            if (SelectedRecette != null) //Consigne = coefDirect*t + consigneD
+        {//TODO:CHECK
+            if (OnOff)
             {
-                if (SelectedRecette.TempsDebut.Add(SelectedRecette.TempsRestant) >= DateTime.Now)
-                {
-                    if (SelectedRecette.TempsDebut.Add(SelectedRecette.Segments[SelectedRecette.SegCours].Duree) >= DateTime.Now)
-                    {
-                        TimeSpan t = DateTime.Now - SelectedRecette.TempsDebut;
-                        float coefDirectA = (SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneArriveeA - SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartA) / (float)SelectedRecette.Segments[SelectedRecette.SegCours].Duree.TotalSeconds;
-                        float coefDirectV = (SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneArriveeV - SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartV) / (float)SelectedRecette.Segments[SelectedRecette.SegCours].Duree.TotalSeconds;
+               if (SelectedRecette != null){ //Consigne = coefDirect*t + consigneD
+                    if (SelectedRecette.TempsDebut.Add(SelectedRecette.TempsRestant) >= DateTime.Now) {
+                        if (SelectedRecette.TempsDebut.Add(SelectedRecette.Segments[SelectedRecette.SegCours].Duree) >= DateTime.Now){
+                            TimeSpan t = DateTime.Now - SelectedRecette.TempsDebut;
+                            float coefDirectA = (SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneArriveeA - SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartA) / (float)SelectedRecette.Segments[SelectedRecette.SegCours].Duree.TotalSeconds;
+                            float coefDirectV = (SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneArriveeV - SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartV) / (float)SelectedRecette.Segments[SelectedRecette.SegCours].Duree.TotalSeconds;
 
-                        ConsigneA = (int)(coefDirectA * (float)t.TotalSeconds + SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartA);
-                        ConsigneV = (int)(coefDirectV * (float)t.TotalSeconds + SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartV);
-                        if (ValuesA.Count < 500)
-                        {
-                            ValuesA.Add(ConsigneV);
-                            ValuesB.Add(ConsigneA);
+                            ConsigneA = (int)(coefDirectA * (float)t.TotalSeconds + SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartA);
+                            ConsigneV = (int)(coefDirectV * (float)t.TotalSeconds + SelectedRecette.Segments[SelectedRecette.SegCours].ConsigneDepartV);
+                            if (ValuesA.Count < 500){
+                                ValuesA.Add(ConsigneV);
+                                ValuesB.Add(ConsigneA);
+                            }
+                            else {
+                                for (int i = 0; i < ValuesA.Count - 1; i++)
+                                {
+                                    ValuesA[i] = ValuesA[i + 1];
+                                    ValuesB[i] = ValuesB[i + 1];
+                                    ValuesA[ValuesA.Count - 1] = ConsigneV;
+                                    ValuesB[ValuesA.Count - 1] = ConsigneA;
+                                }
+                            }
                         }
-                        else
-                        {
-                            for (int i = 0; i < ValuesA.Count - 1; i++)
+                        else {
+                            SelectedRecette.SegCours++;
+                            if (SelectedRecette.SegCours >= SelectedRecette.Segments.Count)
                             {
-                                ValuesA[i] = ValuesA[i + 1];
-                                ValuesB[i] = ValuesB[i + 1];
-                                ValuesA[ValuesA.Count - 1] = ConsigneV;
-                                ValuesB[ValuesA.Count - 1] = ConsigneA;
+                                SelectedRecette.SegCours--;
+                                OnOff = false;
+                                Messenger.Default.Send(SelectedRecette);
                             }
                         }
                     }
-                    else
-                    {
-                        SelectedRecette.SegCours++;
-                        if (SelectedRecette.SegCours >= SelectedRecette.Segments.Count)
-                        {
-                            SelectedRecette.SegCours--;
-                            OnOff = false;
-                            Messenger.Default.Send(SelectedRecette);
-                        }
-                    }
-                }
-                WriteModbus();
+                    WriteModbus();
+               }
+            }
+            else
+            {
+                //readInfo();
             }
         }
 
@@ -818,6 +991,32 @@ namespace AcoreApplication.Model
                         {
                             ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), 1);
                             LectureV = readLectureV[0];
+                        }
+                        break;
+                    case REGISTRE.MiseSousTension:
+                        {
+
+                            bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                            if (readMiseSousTension != null)
+                            {
+                                MiseSousTension = readMiseSousTension[0];
+                                if (MiseSousTension == false) {
+                                    OnOff = false;
+                                }
+                            }
+                            /*
+                            ModBusMaster.WriteSingleCoil(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), miseSousTension);
+                            */
+                        }
+                        break;
+                    case REGISTRE.OnOff:
+                        {
+                            
+                            ModBusMaster.WriteSingleCoil(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), onOff);
+                            /*
+                            miseSousTension = true;
+                            ModBusMaster.WriteSingleCoil(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), miseSousTension);
+                            miseSousTension = false;*/
                         }
                         break;
                 }

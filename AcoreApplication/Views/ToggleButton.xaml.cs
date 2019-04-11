@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace AcoreApplication.Views
 {
@@ -34,8 +35,36 @@ namespace AcoreApplication.Views
             Back.Fill = OffColor;
             Toogled = false;
             Dot.Margin = RightSide;
+
+
+            DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += update;
+            timer.Start();
+
         }
-        
+
+        void update(object sender, EventArgs e)
+        {
+            Redresseur red = (Redresseur)this.DataContext;
+            if (red != null)
+            {
+                if (!red.OnOff)
+                {
+                    Back.Fill = OffColor;
+                    Toogled = false;
+                    Dot.Margin = RightSide;
+                }
+                else
+                {
+                    Back.Fill = OnColor;
+                    Toogled = true;
+                    Dot.Margin = LeftSide;
+                }
+            }
+        }
+
+
         private void UpdateToggle(Redresseur red)
         {
             if (red.OnOff)

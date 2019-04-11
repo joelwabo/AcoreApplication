@@ -35,7 +35,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Id}" />
+                                            <!--<TextBlock Text="{Binding Id}" />-->
                                             <Image Source="{Binding EtatImageSource, Mode=TwoWay}" Width="20"  />
                                         </StackPanel>
                                     </DataTemplate>
@@ -75,7 +75,7 @@
                     </DataGrid>
                     <Grid Background="#FFFCFCFC" Margin="10,304.4,10,397.2">
                     </Grid>
-                    <ListBox  x:Name="listBox" Margin="0,300,0,0" ItemsSource="{Binding ListRedresseurToShow}" >
+                    <ListBox  x:Name="listBox" Margin="0,250,0,20" ItemsSource="{Binding ListRedresseurToShow}"  >
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel  Orientation="Horizontal"/>
@@ -92,7 +92,7 @@
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="Background" Value="GhostWhite"/>
                                 <Setter Property="Padding" Value="0,0,0,0"/>
-                                <Setter Property="Margin" Value="0,0,0,0"/>
+                                <Setter Property="Margin" Value="0,-50,0,0"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsSelected" Value="true">
                                         <Setter Property="Background" Value="Transparent"/>
