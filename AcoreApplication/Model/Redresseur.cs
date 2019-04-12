@@ -98,13 +98,25 @@ namespace AcoreApplication.Model
         public bool MiseSousTension
         {
             get { return miseSousTension; }
-            set { NotifyPropertyChanged(ref miseSousTension, value); }
+            set { NotifyPropertyChanged(ref miseSousTension, value);
+                if (miseSousTension == true)
+                {
+                    MiseSousTensionImageSource = "../Resources/power2.png";
+                }
+                else
+                {
+                    MiseSousTensionImageSource = "../Resources/power.png";
+                }
+            }
         }
         private MODES etat;
         public MODES Etat
         {
             get { return etat; }
-            set { NotifyPropertyChanged(ref etat, value); }
+            set { NotifyPropertyChanged(ref etat, value);
+
+                
+            }
         }
         private TYPEREDRESSEUR type;
         public TYPEREDRESSEUR Type
@@ -321,7 +333,7 @@ namespace AcoreApplication.Model
         private Thread RedresseurPoolingTask { get; set; }
 
 
-        //PPM TRY
+        
         private string etatImageSource;
         public string EtatImageSource
         {
@@ -329,9 +341,11 @@ namespace AcoreApplication.Model
             set { NotifyPropertyChanged(ref etatImageSource, value); }
         }
 
-
+        private bool connected;
 
         private string miseSousTensionImageSource;
+        
+
         public string MiseSousTensionImageSource
         {
             get { return miseSousTensionImageSource; }
@@ -370,6 +384,9 @@ namespace AcoreApplication.Model
             Rampe = red.Rampe;
             DureeRampe = DateTime.Parse(red.DureeRampe.ToString());
             Defaut = red.Defaut;
+
+            connected = false;
+            
 
             Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = Registre.GetAllRegisterFromRedresseurId(Id);
@@ -415,69 +432,7 @@ namespace AcoreApplication.Model
             Registres = Registre.GetAllRegisterFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
 
-            switch (Etat)
-            {
-                case MODES.LocalManuel:
-                    if (onOff)
-                    {
-                        EtatImageSource = "../Resources/liasonOkLocal.png";
-                    }
-                    else
-                    {
-                        EtatImageSource = "../Resources/liasonPas.png";
-                    }
-                    break;
-                case MODES.LocalRecette:
-                    if (onOff)
-                    {
-                        EtatImageSource = "../Resources/liasonOkLocal.png";
-                    }
-                    else
-                    {
-                        EtatImageSource = "../Resources/liasonPas.png";
-                    }
-                    break;
-                case MODES.RemoteManuel:
-                    if (onOff)
-                    {
-                        EtatImageSource = "../Resources/liasonOkRemote.png";
-                    }
-                    else
-                    {
-                        EtatImageSource = "../Resources/liasonPas.png";
-                    }
-                    break;
-                case MODES.RemoteRecette:
-                    if (onOff)
-                    {
-                        EtatImageSource = "../Resources/liasonOkRecette.png";
-                    }
-                    else
-                    {
-                        EtatImageSource = "../Resources/liasonPas.png";
-                    }
-                    break;
-                case MODES.Supervision:
-                    if (onOff)
-                    {
-                        EtatImageSource = "../Resources/supervision.png";
-                    }
-                    else
-                    {
-                        EtatImageSource = "../Resources/supervisionPas.png";
-                    }
-                    break;
-            }
-
-            if (miseSousTension == true)
-            {
-                miseSousTensionImageSource = "../Resources/power2.png";
-            }
-            else
-            {
-                miseSousTensionImageSource = "../Resources/power.png";
-            }
-
+            
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
         }
@@ -495,72 +450,7 @@ namespace AcoreApplication.Model
             if (object.Equals(variable, valeur)) return false;
 
             variable = valeur;
-            if (nomPropriete == "Etat"|| nomPropriete=="OnOff") {
-                switch (this.Etat)
-                {
-                    case MODES.LocalManuel:
-                        if (onOff)
-                        {
-                            EtatImageSource = "../Resources/liasonOkLocal.png";
-                        }
-                        else
-                        {
-                            EtatImageSource = "../Resources/liasonPas.png";
-                        }
-                        break;
-                    case MODES.LocalRecette:
-                        if (onOff)
-                        {
-                            EtatImageSource = "../Resources/liasonOkLocal.png";
-                        }
-                        else
-                        {
-                            EtatImageSource = "../Resources/liasonPas.png";
-                        }
-                        break;
-                    case MODES.RemoteManuel:
-                        if (onOff)
-                        {
-                            EtatImageSource = "../Resources/liasonOkRemote.png";
-                        }
-                        else
-                        {
-                            EtatImageSource = "../Resources/liasonPas.png";
-                        }
-                        break;
-                    case MODES.RemoteRecette:
-                        if (onOff)
-                        {
-                            EtatImageSource = "../Resources/liasonOkRecette.png";
-                        }
-                        else
-                        {
-                            EtatImageSource = "../Resources/liasonPas.png";
-                        }
-                        break;
-                    case MODES.Supervision:
-                        if (onOff)
-                        {
-                            EtatImageSource = "../Resources/supervision.png";
-                        }
-                        else
-                        {
-                            EtatImageSource = "../Resources/supervisionPas.png";
-                        }
-                        break;
-                }
-            }
-            if (nomPropriete == "MiseSousTension")
-            {
-                if (miseSousTension == true)
-                {
-                    MiseSousTensionImageSource = "../Resources/power2.png";
-                }
-                else
-                {
-                    MiseSousTensionImageSource = "../Resources/power.png";
-                }
-            }
+            
             RaisePropertyChanged(nomPropriete);
             return true;
         }
@@ -608,6 +498,9 @@ namespace AcoreApplication.Model
                 }
 
 
+                checkConnection();
+
+
                
 
                 /*
@@ -640,6 +533,77 @@ namespace AcoreApplication.Model
                  }
                  */
                 Thread.Sleep(Cst_SleepTime/5);
+            }
+        }
+
+        private void checkConnection()
+        {
+            if (Registres.Where(s => s.IdRedresseur == Id).Count() >= 1)
+            {
+                foreach (Registre registre in Registres.Where(s => s.IdRedresseur == Id))
+                {
+                    try
+                    {
+                        switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                        {
+                            case REGISTRE.MiseSousTension:
+                                {
+                                    if (Id == registre.IdRedresseur)
+                                    {
+                                        ushort x = Convert.ToUInt16(registre.AdresseDebut);
+
+                                        bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
+
+                                        if (readMiseSousTension != null)
+                                        {
+                                            connected = true;
+                                            switch (this.Etat)
+                                            {
+                                                case MODES.LocalManuel:
+                                                    EtatImageSource = "../Resources/liasonOkLocal.png";
+                                                    break;
+                                                case MODES.LocalRecette:
+                                                    EtatImageSource = "../Resources/liasonOkLocal.png";
+                                                    break;
+                                                case MODES.RemoteManuel:
+                                                    EtatImageSource = "../Resources/liasonOkRemote.png";
+                                                    break;
+                                                case MODES.RemoteRecette:
+                                                    EtatImageSource = "../Resources/liasonOkRecette.png";
+                                                    break;
+                                                case MODES.Supervision:
+                                                    if (onOff)
+                                                    {
+                                                        EtatImageSource = "../Resources/supervision.png";
+                                                    }
+                                                    else
+                                                    {
+                                                        EtatImageSource = "../Resources/supervisionPas.png";
+                                                    }
+                                                    break;
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            connected = false;
+                                            EtatImageSource = "../Resources/liasonPas.png";
+                                        }
+                                    }
+                                }
+                                break;
+
+                        }
+                    }
+                    catch
+                    {
+
+                        connected = false; EtatImageSource = "../Resources/liasonPas.png";
+                    }
+                }
+            }
+            else {
+                EtatImageSource = "../Resources/liasonPas.png";
             }
         }
 
@@ -961,7 +925,7 @@ namespace AcoreApplication.Model
             }
             else
             {
-                //readInfo();
+                checkStates();
             }
         }
 

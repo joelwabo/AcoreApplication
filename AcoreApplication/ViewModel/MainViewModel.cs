@@ -190,8 +190,8 @@ namespace AcoreApplication.ViewModel
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "LocalRecette"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "LocalManuel"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteManuel"));
-            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "Supervision"));
             ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "RemoteRecette"));
+            ListEtats.Add((AcoreApplication.Model.Constantes.MODES)Enum.Parse(typeof(AcoreApplication.Model.Constantes.MODES), "Supervision"));
 
 
 
