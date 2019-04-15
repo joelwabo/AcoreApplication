@@ -101,7 +101,7 @@
                 <Button x:Name="button2" Content="X" HorizontalAlignment="Left" Height="20" Margin="160.928,0,0,-0.341" VerticalAlignment="Top" Width="20">
                     <Interactivity:Interaction.Triggers>
                         <Interactivity:EventTrigger EventName="Click" >
-                            <Command:EventToCommand Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True" CommandParameter="{Binding Id}" />
+                            <Interactivity:InvokeCommandAction Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}"  CommandParameter="{Binding Id}" />
                         </Interactivity:EventTrigger>
                     </Interactivity:Interaction.Triggers>
                 </Button>
@@ -111,11 +111,12 @@
                     <Image Source="{Binding MiseSousTensionImageSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </Button>
                 <local:ToggleButton x:Name="ToggleButton" Margin="40,10,99,324.459" Width="40" Height="25" />
-                <TextBlock Text="{Binding Path=Etat}" Margin="10,44,46,291" Height="25" Foreground="Black"/>
+                <Image Name="DefautImage"  Source="../Resources/defaut.png" Height="33" Width="33" Margin="111,6,56,321.8" Visibility="Collapsed"/>
+                    <TextBlock Text="{Binding Path=Etat}" Margin="10,44,46,291" Height="25" Foreground="Black"/>
                 <ComboBox Name="RecetteComboBox"  HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Height="26" Width="134" ItemsSource="{Binding Path=ListRecette}">
                     <Interactivity:Interaction.Triggers>
                         <Interactivity:EventTrigger EventName="SelectionChanged" >
-                            <Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>
+                            <!-- <Command:EventToCommand Command="{Binding Path=MainView.SelectedRecetteChangedCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True"/>-->
                         </Interactivity:EventTrigger>
                     </Interactivity:Interaction.Triggers>
                     <ComboBox.ItemTemplate>
@@ -195,7 +196,7 @@
                         </TextBlock>
                     </Border>
                 </Grid>
-                <Rectangle HorizontalAlignment="Left" Height="31" Margin="12,195,0,0" Stroke="Black" VerticalAlignment="Top" Width="156"/>
+                <Rectangle HorizontalAlignment="Left" Height="31" Margin="12,195,0,0" Stroke="Black" VerticalAlignment="Top" Width="156" />
                 <TextBlock HorizontalAlignment="Center" Height="31.6" Margin="11.6,194.6,143.2,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="34.2" Padding="10,8,0,0" Foreground="Black"><Run Text="OF"/><Run Text=" :"/></TextBlock>
                 <TextBlock HorizontalAlignment="Left" Height="31.6" Margin="50.8,194.6,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="111.2" Padding="0,8,0,0" Foreground="Black"/>
                 <Rectangle HorizontalAlignment="Left" Height="53" Margin="12,239,0,0" Stroke="Black" VerticalAlignment="Top" Width="156" />
@@ -219,7 +220,7 @@
                 <Button Content="X" HorizontalAlignment="Left" Height="20" Margin="156.928,0,0,-0.341" VerticalAlignment="Top" Width="20">
                     <Interactivity:Interaction.Triggers>
                         <Interactivity:EventTrigger EventName="Click" >
-                            <Command:EventToCommand Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}" PassEventArgsToCommand="True" CommandParameter="{Binding Id}" />
+                            <Interactivity:InvokeCommandAction  Command="{Binding Path=MainView.CloseButtonCommand, Source={StaticResource Locator}}"  CommandParameter="{Binding Id}" />
                         </Interactivity:EventTrigger>
                     </Interactivity:Interaction.Triggers>
                 </Button>
@@ -229,7 +230,7 @@
                     <TabItem Header="Pulse">
                         <Grid Background="#FFE5E5E5">
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
-                            <CheckBox IsChecked="{Binding Path=Pulse, Mode=TwoWay}" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8"/>
+                            <CheckBox IsChecked="{Binding Path=Pulse, Mode=TwoWay}" HorizontalAlignment="Left" Height="15" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="15"/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Temps ON : "/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="82.067,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=TempsOn, Mode=TwoWay}"/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067"><Run Text="Temps "/><Run Text="OFF"/><Run Text=": "/></TextBlock>
@@ -239,7 +240,7 @@
                     <TabItem Header="A/H">
                         <Grid Background="#FFE5E5E5">
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
-                            <CheckBox Content="" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8"/>
+                            <CheckBox Content="" HorizontalAlignment="Left" Height="15" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="15"/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Calibre :"/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=CalibreAH, Mode=TwoWay}"/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,35.748,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067"><Run Text="Valeur"/><Run Text=" : "/></TextBlock>
@@ -249,7 +250,7 @@
                     <TabItem Header="Tempo">
                         <Grid Background="#FFE5E5E5">
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
-                            <CheckBox  HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8" IsChecked="{Binding Path=Temporisation, Mode=TwoWay}"/>
+                            <CheckBox  HorizontalAlignment="Left" Height="15" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="15" IsChecked="{Binding Path=Temporisation, Mode=TwoWay}"/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Value_text, Source={StaticResource LanguagesRes}}"/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="64.8,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=DureeTempo, Mode=TwoWay}"/>
                         </Grid>
@@ -257,7 +258,7 @@
                     <TabItem Header="Ramp">
                         <Grid Background="#FFE5E5E5">
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54.8"><Run Text="ON"/><Run Text="/"/><Run Text="OFF"/><Run Text=" :"/></TextBlock>
-                            <CheckBox Content="" HorizontalAlignment="Left" Height="12.401" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="13.8" IsChecked="{Binding Path=Rampe, Mode=TwoWay}"/>
+                            <CheckBox Content="" HorizontalAlignment="Left" Height="15" Margin="69.8,0.473,0,0" VerticalAlignment="Top" Width="15" IsChecked="{Binding Path=Rampe, Mode=TwoWay}"/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="10,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="Valeur : "/>
                             <TextBlock HorizontalAlignment="Left" Height="17.874" Margin="59.667,17.874,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="67.067" Text="{Binding Path=DureeRampe, Mode=TwoWay}"/>
                         </Grid>

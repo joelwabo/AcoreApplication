@@ -121,6 +121,13 @@ namespace AcoreApplication.ViewModel
             set { NotifyPropertyChanged(ref typeVisibilityParam, value); }
         }
 
+        private Visibility temperatureVisibilityParam = Visibility.Visible;
+        public Visibility TemperatureVisibilityParam
+        {
+            get { return temperatureVisibilityParam; }
+            set { NotifyPropertyChanged(ref temperatureVisibilityParam, value); }
+        }
+
         private Visibility tempoVisibilityParam = Visibility.Visible;
         public Visibility TempoVisibilityParam
         {
@@ -173,6 +180,7 @@ namespace AcoreApplication.ViewModel
 
             PulseVisibilityParam = Visibility.Collapsed;
             TypeVisibilityParam = Visibility.Visible;
+            TemperatureVisibilityParam = Visibility.Visible;
 
             tempoVisibilityParam = new Visibility();
             TempoVisibilityParam = Visibility.Visible;
@@ -274,6 +282,30 @@ namespace AcoreApplication.ViewModel
                 TypeVisibilityParam = Visibility.Collapsed;
             }
 
+            if (checkTemperatureVisibility())
+            {
+                TemperatureVisibilityParam = Visibility.Visible;
+            }
+            else
+            {
+                TemperatureVisibilityParam = Visibility.Collapsed;
+            }
+
+        }
+
+        private bool checkTemperatureVisibility()
+        {
+            if (ListRedresseur != null)
+            {
+                foreach (Redresseur redresseur in ListRedresseur)
+                {
+                    if (redresseur.Temperature>=0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private bool checkTypeVisibility()

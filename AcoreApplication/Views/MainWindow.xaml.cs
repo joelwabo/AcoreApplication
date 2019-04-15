@@ -46,7 +46,21 @@ namespace AcoreApplication.Views
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
             AcoreApplication.Resources.Lang.Wrapper.ChangeCulture(Thread.CurrentThread.CurrentUICulture);
 
+            hideColumns();
 
+        }
+
+        private void hideColumns()
+        {
+
+            MachineDataGrid.Columns[12].Visibility = Visibility.Collapsed; //TONms
+
+            MachineDataGrid.Columns[13].Visibility = Visibility.Collapsed; //TOFFms
+
+            MachineDataGrid.Columns[15].Visibility = Visibility.Collapsed; //Duree tempo
+
+            MachineDataGrid.Columns[16].Visibility = Visibility.Collapsed; //Duree restante
+            MachineDataGrid.Columns[18].Visibility = Visibility.Collapsed; //Duree rampe
         }
 
         private void Spanish_click(object sender, RoutedEventArgs e)
@@ -194,6 +208,75 @@ namespace AcoreApplication.Views
             {
                 MachineDataGrid.Columns[12].Visibility = Visibility.Hidden;
                 TonContextMenu.Header = "Show Tonms";
+            }
+
+        }
+
+        private void Toff_click(object sender, RoutedEventArgs e)
+        {
+
+            string headerText = (string)ToffContextMenu.Header;
+            if (headerText == "Show Toffms")
+            {
+
+                MachineDataGrid.Columns[13].Visibility = Visibility.Visible;
+                ToffContextMenu.Header = "Hide Toffms";
+            }
+            else if (headerText == "Hide Toffms")
+            {
+                MachineDataGrid.Columns[13].Visibility = Visibility.Hidden;
+                ToffContextMenu.Header = "Show Toffms";
+            }
+        }
+
+        private void DureeTempo_click(object sender, RoutedEventArgs e)
+        {
+
+            string headerText = (string)DureeTempoContextMenu.Header;
+            if (headerText == "Show Durée tempo")
+            {
+
+                MachineDataGrid.Columns[15].Visibility = Visibility.Visible;
+                DureeTempoContextMenu.Header = "Hide Durée tempo";
+            }
+            else if (headerText == "Hide Durée tempo")
+            {
+                MachineDataGrid.Columns[15].Visibility = Visibility.Hidden;
+                DureeTempoContextMenu.Header = "Show Durée tempo";
+            }
+        }
+
+        private void DureeRestante_click(object sender, RoutedEventArgs e)
+        {
+
+            string headerText = (string)DureeRestanteContextMenu.Header;
+            if (headerText == "Show Durée restante")
+            {
+
+                MachineDataGrid.Columns[16].Visibility = Visibility.Visible;
+                DureeRestanteContextMenu.Header = "Hide Durée restante";
+            }
+            else if (headerText == "Hide Durée restante")
+            {
+                MachineDataGrid.Columns[16].Visibility = Visibility.Hidden;
+                DureeRestanteContextMenu.Header = "Show Durée restante";
+            }
+        }
+
+        private void DureeRampe_click(object sender, RoutedEventArgs e)
+        {
+
+            string headerText = (string)DureeRampeContextMenu.Header;
+            if (headerText == "Show Durée rampe")
+            {
+
+                MachineDataGrid.Columns[18].Visibility = Visibility.Visible;
+                DureeRampeContextMenu.Header = "Hide Durée rampe";
+            }
+            else if (headerText == "Hide Durée rampe")
+            {
+                MachineDataGrid.Columns[18].Visibility = Visibility.Hidden;
+                DureeRampeContextMenu.Header = "Show Durée rampe";
             }
         }
 

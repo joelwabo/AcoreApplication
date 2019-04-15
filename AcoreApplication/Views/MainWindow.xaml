@@ -10,72 +10,83 @@
         xmlns:Command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         DataContext="{Binding MainView, Source={StaticResource Locator}}"
-        Title="FirstWindow" Height="768" Width="1024" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="FirstWindow"  WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
-    <Grid Width="1024" Height="768">
+    <Grid x:Name="ScreenGrid">
         <Button Content="{Binding Validate_change,Source={StaticResource LanguagesRes}}" HorizontalAlignment="Left" Height="26.6" Margin="607.2,0.4,0,0" VerticalAlignment="Top" Width="100" Command="{Binding ValideButton}"
                 CommandParameter="{Binding}"/>
-        <TabControl Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="772" Margin="-4,-4,0,0" VerticalAlignment="Top" Width="1028">
+        <TabControl Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="772" Margin="-4,-4,0,0" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ScreenGrid}">
             <TabItem  Width="70" Height="30">
                 <TabItem.Header>
                     <Image Source="../Resources/power.png" />
                 </TabItem.Header>
                 <Grid Background="#FFE5E5E5">
                     <FrameworkElement Name="frameworkElement" />
-                    <DataGrid Name="MachineDataGrid"  SelectedItem="{Binding RedresseurSelected}" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="202.6" Margin="10,10,0,0" VerticalAlignment="Top" Width="998" CanUserReorderColumns="False" MouseRightButtonUp="DataGrid_MouseRightButtonUp">
+                    <DataGrid Name="MachineDataGrid"  SelectedItem="{Binding RedresseurSelected}" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False"  Height="200" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch"  CanUserReorderColumns="False" MouseRightButtonUp="DataGrid_MouseRightButtonUp">
                         <Interactivity:Interaction.Triggers>
                             <Interactivity:EventTrigger EventName="SelectedCellsChanged" >
-                                <Command:EventToCommand Command="{Binding ARowEditEnding}" PassEventArgsToCommand="True"/>
+                                <Interactivity:InvokeCommandAction Command="{Binding ARowEditEnding}" />
                             </Interactivity:EventTrigger>
                         </Interactivity:Interaction.Triggers>
-                      
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Machine N°" Binding="{Binding Id}"/>
-                            <DataGridTemplateColumn Header="Machine Etat" >
+                            <DataGridTextColumn Header="Machine N°" Binding="{Binding Id}" Width="*"/>
+                            <DataGridTemplateColumn Header="Machine Etat" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <!--<TextBlock Text="{Binding Id}" />-->
                                             <Image Source="{Binding EtatImageSource, Mode=TwoWay}" Width="20"  />
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="{Binding Commande_V, Source={StaticResource LanguagesRes}}" Binding="{Binding ConsigneV, Mode=TwoWay}" />
-                            <DataGridTextColumn Header="{Binding Commande_A, Source={StaticResource LanguagesRes}}" Binding="{Binding ConsigneA, Mode=TwoWay}"/>
-                            <DataGridTextColumn Header="{Binding Read_V, Source={StaticResource LanguagesRes}}" Binding="{Binding LectureV}"/>
-                            <DataGridTextColumn Header="{Binding Read_A, Source={StaticResource LanguagesRes}}" Binding="{Binding LectureA}"/>
-                            <DataGridTextColumn Header="Temp °C" Binding="{Binding Temperature}"/>
-                            <DataGridTextColumn Header="{Binding Counter, Source={StaticResource LanguagesRes}}" Binding="{Binding CompteurAH}"/>
-                            <DataGridCheckBoxColumn Header="ON/OFF" Binding="{Binding OnOff, Mode=TwoWay}"/>
-                            <DataGridComboBoxColumn Header="{Binding State, Source={StaticResource LanguagesRes}}" SelectedItemBinding="{Binding Etat, Mode=TwoWay}" ItemsSource="{Binding Source={x:Reference frameworkElement},  Path=DataContext.ListEtats}" />
-                            <DataGridTextColumn Header="{Binding Type, Source={StaticResource LanguagesRes}}" Binding="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TypeVisibilityParam}"/>
-                            <DataGridCheckBoxColumn Header="Pulsé"  Binding="{Binding Pulse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn  Header="Ton ms" Binding="{Binding TempsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}"/>
-                            <DataGridTextColumn Header="Toff ms" Binding="{Binding TempsOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}"/>
-                            <DataGridCheckBoxColumn Header="Tempo" Binding="{Binding Temporisation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <DataGridTextColumn Header="Durée Tempo" Binding="{Binding DureeTempo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TempoVisibilityParam}"/>
-                            <DataGridTextColumn Header="Durée rest" Binding="{Binding DureeRestante, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TempoVisibilityParam}"/>
-                            <DataGridCheckBoxColumn Header="{Binding Ramp, Source={StaticResource LanguagesRes}}" Binding="{Binding Rampe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Durée Rampe" Binding="{Binding DureeRampe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridComboBoxColumn Header="Calibre " SelectedItemBinding="{Binding CalibreAH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Reference frameworkElement},  Path=DataContext.ListCalibres}"/>
+                            <DataGridTextColumn Header="{Binding Commande_V, Source={StaticResource LanguagesRes}}" Binding="{Binding ConsigneV, Mode=TwoWay}" Width="*" />
+                            <DataGridTextColumn Header="{Binding Commande_A, Source={StaticResource LanguagesRes}}" Binding="{Binding ConsigneA, Mode=TwoWay}" Width="*"/>
+                            <DataGridTextColumn Header="{Binding Read_V, Source={StaticResource LanguagesRes}}" Binding="{Binding LectureV}" Width="*"/>
+                            <DataGridTextColumn Header="{Binding Read_A, Source={StaticResource LanguagesRes}}" Binding="{Binding LectureA}" Width="*"/>
+                            <DataGridTextColumn Header="Temp °C" Binding="{Binding Temperature}" Width="*"/>
+                            <DataGridTextColumn Header="{Binding Counter, Source={StaticResource LanguagesRes}}" Binding="{Binding CompteurAH}" Width="*"/>
+                            <!--<DataGridCheckBoxColumn Header="ON/OFF" Binding="{Binding OnOff, Mode=TwoWay}"/>-->
+                            <DataGridTemplateColumn Header="ON/OFF"  Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Image Source="{Binding OnOffImageSource, Mode=TwoWay}" Width="20"  />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridComboBoxColumn Header="{Binding State, Source={StaticResource LanguagesRes}}" SelectedItemBinding="{Binding Etat, Mode=TwoWay}" ItemsSource="{Binding Source={x:Reference frameworkElement},  Path=DataContext.ListEtats}" Width="*" />
+                            <DataGridTextColumn Header="{Binding Type, Source={StaticResource LanguagesRes}}" Binding="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TypeVisibilityParam}" Width="*"/>
+                            <DataGridCheckBoxColumn Header="Pulsé"  Binding="{Binding Pulse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                            <DataGridTextColumn  Header="Ton ms" Binding="{Binding TempsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}" Width="*"/>
+                            <DataGridTextColumn Header="Toff ms" Binding="{Binding TempsOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.PulseVisibilityParam}" Width="*"/>
+                            <DataGridCheckBoxColumn Header="Tempo" Binding="{Binding Temporisation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                            <DataGridTextColumn Header="Durée Tempo" Binding="{Binding DureeTempo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TempoVisibilityParam}" Width="*"/>
+                            <DataGridTextColumn Header="Durée rest" Binding="{Binding DureeRestante, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Source={x:Reference frameworkElement},  Path=DataContext.TempoVisibilityParam}" Width="*"/>
+                            <DataGridCheckBoxColumn Header="{Binding Ramp, Source={StaticResource LanguagesRes}}" Binding="{Binding Rampe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                            <DataGridTextColumn Header="Durée Rampe" Binding="{Binding DureeRampe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                            <DataGridComboBoxColumn Header="Calibre " SelectedItemBinding="{Binding CalibreAH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={x:Reference frameworkElement},  Path=DataContext.ListCalibres}" Width="*"/>
 
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu >
                             <ContextMenu>
                                 <MenuItem Header="Show Tonms" Name="TonContextMenu" Click="Ton_click"></MenuItem>
-                                <MenuItem Header="Show Toffms"></MenuItem>
-                                <MenuItem Header="Show Recette"></MenuItem>
-                                <MenuItem Header="Show Segment"></MenuItem>
+                                <MenuItem Header="Show Toffms" Name="ToffContextMenu"  Click="Toff_click"></MenuItem>
+                                <MenuItem Header="Show Durée tempo" Name="DureeTempoContextMenu"  Click="DureeTempo_click"></MenuItem>
+                                <MenuItem Header="Show Durée restante" Name="DureeRestanteContextMenu"  Click="DureeRestante_click"></MenuItem>
+                                <MenuItem Header="Show Durée rampe" Name="DureeRampeContextMenu"  Click="DureeRampe_click"></MenuItem>
+                                <MenuItem Header="Show Recette" ></MenuItem>
+                                <MenuItem Header="Show Segment" ></MenuItem>
                                 <MenuItem Header="Show OF"></MenuItem>
                                 <MenuItem Header="Show A/h"></MenuItem>
                             </ContextMenu>
-                            
+
                         </DataGrid.ContextMenu>
                     </DataGrid>
                     <Grid Background="#FFFCFCFC" Margin="10,304.4,10,397.2">
                     </Grid>
-                    <ListBox  x:Name="listBox" Margin="0,250,0,20" ItemsSource="{Binding ListRedresseurToShow}"  >
+                    <ListBox  x:Name="listBox" HorizontalAlignment="Stretch" Margin="10,250,10,20" ItemsSource="{Binding ListRedresseurToShow}"  >
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel  Orientation="Horizontal"/>
@@ -109,8 +120,12 @@
             </TabItem>
             <TabItem Header="{Binding Recipe, Source={StaticResource LanguagesRes}}">
                 <Grid Background="#FFE5E5E5">
-                    <Grid Margin="0,0,731.2,387.2">
-                        <ComboBox Name="ProcessComboBox" ItemsSource="{Binding ListProcess}" SelectedItem="{Binding ProcessSelected, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="27" Width="134">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="20*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" HorizontalAlignment="Left"  Margin="20,10,0,424.6" >
+                        <ComboBox Name="ProcessComboBox" ItemsSource="{Binding ListProcess}" SelectedItem="{Binding ProcessSelected, Mode=TwoWay}" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="27" >
                             <Interactivity:Interaction.Triggers>
                                 <Interactivity:EventTrigger EventName="SelectionChanged" >
                                     <Command:EventToCommand Command="{Binding SelectedProcessChangedCommand}" PassEventArgsToCommand="True"/>
@@ -124,7 +139,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ProcessSelected.Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="267" Margin="10,42,0,0" VerticalAlignment="Top" Width="264">
+                        <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ProcessSelected.Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" Margin="0,27,0,-0.2">
                             <Interactivity:Interaction.Triggers>
                                 <Interactivity:EventTrigger EventName="AddingNewItem" >
                                     <Command:EventToCommand Command="{Binding AddingRecetteCommand}" PassEventArgsToCommand="True"/>
@@ -141,8 +156,8 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
-                    <Grid Margin="309.6,0,0,370">
-                        <DataGrid ItemsSource="{Binding RecetteSelected.Segments, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="275.6" Margin="-10,10,0,0" VerticalAlignment="Top" Width="708.4">
+                    <Grid Grid.Column="1" >
+                        <DataGrid ItemsSource="{Binding RecetteSelected.Segments, Mode=TwoWay }" AutoGenerateColumns="False" Height="281" Margin="0,27,0,0"  VerticalAlignment="Top">
                             <Interactivity:Interaction.Triggers>
                                 <Interactivity:EventTrigger EventName="AddingNewItem" >
                                     <Command:EventToCommand Command="{Binding AddingSegmentCommand}" PassEventArgsToCommand="True"/>
@@ -169,19 +184,20 @@
                             </DataGrid.Columns>
                         </DataGrid>
                         <TextBlock HorizontalAlignment="Left" Height="25.8" Margin="10,290.6,0,0" TextWrapping="Wrap" Text="A/H : " VerticalAlignment="Top" Width="30.8"/>
+                        <CheckBox HorizontalAlignment="Left" Height="18" Margin="354.3,291.1,0,0" VerticalAlignment="Top" Width="14.4" IsChecked="{Binding Path=AH, Mode=TwoWay}"/>
+                        <TextBlock HorizontalAlignment="Left" Height="18" Margin="391.5,291.1,0,0" TextWrapping="Wrap" Text="Calibre A/H :" VerticalAlignment="Top" Width="69.6"/>
+                        <Menu HorizontalAlignment="Left" Margin="466.1,291.1,0,0" VerticalAlignment="Top">
+                            <MenuItem Header="A/H">
+                                <MenuItem Header="A/H"/>
+                                <MenuItem Header="A/S"/>
+                                <MenuItem Header="A/MN"/>
+                            </MenuItem>
+                        </Menu>
+                        <TextBlock HorizontalAlignment="Left" Height="18" Margin="583.8,291.1,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="94.8"><Run Text="Valeur maximal"/><Run Text=" :"/></TextBlock>
+                        <TextBlock HorizontalAlignment="Left" Height="16" Margin="678.6,293.1,0,0" TextWrapping="Wrap" Text="{Binding CompteurAH}" VerticalAlignment="Top" Width="69.6"/>
                     </Grid>
-                    <lvc:CartesianChart Name="SegmentChart" Margin="0,392,0,44.8"  LegendLocation="Right"/>
-                    <CheckBox HorizontalAlignment="Left" Height="18" Margin="354.3,291.1,0,0" VerticalAlignment="Top" Width="14.4" IsChecked="{Binding Path=AH, Mode=TwoWay}"/>
-                    <TextBlock HorizontalAlignment="Left" Height="18" Margin="391.5,291.1,0,0" TextWrapping="Wrap" Text="Calibre A/H :" VerticalAlignment="Top" Width="69.6"/>
-                    <Menu HorizontalAlignment="Left" Margin="466.1,291.1,0,0" VerticalAlignment="Top">
-                        <MenuItem Header="A/H">
-                            <MenuItem Header="A/H"/>
-                            <MenuItem Header="A/S"/>
-                            <MenuItem Header="A/MN"/>
-                        </MenuItem>
-                    </Menu>
-                    <TextBlock HorizontalAlignment="Left" Height="18" Margin="583.8,291.1,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="94.8"><Run Text="Valeur maximal"/><Run Text=" :"/></TextBlock>
-                    <TextBlock HorizontalAlignment="Left" Height="16" Margin="678.6,293.1,0,0" TextWrapping="Wrap" Text="{Binding CompteurAH}" VerticalAlignment="Top" Width="69.6"/>
+                    <lvc:CartesianChart Name="SegmentChart" Margin="0,392,0,44.8"  LegendLocation="Right" Grid.ColumnSpan="2"/>
+
                 </Grid>
             </TabItem>
             <TabItem Header="{Binding Historics, Source={StaticResource LanguagesRes}}">
@@ -234,7 +250,12 @@
             </TabItem>
             <TabItem Header="{Binding Parameters, Source={StaticResource LanguagesRes}}">
                 <Grid Background="#FFE5E5E5">
-                    <TabControl HorizontalAlignment="Left" Height="682.641" Margin="10,10,0,0" VerticalAlignment="Top" Width="998" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="12*"/>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="359*"/>
+                    </Grid.ColumnDefinitions>
+                    <TabControl HorizontalAlignment="Left" Height="700"  VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ScreenGrid}" Grid.ColumnSpan="3" Margin="0,0,-6,0">
                         <TabItem Header="{Binding Users, Source={StaticResource LanguagesRes}}">
                             <Grid Background="#FFE5E5E5">
                                 <DataGrid Name="usergrid">
@@ -251,32 +272,32 @@
                             </Grid>
                         </TabItem>
                         <TabItem Header="{Binding Rectifier, Source={StaticResource LanguagesRes}}">
-                            <Grid Background="#FFE5E5E5">
-                                <DataGrid Margin="10,0" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" SelectedItem="{Binding RedresseurSelected, Mode=TwoWay}" AutoGenerateColumns="False"  VerticalAlignment="Top" Width="968" Height="219.4">
+                            <Grid Background="#FFE5E5E5" >
+                                <DataGrid Margin="10,10,10,0" HorizontalAlignment="Stretch"  ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" SelectedItem="{Binding RedresseurSelected, Mode=TwoWay}" AutoGenerateColumns="False"  VerticalAlignment="Top"  Height="220">
                                     <Interactivity:Interaction.Triggers>
                                         <Interactivity:EventTrigger EventName="AddingNewItem" >
                                             <Command:EventToCommand Command="{Binding AddingNewRedresseurCommand}" PassEventArgsToCommand="True"/>
                                         </Interactivity:EventTrigger>
                                     </Interactivity:Interaction.Triggers>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="N°" Binding="{Binding Id}"/>
-                                        <DataGridTextColumn Header="{Binding Name, Source={StaticResource LanguagesRes}}" Binding="{Binding Nom, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="{Binding Process, Source={StaticResource LanguagesRes}}" Binding="{Binding IdProcess, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="{Binding Ip_address, Source={StaticResource LanguagesRes}}"/>
-                                        <DataGridTextColumn Header="Calibre U" Binding="{Binding CalibreU, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="Max U (V)" Binding="{Binding UMax, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="Calibre I" Binding="{Binding CalibreI, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="Max I (A)" Binding="{Binding IMax, Mode=TwoWay}"/>
-                                        <DataGridCheckBoxColumn Header="Tempo" Binding="{Binding Temporisation, Mode=TwoWay}"/>
-                                        <DataGridCheckBoxColumn Header="{Binding Ramp, Source={StaticResource LanguagesRes}}" Binding="{Binding Rampe, Mode=TwoWay}"/>
-                                        <DataGridCheckBoxColumn Header="Pulse" Binding="{Binding Pulse, Mode=TwoWay}"/>
-                                        <DataGridCheckBoxColumn Header="A/H" Binding="{Binding AH, Mode=TwoWay}"/>
-                                        <DataGridCheckBoxColumn Header="Inverseur" Binding="{Binding Inverseur, Mode=TwoWay}"/>
-                                        <DataGridCheckBoxColumn Header="Prevent" Binding="{Binding Prevent, Mode=TwoWay}"/>
-                                        <DataGridCheckBoxColumn Header="Marche Globale" Binding="{Binding MiseSousTension, Mode=TwoWay}"/>
+                                        <DataGridTextColumn Header="N°" Binding="{Binding Id}"  Width="*"/>
+                                        <DataGridTextColumn Header="{Binding Name, Source={StaticResource LanguagesRes}}" Binding="{Binding Nom, Mode=TwoWay}"  Width="2*"/>
+                                        <DataGridTextColumn Header="{Binding Process, Source={StaticResource LanguagesRes}}" Binding="{Binding IdProcess, Mode=TwoWay}"  Width="2*"/>
+                                        <DataGridTextColumn Header="{Binding Ip_address, Source={StaticResource LanguagesRes}}" Binding="{Binding IpAdresse, Mode=TwoWay}"  Width="2*" />
+                                        <DataGridTextColumn Header="Calibre U" Binding="{Binding CalibreU, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridTextColumn Header="Max U (V)" Binding="{Binding UMax, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridTextColumn Header="Calibre I" Binding="{Binding CalibreI, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridTextColumn Header="Max I (A)" Binding="{Binding IMax, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridCheckBoxColumn Header="Tempo" Binding="{Binding Temporisation, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridCheckBoxColumn Header="{Binding Ramp, Source={StaticResource LanguagesRes}}" Binding="{Binding Rampe, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridCheckBoxColumn Header="Pulse" Binding="{Binding Pulse, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridCheckBoxColumn Header="A/H" Binding="{Binding AH, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridCheckBoxColumn Header="Inverseur" Binding="{Binding Inverseur, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridCheckBoxColumn Header="Prevent" Binding="{Binding Prevent, Mode=TwoWay}"  Width="*"/>
+                                        <DataGridCheckBoxColumn Header="Marche Globale" Binding="{Binding MiseSousTension, Mode=TwoWay}"  Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <DataGrid ItemsSource="{Binding RedresseurSelected.Registres, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="202.906" Margin="10,245.161,0,0" VerticalAlignment="Top" Width="968">
+                                <DataGrid ItemsSource="{Binding RedresseurSelected.Registres, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Height="202.906" Margin="10,245,10,0" VerticalAlignment="Top" >
                                     <Interactivity:Interaction.Triggers>
                                         <Interactivity:EventTrigger EventName="LoadingRow" >
                                             <Command:EventToCommand Command="{Binding RegistreLoadingRowCommand}" PassEventArgsToCommand="True"/>
@@ -320,7 +341,7 @@
                                 <DataGrid Margin="10,333.6,10,0">
 
                                 </DataGrid>
-                             </Grid>
+                            </Grid>
                         </TabItem>
                         <TabItem Header="{Binding Supervision, Source={StaticResource LanguagesRes}}">
                             <Grid Background="#FFE5E5E5">
@@ -341,7 +362,7 @@
             </TabItem>
         </TabControl>
 
-        <Menu HorizontalAlignment="Left" Height="27" Margin="831,0,0,0" VerticalAlignment="Top">
+        <Menu HorizontalAlignment="Right" Height="30"  VerticalAlignment="Top">
             <MenuItem Header="{Binding Change_idiom, Source={StaticResource LanguagesRes}}">
                 <MenuItem Header="{Binding English, Source={StaticResource LanguagesRes}}" Click="English_click"></MenuItem>
                 <MenuItem Header="{Binding French, Source={StaticResource LanguagesRes}}" Click="French_click"></MenuItem>

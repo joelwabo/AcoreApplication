@@ -384,6 +384,9 @@
       <LastGenOutput>AcoreDBEntities.cs</LastGenOutput>
     </Content>
     <Content Include="DataService\AcoreDB_create.sql" />
+    <Resource Include="Resources\defaut.png" />
+    <Resource Include="Resources\powerDefaut.png" />
+    <Resource Include="Resources\powerOn.png" />
     <Resource Include="Resources\supervisionPas.png" />
     <Resource Include="Resources\supervision.png" />
     <Resource Include="Resources\liasonPas.png" />
