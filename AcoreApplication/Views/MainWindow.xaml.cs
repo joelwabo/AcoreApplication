@@ -278,6 +278,9 @@ namespace AcoreApplication.Views
                 MachineDataGrid.Columns[18].Visibility = Visibility.Hidden;
                 DureeRampeContextMenu.Header = "Show Durée rampe";
             }
+
+      
+
         }
 
     }

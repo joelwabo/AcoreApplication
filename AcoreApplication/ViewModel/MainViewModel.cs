@@ -30,12 +30,14 @@ namespace AcoreApplication.ViewModel
         public ICommand RegistreLoadingRowCommand { get; set; }
         public ICommand LoadingSegmentCommand { get; set; }
         public ICommand EditingSegmentCommand { get; set; }
+        public ICommand EditingRegistreCommand { get; set; }
         public ICommand EditingRecetteCommand { get; set; }
         public ICommand EditingProcessCommand { get; set; }
         public ICommand ValideButton { get; set; }
         public ICommand AddingProcessCommand { get; set; }
         public ICommand AddingSegmentCommand { get; set; }
         public ICommand AddingRecetteCommand { get; set; }
+        public ICommand AddingRegistreCommand { get; set; }
         public ICommand AddingRedresseurCommand { get; set; }
         public ICommand SelectedRecetteChangedCommand { get; set; }
 
@@ -217,11 +219,13 @@ namespace AcoreApplication.ViewModel
 
             AddingProcessCommand = new RelayCommand<Object>(AddingProcess);
             AddingRecetteCommand = new RelayCommand<AddingNewItemEventArgs>(AddingRecette);
+            AddingRegistreCommand = new RelayCommand<AddingNewItemEventArgs>(AddingRegistre);
             AddingSegmentCommand = new RelayCommand<AddingNewItemEventArgs>(AddingSegment);
             AddingRedresseurCommand = new RelayCommand<AddingNewItemEventArgs>(AddingRedresseur);
             LoadingSegmentCommand = new RelayCommand<DataGridRowEventArgs>(LoadingSegment);
             EditingSegmentCommand = new RelayCommand<DataGridRowEditEndingEventArgs>(EditingSegment);
             EditingRecetteCommand = new RelayCommand<DataGridRowEditEndingEventArgs>(EditingRecette);
+            EditingRegistreCommand = new RelayCommand<DataGridRowEditEndingEventArgs>(EditingRegistre);
             EditingProcessCommand = new RelayCommand<DataGridRowEditEndingEventArgs>(EditingProcess);
             RegistreLoadingRowCommand = new RelayCommand<DataGridRowEventArgs>(RegistreLoadingRow);
             SelectedProcessChangedCommand = new RelayCommand<SelectionChangedEventArgs>(SelectedProcessChanged);
@@ -233,7 +237,7 @@ namespace AcoreApplication.ViewModel
             ValideButton = new RelayCommand<Object>(valideButton);
 
 
-
+            //ExampleOf CSV Import and export and picker
             //exportCSV("C:/Users/Pablo.PEREZ-MARTINEZ/Downloads/csvHeader.csv");
 
         }
@@ -408,6 +412,21 @@ namespace AcoreApplication.ViewModel
             SimpleIoc.Default.GetInstance<IRecetteService>().Insert(arg.NewItem as Recette);
         }
 
+        private void AddingRegistre(AddingNewItemEventArgs arg)
+        {
+            arg.NewItem = new DataService.Registre(RedresseurSelected.Id);
+            //SimpleIoc.Default.GetInstance<IRegistreService>().Insert(arg.NewItem as DataService.Registre);
+            DataService.Registre reg = arg.NewItem as DataService.Registre;
+            reg.IdRedresseur = 3;
+            reg.Nom = "ConsigneV";
+            reg.AdresseDebut = 2292;
+            reg.AdresseFin = 2292;
+            reg.Type = "Int";
+            reg.NumBit = 1;
+            reg.TypeModbus = "HoldingRegister";
+            SimpleIoc.Default.GetInstance<IRegistreService>().Insert();
+        }
+
         private void valideButton(Object obj)
         {
             ListProcess = SimpleIoc.Default.GetInstance<IProcessService>().GetAllData();
@@ -436,6 +455,13 @@ namespace AcoreApplication.ViewModel
             Recette recette = arg.Row.Item as Recette;
             SimpleIoc.Default.GetInstance<IRecetteService>().Update(recette);
         }
+
+        private void EditingRegistre(DataGridRowEditEndingEventArgs arg)
+        {
+            DataService.Registre registre = arg.Row.Item as DataService.Registre;
+            SimpleIoc.Default.GetInstance<IRegistreService>().Update(registre);
+        }
+
 
         private void RegistreLoadingRow(DataGridRowEventArgs arg)
         {
@@ -486,6 +512,8 @@ namespace AcoreApplication.ViewModel
             //before your loop
 
             //filePath = "C://csvHeader.csv";
+
+            /* WRITE A CSV FILE
             var csv = new StringBuilder();
 
             //in your loop
@@ -497,9 +525,50 @@ namespace AcoreApplication.ViewModel
 
             //after your loop
             File.WriteAllText(filePath, csv.ToString());
-        }
 
-        #endregion
-    }
+
+            */
+
+            /*
+            //READ A CSV FILE
+             // Configure open file dialog box
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            dlg.DefaultExt = ".csv"; // Default file extension
+            dlg.Filter = "Text documents (.csv)|*.csv"; // Filter files by extension
+
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                // Open document
+                string filename = dlg.FileName;
+
+                using (var reader = new StreamReader(@filename))
+                {
+                    List<string> listA = new List<string>();
+                    List<string> listB = new List<string>();
+                    while (!reader.EndOfStream)
+                    {
+
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+
+                        listA.Add(values[0]);
+                        listB.Add(values[1]);
+                    }
+                }
+            }
+
+
+            */
+
+
+}
+
+#endregion
+}
 
 }

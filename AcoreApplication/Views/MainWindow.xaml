@@ -22,6 +22,7 @@
                 </TabItem.Header>
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200*"/>
                         <ColumnDefinition Width="25*"/>
                         <ColumnDefinition Width="531*"/>
                     </Grid.ColumnDefinitions>
@@ -313,10 +314,10 @@
                                             <Interactivity:InvokeCommandAction Command="{Binding RegistreLoadingRowCommand}" />
                                         </Interactivity:EventTrigger>
                                         <Interactivity:EventTrigger EventName="AddingNewItem" >
-                                            <!--<Interactivity:InvokeCommandAction Command="{Binding AddingRegistreCommand}" />-->
+                                            <Command:EventToCommand Command="{Binding AddingRegistreCommand}" PassEventArgsToCommand="True" />
                                         </Interactivity:EventTrigger>
-                                        <Interactivity:EventTrigger EventName="CellEditEnding" >
-                                            <!--<Interactivity:InvokeCommandAction Command="{Binding AddingRegistreCommand}" />-->
+                                        <Interactivity:EventTrigger EventName="RowEditEnding" >
+                                            <Command:EventToCommand Command="{Binding EditingRegistreCommand}" PassEventArgsToCommand="True" />
                                         </Interactivity:EventTrigger>
 
                                     </Interactivity:Interaction.Triggers>
