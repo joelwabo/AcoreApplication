@@ -50,47 +50,52 @@ namespace AcoreApplication.DataService
         {
             while (true)
             {
-                if (Mode == MODES.Connected.ToString())
+                try
                 {
-                    // read Etat, Read On/Off, Read Marche/Arret
-                    foreach (Model.Redresseur redresseur in Redresseurs.ToList())
+                    if (Mode == MODES.Connected.ToString())
                     {
-                        foreach (Registre registre in redresseur.Registres)
+                        // read Etat, Read On/Off, Read Marche/Arret
+                        foreach (Model.Redresseur redresseur in Redresseurs.ToList())
                         {
-                            switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                            foreach (Registre registre in redresseur.Registres)
                             {
-                                case REGISTRE.Defaut:
-                                    {
-                                        ushort[] Defaut = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                        redresseur.Defaut = Convert.ToBoolean(Defaut[0]);
-                                    }
-                                    break;
-                                case REGISTRE.OnOff:
-                                    /*{
-                                        ushort[] OnOff = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                        bool onOff = Convert.ToBoolean(OnOff[0]);
-                                        redresseur.OnOff = onOff;
-                                    }*/
-                                    break;
-                                case REGISTRE.MarcheArret:
-                                    {
-                                        ushort[] MarcheArret = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                        redresseur.MiseSousTension = Convert.ToBoolean(MarcheArret[0]);
-                                    }
-                                    break;
-                                case REGISTRE.Etat:
-                                    {
-                                        ushort[] Etat = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                        string etat = Etat[0].ToString();
-                                        redresseur.Etat = (MODES)Enum.Parse(typeof(MODES), etat);
-                                    }
-                                    break;
+                                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                                {
+                                    case REGISTRE.Defaut:
+                                        {
+                                            ushort[] Defaut = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                            redresseur.Defaut = Convert.ToBoolean(Defaut[0]);
+                                        }
+                                        break;
+                                    case REGISTRE.OnOff:
+                                        /*{
+                                            ushort[] OnOff = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                            bool onOff = Convert.ToBoolean(OnOff[0]);
+                                            redresseur.OnOff = onOff;
+                                        }*/
+                                        break;
+                                    case REGISTRE.MarcheArret:
+                                        {
+                                            ushort[] MarcheArret = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                            redresseur.MiseSousTension = Convert.ToBoolean(MarcheArret[0]);
+                                        }
+                                        break;
+                                    case REGISTRE.Etat:
+                                        {
+                                            ushort[] Etat = redresseur.ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                            string etat = Etat[0].ToString();
+                                            redresseur.Etat = (MODES)Enum.Parse(typeof(MODES), etat);
+                                        }
+                                        break;
+                                }
                             }
                         }
                     }
+                    else
+                        Connection();
                 }
-                else
-                    Connection();
+                catch { }
+
                 Thread.Sleep(Cst_SleepTime);
             }
         }

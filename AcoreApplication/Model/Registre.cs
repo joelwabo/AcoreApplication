@@ -20,6 +20,11 @@ namespace AcoreApplication.DataService
         {
         }
 
+        public Registre(int id)
+        {
+            this.IdRedresseur = id;
+        }
+
         #endregion 
 
         #region METHODES
@@ -41,7 +46,44 @@ namespace AcoreApplication.DataService
             }
             return registres;
         }
-        
+
+        //Alert this should not be here
+        public static void insert(ObservableCollection<Registre> registres) {
+            using (var bdd = new AcoreDBEntities())
+            {
+                Registre x = bdd.Registre.OrderByDescending(r => r.Id).FirstOrDefault();
+                foreach (Registre reg in registres) {
+               
+                    if (reg.Id == 0)
+                    {
+                        
+
+
+                        bdd.Registre.Add(new Registre() {
+
+                            IdRedresseur =  reg.IdRedresseur,
+                            Nom = reg.Nom,
+                            Type = reg.Type,
+                            TypeModbus = reg.TypeModbus,
+                            NumBit = reg.NumBit,
+                            AdresseDebut = reg.AdresseDebut,
+                            AdresseFin= reg.AdresseFin
+                        });
+                            
+                        bdd.SaveChanges();
+                    }
+                    else
+                    {
+                        //TODO:UPDATE
+
+                    }
+                    
+
+                }
+
+            }
+            
+        }
         #endregion
     }
 }

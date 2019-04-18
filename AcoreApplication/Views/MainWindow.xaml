@@ -21,8 +21,12 @@
                     <Image Source="../Resources/power.png" />
                 </TabItem.Header>
                 <Grid Background="#FFE5E5E5">
-                    <FrameworkElement Name="frameworkElement" />
-                    <DataGrid Name="MachineDataGrid"  SelectedItem="{Binding RedresseurSelected}" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False"  Height="200" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch"  CanUserReorderColumns="False" MouseRightButtonUp="DataGrid_MouseRightButtonUp">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="531*"/>
+                    </Grid.ColumnDefinitions>
+                    <FrameworkElement Name="frameworkElement" Grid.ColumnSpan="3" Margin="0,0,0,-0.4" />
+                    <DataGrid Name="MachineDataGrid"  SelectedItem="{Binding RedresseurSelected}" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False"  Height="200" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch"  CanUserReorderColumns="False" MouseRightButtonUp="DataGrid_MouseRightButtonUp" Grid.ColumnSpan="3">
                         <Interactivity:Interaction.Triggers>
                             <Interactivity:EventTrigger EventName="SelectedCellsChanged" >
                                 <Interactivity:InvokeCommandAction Command="{Binding ARowEditEnding}" />
@@ -76,17 +80,17 @@
                                 <MenuItem Header="Show Durée tempo" Name="DureeTempoContextMenu"  Click="DureeTempo_click"></MenuItem>
                                 <MenuItem Header="Show Durée restante" Name="DureeRestanteContextMenu"  Click="DureeRestante_click"></MenuItem>
                                 <MenuItem Header="Show Durée rampe" Name="DureeRampeContextMenu"  Click="DureeRampe_click"></MenuItem>
-                                <MenuItem Header="Show Recette" ></MenuItem>
+                                <!-- <MenuItem Header="Show Recette" ></MenuItem>
                                 <MenuItem Header="Show Segment" ></MenuItem>
                                 <MenuItem Header="Show OF"></MenuItem>
-                                <MenuItem Header="Show A/h"></MenuItem>
+                                <MenuItem Header="Show A/h"></MenuItem>-->
                             </ContextMenu>
 
                         </DataGrid.ContextMenu>
                     </DataGrid>
-                    <Grid Background="#FFFCFCFC" Margin="10,304.4,10,397.2">
+                    <Grid Background="#FFFCFCFC" Margin="10,304,10,397.6" Grid.ColumnSpan="3">
                     </Grid>
-                    <ListBox  x:Name="listBox" HorizontalAlignment="Stretch" Margin="10,250,10,20" ItemsSource="{Binding ListRedresseurToShow}"  >
+                    <ListBox  x:Name="listBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,250,10,19.6" ItemsSource="{Binding ListRedresseurToShow}" Grid.ColumnSpan="3"  >
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel  Orientation="Horizontal"/>
@@ -160,7 +164,7 @@
                         <DataGrid ItemsSource="{Binding RecetteSelected.Segments, Mode=TwoWay }" AutoGenerateColumns="False" Height="281" Margin="0,27,0,0"  VerticalAlignment="Top">
                             <Interactivity:Interaction.Triggers>
                                 <Interactivity:EventTrigger EventName="AddingNewItem" >
-                                    <Command:EventToCommand Command="{Binding AddingSegmentCommand}" PassEventArgsToCommand="True"/>
+                                    <Command:EventToCommand Command="{Binding AddingSegmentCommand}" PassEventArgsToCommand="True" />
                                 </Interactivity:EventTrigger>
                                 <Interactivity:EventTrigger EventName="LoadingRow" >
                                     <Command:EventToCommand Command="{Binding LoadingSegmentCommand}" PassEventArgsToCommand="True"/>
@@ -205,7 +209,7 @@
                     <DataGrid Name="HistoriqueDataGrid" ItemsSource="{Binding ListHistorique, Mode=TwoWay}" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="165.8" VerticalAlignment="Top" Width="1001" Margin="10,58,0,0">
                         <Interactivity:Interaction.Triggers>
                             <Interactivity:EventTrigger EventName="SelectionChanged" >
-                                <Command:EventToCommand Command="{Binding SelectedHistoriqueChangedCommand}" PassEventArgsToCommand="True"/>
+                                <!--<Command:EventToCommand Command="{Binding SelectedHistoriqueChangedCommand}" PassEventArgsToCommand="True"/>-->
                             </Interactivity:EventTrigger>
                         </Interactivity:Interaction.Triggers>
                         <DataGrid.Columns>
@@ -273,10 +277,14 @@
                         </TabItem>
                         <TabItem Header="{Binding Rectifier, Source={StaticResource LanguagesRes}}">
                             <Grid Background="#FFE5E5E5" >
+                                <Button Content="{Binding Validate_change,Source={StaticResource LanguagesRes}}" HorizontalAlignment="Left" Height="26.6" Margin="607.2,0.4,0,0" VerticalAlignment="Top" Width="100" Command="{Binding ValideButton}"/>
+
+                                <Button Content="Ajouter Redresseurs" HorizontalAlignment="Left" Height="26.6" Margin="757.2,0.4,0,0" VerticalAlignment="Top" Width="100" Command="{Binding AddingRedresseurCommand}" CommandParameter="{Binding}"/>
+                                
                                 <DataGrid Margin="10,10,10,0" HorizontalAlignment="Stretch"  ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" SelectedItem="{Binding RedresseurSelected, Mode=TwoWay}" AutoGenerateColumns="False"  VerticalAlignment="Top"  Height="220">
                                     <Interactivity:Interaction.Triggers>
                                         <Interactivity:EventTrigger EventName="AddingNewItem" >
-                                            <Command:EventToCommand Command="{Binding AddingNewRedresseurCommand}" PassEventArgsToCommand="True"/>
+                                            <Command:EventToCommand Command="{Binding AddingRedresseurCommand}" PassEventArgsToCommand="True" />
                                         </Interactivity:EventTrigger>
                                     </Interactivity:Interaction.Triggers>
                                     <DataGrid.Columns>
@@ -297,11 +305,20 @@
                                         <DataGridCheckBoxColumn Header="Marche Globale" Binding="{Binding MiseSousTension, Mode=TwoWay}"  Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
+
+
                                 <DataGrid ItemsSource="{Binding RedresseurSelected.Registres, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Stretch" Height="202.906" Margin="10,245,10,0" VerticalAlignment="Top" >
                                     <Interactivity:Interaction.Triggers>
                                         <Interactivity:EventTrigger EventName="LoadingRow" >
-                                            <Command:EventToCommand Command="{Binding RegistreLoadingRowCommand}" PassEventArgsToCommand="True"/>
+                                            <Interactivity:InvokeCommandAction Command="{Binding RegistreLoadingRowCommand}" />
                                         </Interactivity:EventTrigger>
+                                        <Interactivity:EventTrigger EventName="AddingNewItem" >
+                                            <!--<Interactivity:InvokeCommandAction Command="{Binding AddingRegistreCommand}" />-->
+                                        </Interactivity:EventTrigger>
+                                        <Interactivity:EventTrigger EventName="CellEditEnding" >
+                                            <!--<Interactivity:InvokeCommandAction Command="{Binding AddingRegistreCommand}" />-->
+                                        </Interactivity:EventTrigger>
+
                                     </Interactivity:Interaction.Triggers>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Nom Variable" Binding="{Binding Nom}"/>
@@ -319,7 +336,12 @@
                         </TabItem>
                         <TabItem Header="{Binding Process, Source={StaticResource LanguagesRes}}">
                             <Grid Background="#FFE5E5E5">
-                                <DataGrid ItemsSource="{Binding ListProcess, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="275.6" Margin="10,10,0,0" VerticalAlignment="Top" Width="968" CanUserAddRows="False">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="55*"/>
+                                    <ColumnDefinition Width="14*"/>
+                                    <ColumnDefinition Width="687*"/>
+                                </Grid.ColumnDefinitions>
+                                <DataGrid CanUserAddRows="True" ItemsSource="{Binding ListProcess, Mode=TwoWay }" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="276" Margin="10,10,-222,0" VerticalAlignment="Top" Width="968" Grid.ColumnSpan="3" >
                                     <Interactivity:Interaction.Triggers>
                                         <Interactivity:EventTrigger EventName="RowEditEnding" >
                                             <Command:EventToCommand Command="{Binding EditingProcessCommand}" PassEventArgsToCommand="True"/>
@@ -336,9 +358,9 @@
                                         <DataGridCheckBoxColumn Header="A/H" Binding="{Binding AH, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Button Content="Ajouter process" HorizontalAlignment="Left" Height="25.26" Margin="10,297.34,0,0"
-                                        VerticalAlignment="Top" Width="109.2"  Command="{Binding AddingProcessCommand}" CommandParameter="{Binding}"/>
-                                <DataGrid Margin="10,333.6,10,0">
+                                <Button Content="Ajouter process" HorizontalAlignment="Left" Height="26" Margin="10,297,0,0"
+                                        VerticalAlignment="Top" Width="109"  Command="{Binding AddingProcessCommand}" CommandParameter="{Binding}" Grid.ColumnSpan="3"/>
+                                <DataGrid Margin="10,334,10,0.2" Grid.ColumnSpan="3">
 
                                 </DataGrid>
                             </Grid>

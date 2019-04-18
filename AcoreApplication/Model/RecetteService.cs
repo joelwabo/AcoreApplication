@@ -72,7 +72,8 @@ namespace AcoreApplication.Model
                     DataService.Recette recetteToUpdate = bdd.Recette.FirstOrDefault(recetteFound => recetteFound.Id == recette.Id);
                     if (recetteToUpdate != null)
                     {
-                        recetteToUpdate.IdProcess = recette.IdProcess;
+                        recetteToUpdate.IdProcess = recette.IdProcess; 
+
                         recetteToUpdate.Nom = recette.Nom;
                         recetteToUpdate.Cyclage = recette.Cyclage;
                         recetteToUpdate.SegCours = recette.SegCours;

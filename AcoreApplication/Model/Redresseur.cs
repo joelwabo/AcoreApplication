@@ -501,30 +501,33 @@ namespace AcoreApplication.Model
         {
             while (true)
             {
-                
-                switch (Etat)
+                try
                 {
-                    case MODES.LocalManuel:
-                        LocaleManuel();
-                        break;
-                    case MODES.LocalRecette:
-                        LocaleRecette();
-                        break;
-                    case MODES.RemoteManuel:
-                        RemoteManuel();
-                        break;
-                    case MODES.RemoteRecette:
-                        RemoteRecette();
-                        break;
-                    case MODES.Supervision:
-                        break;
+                    switch (Etat)
+                    {
+                        case MODES.LocalManuel:
+                            LocaleManuel();
+                            break;
+                        case MODES.LocalRecette:
+                            LocaleRecette();
+                            break;
+                        case MODES.RemoteManuel:
+                            RemoteManuel();
+                            break;
+                        case MODES.RemoteRecette:
+                            RemoteRecette();
+                            break;
+                        case MODES.Supervision:
+                            break;
+                    }
+
+
+                    checkConnection();
                 }
+                catch { }
 
 
-                checkConnection();
 
-
-               
 
                 /*
                  if (OnOff)
@@ -699,106 +702,110 @@ namespace AcoreApplication.Model
 
         private void LocaleRecette()
         {
-            if (OnOff)
+            try
             {
-                foreach (Registre registre in Registres)
+                if (OnOff)
                 {
-                    switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                    foreach (Registre registre in Registres)
                     {
-                        case REGISTRE.ConsigneA:
-                            {
-                                ushort[] readConsigneA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                ConsigneA = readConsigneA[0];
-                            }
-                            break;
-                        case REGISTRE.ConsigneV:
-                            {
-                                ushort[] readConsigneV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                ConsigneV = readConsigneV[0];
-                                if (ValuesA.Count < 500)
-                                    ValuesA.Add(ConsigneV);
-                                else
+                        switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                        {
+                            case REGISTRE.ConsigneA:
                                 {
-                                    for (int i = 0; i < ValuesA.Count - 1; i++)
-                                        ValuesA[i] = ValuesA[i + 1];
-                                    ValuesA[ValuesA.Count - 1] = ConsigneV;
+                                    ushort[] readConsigneA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                    ConsigneA = readConsigneA[0];
                                 }
-                            }
-                            break;
-                        case REGISTRE.LectureA:
-                            {
-                                ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                LectureA = readLectureA[0];
-                                if (ValuesB.Count < 500)
-                                    ValuesB.Add(ConsigneA);
-                                else
+                                break;
+                            case REGISTRE.ConsigneV:
                                 {
-                                    for (int i = 0; i < ValuesA.Count - 1; i++)
-                                        ValuesB[i] = ValuesB[i + 1];
-                                    ValuesB[ValuesA.Count - 1] = ConsigneA;
+                                    ushort[] readConsigneV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                    ConsigneV = readConsigneV[0];
+                                    if (ValuesA.Count < 500)
+                                        ValuesA.Add(ConsigneV);
+                                    else
+                                    {
+                                        for (int i = 0; i < ValuesA.Count - 1; i++)
+                                            ValuesA[i] = ValuesA[i + 1];
+                                        ValuesA[ValuesA.Count - 1] = ConsigneV;
+                                    }
                                 }
-                            }
-                            break;
-                        case REGISTRE.LectureV:
-                            {
-                                ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-                                LectureV = readLectureV[0];
-                            }
-                            break;
-                        case REGISTRE.MiseSousTension:
-                            {
-                                bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                break;
+                            case REGISTRE.LectureA:
+                                {
+                                    ushort[] readLectureA = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                    LectureA = readLectureA[0];
+                                    if (ValuesB.Count < 500)
+                                        ValuesB.Add(ConsigneA);
+                                    else
+                                    {
+                                        for (int i = 0; i < ValuesA.Count - 1; i++)
+                                            ValuesB[i] = ValuesB[i + 1];
+                                        ValuesB[ValuesA.Count - 1] = ConsigneA;
+                                    }
+                                }
+                                break;
+                            case REGISTRE.LectureV:
+                                {
+                                    ushort[] readLectureV = ModBusMaster.ReadHoldingRegisters(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+                                    LectureV = readLectureV[0];
+                                }
+                                break;
+                            case REGISTRE.MiseSousTension:
+                                {
+                                    bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
 
-                                if (readMiseSousTension != null)
-                                {
-                                    MiseSousTension = readMiseSousTension[0];
+                                    if (readMiseSousTension != null)
+                                    {
+                                        MiseSousTension = readMiseSousTension[0];
+                                    }
                                 }
-                            }
-                            break;
-                        case REGISTRE.RetourOnOff:
-                            {
-                                ushort x = Convert.ToUInt16(registre.AdresseDebut);
+                                break;
+                            case REGISTRE.RetourOnOff:
+                                {
+                                    ushort x = Convert.ToUInt16(registre.AdresseDebut);
 
-                                bool[] readOnOff = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
-                                if (readOnOff != null)
-                                {
-                                    OnOff = readOnOff[0];
+                                    bool[] readOnOff = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
+                                    if (readOnOff != null)
+                                    {
+                                        OnOff = readOnOff[0];
+                                    }
                                 }
-                            }
-                            break;
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Registre registre in Registres)
+                    {
+                        switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                        {
+                            case REGISTRE.MiseSousTension:
+                                {
+                                    bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
+
+                                    if (readMiseSousTension != null)
+                                    {
+                                        MiseSousTension = readMiseSousTension[0];
+                                    }
+                                }
+                                break;
+                            case REGISTRE.RetourOnOff:
+                                {
+                                    ushort x = Convert.ToUInt16(registre.AdresseDebut);
+
+                                    bool[] readOnOff = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
+                                    if (readOnOff != null)
+                                    {
+                                        OnOff = readOnOff[0];
+                                    }
+                                }
+                                break;
+                        }
                     }
                 }
             }
-            else {
-                foreach (Registre registre in Registres)
-                {
-                    switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
-                    {
-                        case REGISTRE.MiseSousTension:
-                            {
-                                bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), Cst_NbRedresseurs);
-
-                                if (readMiseSousTension != null)
-                                {
-                                    MiseSousTension = readMiseSousTension[0];
-                                }
-                            }
-                            break;
-                        case REGISTRE.RetourOnOff:
-                            {
-                                ushort x = Convert.ToUInt16(registre.AdresseDebut);
-
-                                bool[] readOnOff = ModBusMaster.ReadCoils(Cst_SlaveNb, x, Cst_NbRedresseurs);
-                                if (readOnOff != null)
-                                {
-                                    OnOff = readOnOff[0];
-                                }
-                            }
-                            break;
-                    }
-                }
-            }
-
+            catch { }
         }
 
         private void LocaleManuel()
@@ -870,40 +877,43 @@ namespace AcoreApplication.Model
 
         private void checkStates()
         {
-            foreach (Registre registre in Registres)
+            try
             {
-                switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                foreach (Registre registre in Registres)
                 {
-                    case REGISTRE.MiseSousTension:
-                        {
-                            try
+                    switch ((REGISTRE)Enum.Parse(typeof(REGISTRE), registre.Nom))
+                    {
+                        case REGISTRE.MiseSousTension:
                             {
-                                ushort x = Convert.ToUInt16(registre.AdresseDebut);
-                                
-                                bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), 1);
-
-                                if (readMiseSousTension != null)
+                                try
                                 {
-                                    MiseSousTension = readMiseSousTension[0];
-                                }
-                            }
-                            catch (Exception e) { }
-                           
-                        }
-                        break;
-                    case REGISTRE.OnOff:
-                        {
-                            try
-                            {
-                                ModBusMaster.WriteSingleCoil(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), onOff);
-                            }
-                            catch (Exception e) { }
+                                    ushort x = Convert.ToUInt16(registre.AdresseDebut);
 
-                        }
-                        break;
+                                    bool[] readMiseSousTension = ModBusMaster.ReadCoils(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), 1);
+
+                                    if (readMiseSousTension != null)
+                                    {
+                                        MiseSousTension = readMiseSousTension[0];
+                                    }
+                                }
+                                catch (Exception e) { }
+
+                            }
+                            break;
+                        case REGISTRE.OnOff:
+                            {
+                                try
+                                {
+                                    ModBusMaster.WriteSingleCoil(Cst_SlaveNb, Convert.ToUInt16(registre.AdresseDebut), onOff);
+                                }
+                                catch (Exception e) { }
+
+                            }
+                            break;
+                    }
                 }
             }
-
+            catch { }
         }
 
         private void RemoteRecette()
