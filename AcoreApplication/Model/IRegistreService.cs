@@ -1,14 +1,13 @@
 ﻿using System.Collections.ObjectModel;
-using AcoreApplication.DataService;
 
 namespace AcoreApplication.Model
 {
     public interface IRegistreService
     {
-        ObservableCollection<Registre> GetAllData();
+        ObservableCollection<DataService.Registre> GetAllData();
         bool Insert();
-        bool Insert(Registre registre);
-        bool Delete(Registre registre);
-        bool Update(Registre registre);
+        bool Insert(DataService.Registre registre);
+        bool Delete(DataService.Registre registre);
+        bool Update(DataService.Registre registre);
     }
 }

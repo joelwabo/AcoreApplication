@@ -27,7 +27,7 @@
                         <ColumnDefinition Width="531*"/>
                     </Grid.ColumnDefinitions>
                     <FrameworkElement Name="frameworkElement" Grid.ColumnSpan="3" Margin="0,0,0,-0.4" />
-                    <DataGrid Name="MachineDataGrid"  SelectedItem="{Binding RedresseurSelected}" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False"  Height="200" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch"  CanUserReorderColumns="False" MouseRightButtonUp="DataGrid_MouseRightButtonUp" Grid.ColumnSpan="3">
+                    <DataGrid Name="MachineDataGrid"  SelectedItem="{Binding RedresseurSelected}" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" AutoGenerateColumns="False" CanUserAddRows="False" Height="200" Margin="10,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch"  CanUserReorderColumns="False" MouseRightButtonUp="DataGrid_MouseRightButtonUp" Grid.ColumnSpan="3">
                         <Interactivity:Interaction.Triggers>
                             <Interactivity:EventTrigger EventName="SelectedCellsChanged" >
                                 <Interactivity:InvokeCommandAction Command="{Binding ARowEditEnding}" />
@@ -280,7 +280,7 @@
                             <Grid Background="#FFE5E5E5" >
                                 <Button Content="{Binding Validate_change,Source={StaticResource LanguagesRes}}" HorizontalAlignment="Left" Height="26.6" Margin="607.2,0.4,0,0" VerticalAlignment="Top" Width="100" Command="{Binding ValideButton}"/>
 
-                                <Button Content="Ajouter Redresseurs" HorizontalAlignment="Left" Height="26.6" Margin="757.2,0.4,0,0" VerticalAlignment="Top" Width="100" Command="{Binding AddingRedresseurCommand}" CommandParameter="{Binding}"/>
+                                <Button Content="Ajouter Redresseurs" HorizontalAlignment="Left" Height="26.6" Margin="757.2,0.4,0,0" VerticalAlignment="Top" Width="100" Command="{Binding ImportRedresseurCommand}" CommandParameter="{Binding}"/>
                                 
                                 <DataGrid Margin="10,10,10,0" HorizontalAlignment="Stretch"  ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" SelectedItem="{Binding RedresseurSelected, Mode=TwoWay}" AutoGenerateColumns="False"  VerticalAlignment="Top"  Height="220">
                                     <Interactivity:Interaction.Triggers>

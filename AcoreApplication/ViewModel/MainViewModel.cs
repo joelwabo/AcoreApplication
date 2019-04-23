@@ -42,6 +42,9 @@ namespace AcoreApplication.ViewModel
         public ICommand SelectedRecetteChangedCommand { get; set; }
 
         public ICommand CloseButtonCommand { get; set; }
+
+        public ICommand ImportRedresseurCommand { get; set; }
+        
         public ICommand ARowEditEnding { get; set; }
 
         private ObservableCollection<Segment> historiqueSelectedSegment = null;
@@ -235,12 +238,15 @@ namespace AcoreApplication.ViewModel
 
             ARowEditEnding = new RelayCommand<SelectedCellsChangedEventArgs>(ARowEditEndingMethod);
             ValideButton = new RelayCommand<Object>(valideButton);
+            ImportRedresseurCommand = new RelayCommand<Object>(ImportRedresseur);
 
 
             //ExampleOf CSV Import and export and picker
             //exportCSV("C:/Users/Pablo.PEREZ-MARTINEZ/Downloads/csvHeader.csv");
 
         }
+
+       
 
         private void CloseButtonCommandMethod(Object obj)
         {
@@ -418,13 +424,15 @@ namespace AcoreApplication.ViewModel
             //SimpleIoc.Default.GetInstance<IRegistreService>().Insert(arg.NewItem as DataService.Registre);
             DataService.Registre reg = arg.NewItem as DataService.Registre;
             reg.IdRedresseur = 3;
-            reg.Nom = "ConsigneV";
-            reg.AdresseDebut = 2292;
-            reg.AdresseFin = 2292;
+            reg.Nom = "ConsigneA";
+            reg.AdresseDebut = 2302;
+            reg.AdresseFin = 2302;
             reg.Type = "Int";
             reg.NumBit = 1;
             reg.TypeModbus = "HoldingRegister";
             SimpleIoc.Default.GetInstance<IRegistreService>().Insert();
+            ObservableCollection<DataService.Registre> list =  SimpleIoc.Default.GetInstance<IRegistreService>().GetAllData();
+            //RedresseurSelected.Registres = list;
         }
 
         private void valideButton(Object obj)
@@ -508,6 +516,55 @@ namespace AcoreApplication.ViewModel
             return true;
         }
 
+        private void ImportRedresseur(Object obj) {
+
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            dlg.DefaultExt = ".csv"; // Default file extension
+            dlg.Filter = "Text documents (.csv)|*.csv"; // Filter files by extension
+
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                // Open document
+                string filename = dlg.FileName;
+
+                using (var reader = new StreamReader(@filename))
+                {
+                    List<string> listA = new List<string>();
+                    List<string> listB = new List<string>();
+                    while (!reader.EndOfStream)
+                    {
+
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+
+                        try
+                        {
+                            Redresseur red = new Redresseur();
+                            red.IpAdresse = values[2];
+                            red.IdProcess = Int32.Parse(values[1]);
+
+                            SimpleIoc.Default.GetInstance<IRedresseurService>().Insert();
+
+                            ObservableCollection<Redresseur> col= SimpleIoc.Default.GetInstance<IRedresseurService>().GetAllData();
+                            
+                            //SimpleIoc.Default.GetInstance<IRedresseurService>().Insert();
+                            //Redresseur red = new Redresseur(new DataService.Redresseur());
+                            //red.IpAdresse = values[2];
+
+                        }
+
+                        catch {
+                        }
+                    }
+                }
+            }
+
+        }
         private void exportCSV(string filePath) {
             //before your loop
 

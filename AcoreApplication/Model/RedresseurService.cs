@@ -52,21 +52,27 @@ namespace AcoreApplication.Model
 
         public ObservableCollection<Redresseur> GetAllData()
         {
-            ObservableCollection<Redresseur> result = new ObservableCollection<Redresseur>();
-            using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Redresseur", connection))
-                using (SqlDataReader reader = command.ExecuteReader())
+                ObservableCollection<Redresseur> result = new ObservableCollection<Redresseur>();
+                using (SqlConnection connection = new SqlConnection(CnnVal("AcoreDataBase")))
                 {
-                    while (reader.Read())
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("SELECT * FROM Redresseur", connection))
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        Redresseur redresseur = new Redresseur(reader);
-                        result.Add(redresseur);
+                        while (reader.Read())
+                        {
+                            Redresseur redresseur = new Redresseur(reader);
+                            result.Add(redresseur);
+                        }
                     }
                 }
+                return result;
             }
-            return result;
+            catch (Exception e) {
+                return null;
+            }
         }
 
         public bool Insert()
@@ -81,8 +87,8 @@ namespace AcoreApplication.Model
                         IpAdresse = "192.168.1.111",
                         OnOff = false,
                         MiseSousTension = false,
-                        Etat = "",
-                        Type = "",
+                        Etat = "LocalManuel",
+                        Type = "Cathodique",
                         UMax = 0,
                         IMax = 0,
                         ConsigneV = 0,
@@ -92,7 +98,7 @@ namespace AcoreApplication.Model
                         Temperature = 0,
                         AH = false,
                         CompteurAH = 0,
-                        CalibreAH = "",
+                        CalibreAH = "A_H",
                         Pulse = false,
                         Temporisation = false,
                         TempsOn = 0,

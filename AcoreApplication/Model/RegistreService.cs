@@ -12,28 +12,44 @@ namespace AcoreApplication.Model
 {
     public class RegistreService : IRegistreService
     {
-        public bool Delete(Registre registre)
+        public bool Delete(DataService.Registre registre)
         {
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<Registre> GetAllData()
+        public ObservableCollection<DataService.Registre> GetAllData()
         {
-            throw new NotImplementedException();
+            ObservableCollection<Registre> result = new ObservableCollection<Registre>();
+            try
+            {
+                using (var bdd = new AcoreDBEntities())
+                {
+                    List<Registre> regs = bdd.Registre.ToList();
+                    foreach (Registre reg in regs)
+                    {
+                        result.Add(reg);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+            }
+            return result;
         }
 
         public bool Insert()
         {
             try
             {
-                using (var bdd = new DataService.AcoreDBEntities())
+                using (var bdd = new AcoreDBEntities())
                 {
                     bdd.Registre.Add(new DataService.Registre()
                     {
                         IdRedresseur = 3,
-                        Nom = "ConsigneV",
-                        AdresseDebut = 2292,
-                        AdresseFin = 2292,
+                        Nom = "ConsigneA",
+                        AdresseDebut = 2302,
+                        AdresseFin = 2302,
                         Type = "Int",
                         NumBit = 1,
                         TypeModbus = "HoldingRegister"
@@ -49,22 +65,13 @@ namespace AcoreApplication.Model
             }
 
         }
-        public bool Insert(Registre reg)
+        public bool Insert(DataService.Registre reg)
         {
             try
             {
-                using (var bdd = new DataService.AcoreDBEntities())
+                using (var bdd = new AcoreDBEntities())
                 {
-                    bdd.Registre.Add(new DataService.Registre()
-                    {
-                        IdRedresseur = 3,
-                        Nom = "ConsigneV",
-                        AdresseDebut = 2292,
-                        AdresseFin = 2292,
-                        Type = "Int",
-                        NumBit = 1,
-                        TypeModbus = "HoldingRegister"
-                    });
+                    bdd.Registre.Add(reg);
                     bdd.SaveChanges();
                 }
                 return true;

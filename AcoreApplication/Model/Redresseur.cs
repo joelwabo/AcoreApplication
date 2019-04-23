@@ -460,6 +460,10 @@ namespace AcoreApplication.Model
             RedresseurPoolingTask.Start();
         }
 
+        public Redresseur()
+        {
+        }
+
         ~Redresseur()
         {
             ModBusMaster.Dispose();
@@ -498,7 +502,7 @@ namespace AcoreApplication.Model
         }
 
         private void RedresseurPooling()
-        {
+        {   
             while (true)
             {
                 try
@@ -688,7 +692,6 @@ namespace AcoreApplication.Model
                                 //MiseSousTension = readMiseSousTension[0];
                                 if (readOnOff != null)
                                 {
-                                    int i = 0;
                                    // OnOff = readOnOff[0];
                                 }
                             }
