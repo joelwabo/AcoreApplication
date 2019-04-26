@@ -26,10 +26,25 @@ namespace AcoreApplication.Views
 
         private void LoginBtn_Clk(object sender, RoutedEventArgs e)
         {
+            //this should be in the viewModel
             this.Hide();
-            MainWindow win = new MainWindow();
-            win.ShowDialog();
+            //TODO: check password from Database
+            if (checkPassword())
+            {
+                MainWindow win = new MainWindow();
+                win.ShowDialog();
+            }
 
+        }
+        private bool checkPassword() {
+            if (this.username.Text == "User name")
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+            
         }
     }
 }

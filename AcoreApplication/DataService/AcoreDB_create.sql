@@ -71,7 +71,7 @@ CREATE TABLE Recette (
 -- Table: Redresseur
 CREATE TABLE Redresseur (
     Id int  NOT NULL IDENTITY,
-    IpAdresse nvarchar(50)  NOT NULL DEFAULT N'192.168.1.11',
+    IpAdresse nvarchar(50)  NOT NULL DEFAULT N'192.168.1.111',
     IdProcess int  NOT NULL,
     OnOff bit  NOT NULL DEFAULT 0,
     MiseSousTension bit  NOT NULL DEFAULT 0,

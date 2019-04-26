@@ -414,6 +414,7 @@ namespace AcoreApplication.Model
             Options = OptionsService.GetAllOptionsFromTableId(Id, "Id" + this.GetType().Name);
             Registres = Registre.GetAllRegisterFromRedresseurId(Id);
             ListRecette = RecetteService.GetListRecetteFromProcessId(IdProcess);
+            
             RedresseurPoolingTask = new Thread(RedresseurPooling);
             RedresseurPoolingTask.Start();
         }

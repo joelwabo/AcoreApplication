@@ -223,6 +223,7 @@ namespace AcoreApplication.ViewModel
             AddingProcessCommand = new RelayCommand<Object>(AddingProcess);
             AddingRecetteCommand = new RelayCommand<AddingNewItemEventArgs>(AddingRecette);
             AddingRegistreCommand = new RelayCommand<AddingNewItemEventArgs>(AddingRegistre);
+            //AddingRegistreCommand = new RelayCommand<Object>(AddRegistre);
             AddingSegmentCommand = new RelayCommand<AddingNewItemEventArgs>(AddingSegment);
             AddingRedresseurCommand = new RelayCommand<AddingNewItemEventArgs>(AddingRedresseur);
             LoadingSegmentCommand = new RelayCommand<DataGridRowEventArgs>(LoadingSegment);
@@ -351,10 +352,13 @@ namespace AcoreApplication.ViewModel
 
                 foreach (Redresseur redresseur in ListRedresseur)
                 {
-                    if (redresseur.Id == redresseurSelected.Id)
+                    if (redresseurSelected != null)
                     {
-                        ListRedresseurToShow.Add(redresseur);
-                      
+                        if (redresseur.Id == redresseurSelected.Id)
+                        {
+                            ListRedresseurToShow.Add(redresseur);
+
+                        }
                     }
                 }
             }
@@ -399,10 +403,10 @@ namespace AcoreApplication.ViewModel
 
         private void AddingRedresseur(AddingNewItemEventArgs arg)
         {
+            SimpleIoc.Default.GetInstance<IRedresseurService>().Insert();
             foreach (Redresseur redresseur in ListRedresseur)
                 SimpleIoc.Default.GetInstance<IRedresseurService>().Update(redresseur);
 
-            SimpleIoc.Default.GetInstance<IRedresseurService>().Insert();
             ListAutomate = AutomateService.GetAllData();
         }
 
@@ -417,21 +421,18 @@ namespace AcoreApplication.ViewModel
             arg.NewItem = new Recette(ProcessSelected.Id);
             SimpleIoc.Default.GetInstance<IRecetteService>().Insert(arg.NewItem as Recette);
         }
+        /*
+        private void AddRegistre(Object obj) {
 
+            SimpleIoc.Default.GetInstance<IRegistreService>().Insert(new DataService.Registre(RedresseurSelected.Id));
+            ObservableCollection<DataService.Registre> list = SimpleIoc.Default.GetInstance<IRegistreService>().GetAllData(RedresseurSelected.Id);
+            RedresseurSelected.Registres = list;
+        }
+        */
         private void AddingRegistre(AddingNewItemEventArgs arg)
         {
-            arg.NewItem = new DataService.Registre(RedresseurSelected.Id);
-            //SimpleIoc.Default.GetInstance<IRegistreService>().Insert(arg.NewItem as DataService.Registre);
-            DataService.Registre reg = arg.NewItem as DataService.Registre;
-            reg.IdRedresseur = 3;
-            reg.Nom = "ConsigneA";
-            reg.AdresseDebut = 2302;
-            reg.AdresseFin = 2302;
-            reg.Type = "Int";
-            reg.NumBit = 1;
-            reg.TypeModbus = "HoldingRegister";
-            SimpleIoc.Default.GetInstance<IRegistreService>().Insert();
-            ObservableCollection<DataService.Registre> list =  SimpleIoc.Default.GetInstance<IRegistreService>().GetAllData();
+            SimpleIoc.Default.GetInstance<IRegistreService>().Insert(new DataService.Registre(RedresseurSelected.Id));
+            ObservableCollection<DataService.Registre> list = SimpleIoc.Default.GetInstance<IRegistreService>().GetAllData(RedresseurSelected.Id);
             //RedresseurSelected.Registres = list;
         }
 
@@ -545,12 +546,11 @@ namespace AcoreApplication.ViewModel
                         try
                         {
                             Redresseur red = new Redresseur();
-                            red.IpAdresse = values[2];
+                            red.IpAdresse = "192.168.1.111";
                             red.IdProcess = Int32.Parse(values[1]);
 
                             SimpleIoc.Default.GetInstance<IRedresseurService>().Insert();
-
-                            ObservableCollection<Redresseur> col= SimpleIoc.Default.GetInstance<IRedresseurService>().GetAllData();
+                            ListRedresseur = SimpleIoc.Default.GetInstance<IRedresseurService>().GetAllData();
                             
                             //SimpleIoc.Default.GetInstance<IRedresseurService>().Insert();
                             //Redresseur red = new Redresseur(new DataService.Redresseur());

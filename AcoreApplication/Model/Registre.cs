@@ -36,6 +36,7 @@ namespace AcoreApplication.DataService
                 using (var bdd = new AcoreDBEntities())
                 {
                     List<Registre> regs = bdd.Registre.Where(reg => reg.IdRedresseur == id).ToList();
+                   
                     foreach (Registre reg in regs)
                         registres.Add(reg);
                 }

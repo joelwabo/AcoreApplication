@@ -130,7 +130,7 @@
                         <ColumnDefinition Width="20*" />
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0" HorizontalAlignment="Left"  Margin="20,10,0,424.6" >
-                        <ComboBox Name="ProcessComboBox" ItemsSource="{Binding ListProcess}" SelectedItem="{Binding ProcessSelected, Mode=TwoWay}" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="27" >
+                        <ComboBox Name="ProcessComboBox" ItemsSource="{Binding ListProcess, Mode=TwoWay}" SelectedItem="{Binding ProcessSelected, Mode=TwoWay}" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="27" >
                             <Interactivity:Interaction.Triggers>
                                 <Interactivity:EventTrigger EventName="SelectionChanged" >
                                     <Command:EventToCommand Command="{Binding SelectedProcessChangedCommand}" PassEventArgsToCommand="True"/>
@@ -144,7 +144,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ProcessSelected.Recettes}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" Margin="0,27,0,-0.2">
+                        <DataGrid Name="ListRecetteDataGrid"  ItemsSource="{Binding ProcessSelected.Recettes, Mode=TwoWay}" SelectedItem="{Binding RecetteSelected, Mode=TwoWay}" AutoGenerateColumns="False" Margin="0,27,0,-0.2">
                             <Interactivity:Interaction.Triggers>
                                 <Interactivity:EventTrigger EventName="AddingNewItem" >
                                     <Command:EventToCommand Command="{Binding AddingRecetteCommand}" PassEventArgsToCommand="True"/>
@@ -281,8 +281,8 @@
                                 <Button Content="{Binding Validate_change,Source={StaticResource LanguagesRes}}" HorizontalAlignment="Left" Height="26.6" Margin="607.2,0.4,0,0" VerticalAlignment="Top" Width="100" Command="{Binding ValideButton}"/>
 
                                 <Button Content="Ajouter Redresseurs" HorizontalAlignment="Left" Height="26.6" Margin="757.2,0.4,0,0" VerticalAlignment="Top" Width="100" Command="{Binding ImportRedresseurCommand}" CommandParameter="{Binding}"/>
-                                
-                                <DataGrid Margin="10,10,10,0" HorizontalAlignment="Stretch"  ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" SelectedItem="{Binding RedresseurSelected, Mode=TwoWay}" AutoGenerateColumns="False"  VerticalAlignment="Top"  Height="220">
+                               
+                                <DataGrid Margin="10,10,10,0" HorizontalAlignment="Stretch"  CanUserAddRows="False" ItemsSource="{Binding ListRedresseur, Mode=TwoWay }" SelectedItem="{Binding RedresseurSelected, Mode=TwoWay}" AutoGenerateColumns="False"  VerticalAlignment="Top"  Height="220">
                                     <Interactivity:Interaction.Triggers>
                                         <Interactivity:EventTrigger EventName="AddingNewItem" >
                                             <Command:EventToCommand Command="{Binding AddingRedresseurCommand}" PassEventArgsToCommand="True" />
@@ -322,13 +322,13 @@
 
                                     </Interactivity:Interaction.Triggers>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Nom Variable" Binding="{Binding Nom}"/>
-                                        <DataGridTextColumn Header="Nom Variable historisque"/>
-                                        <DataGridTextColumn Header="Type Modbus" Binding="{Binding TypeModbus, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="Adresse Début" Binding="{Binding AdresseDebut, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="Adresse Fin" Binding="{Binding AdresseFin, Mode=TwoWay}"/>
-                                        <DataGridTextColumn Header="Bit N°" Binding="{Binding NumBit, Mode=TwoWay}"/>
+                                        <DataGridTextColumn Header="Nom Variable" Binding="{Binding Nom}" Width="*"/>
+                                        <DataGridTextColumn Header="Nom Variable historisque" Width="*" />
+                                        <DataGridTextColumn Header="Type Modbus" Binding="{Binding TypeModbus, Mode=TwoWay}" Width="*"/>
+                                        <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=TwoWay}" Width="*"/>
+                                        <DataGridTextColumn Header="Adresse Début" Binding="{Binding AdresseDebut, Mode=TwoWay}" Width="*"/>
+                                        <DataGridTextColumn Header="Adresse Fin" Binding="{Binding AdresseFin, Mode=TwoWay}" Width="*"/>
+                                        <DataGridTextColumn Header="Bit N°" Binding="{Binding NumBit, Mode=TwoWay}" Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="152.869" Margin="26.82,487.812,0,0" Stroke="Black" VerticalAlignment="Top" Width="370.252"/>

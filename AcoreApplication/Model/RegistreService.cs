@@ -38,6 +38,27 @@ namespace AcoreApplication.Model
             return result;
         }
 
+        public ObservableCollection<Registre> GetAllData(int redId)
+        {
+            ObservableCollection<Registre> result = new ObservableCollection<Registre>();
+            try
+            {
+                using (var bdd = new AcoreDBEntities())
+                {
+                    List<Registre> regs = bdd.Registre.Where(reg => reg.IdRedresseur == redId).ToList();
+                    foreach (Registre reg in regs)
+                    {
+                        result.Add(reg);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+            }
+            return result;
+        }
+
         public bool Insert()
         {
             try
@@ -71,6 +92,13 @@ namespace AcoreApplication.Model
             {
                 using (var bdd = new AcoreDBEntities())
                 {
+
+                    reg.Nom = "RegNom";
+                    reg.AdresseDebut = 0000;
+                    reg.AdresseFin = 0000;
+                    reg.Type = "Int";
+                    reg.NumBit = 1;
+                    reg.TypeModbus = "HoldingRegister";
                     bdd.Registre.Add(reg);
                     bdd.SaveChanges();
                 }

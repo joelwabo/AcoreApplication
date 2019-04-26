@@ -107,8 +107,9 @@ namespace AcoreApplication.Model
                         DureeRestante = new TimeSpan(0),
                         Rampe = false,
                         DureeRampe = new TimeSpan(0),
-                        Defaut = false
-                    });
+                        Defaut = false,
+                        //Registres = new ObservableCollection<DataService.Registre>();
+                });
                     bdd.SaveChanges();
                 }
                 return true;
