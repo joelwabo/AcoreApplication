@@ -216,7 +216,7 @@ namespace AcoreApplication.ViewModel
 
 
             RedresseurSelected = null;
-            ProcessSelected = ListProcess[0];
+            //ProcessSelected = ListProcess[0];
             RecetteSelected = ProcessSelected.Recettes[0];
             historiqueSelectedSegment = null;
 
